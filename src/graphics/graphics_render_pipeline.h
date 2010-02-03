@@ -83,7 +83,7 @@ namespace graphics
      *      typedef float  matrix4x4_type[16];
      *  };
      *
-     * Now one can create a render pipeline type by writting 
+     * Now one can create a render pipeline type by writting
      *
      *   RenderPipeline<MyMathTypes>  render_pipeline;
      *
@@ -97,19 +97,19 @@ namespace graphics
      *   template<typename math_types>
      *   class MyVertexProgram : public VertexProgram<math_types>
      *   {
-     *       // add your implementation here 
+     *       // add your implementation here
      *   };
      *
      *   template<typename math_types>
      *   class MyFragmentProgram : public FragmentProgram<math_types>
      *   {
-     *       // add your implementation here 
+     *       // add your implementation here
      *   };
      *
      *   template<typename math_types>
      *   class MyRasterizer : public Rasterizer<math_types>
      *   {
-     *       // add your implementation here 
+     *       // add your implementation here
      *   };
      *
      * Now create the objects and load them into the render pipeline.
@@ -169,7 +169,7 @@ namespace graphics
 
     /// Tha actual type of a matrix4x4.
     typedef typename math_types::matrix4x4_type   matrix4x4_type;
-    
+
     public:
     /// The type of the class which contains the actual state of the RenderPipeline.
     typedef GraphicsState<math_types>            graphics_state_type;
@@ -189,7 +189,7 @@ namespace graphics
     /// The actual type of the FrameBuffer.
     typedef FrameBuffer<math_types>              frame_buffer_type;
 
-    
+
     public:
     /**
      * Creates a new RenderPipeline with a default state.
@@ -204,7 +204,7 @@ namespace graphics
         this->m_frame_buffer.set_resolution(this->m_width, this->m_height);
         this->m_zbuffer.set_resolution(this->m_width, this->m_height);
     }
-    
+
         /**
      * Creates a new RenderPipeline with a FrameBuffer of size width x height, and default state.
      * That is: No VertexProgram, Rasterizer nor FragmentProgram.
@@ -214,13 +214,13 @@ namespace graphics
     RenderPipeline(int width, int height) : m_width(width), m_height(height),
                         m_vertex_program(0),
                         m_fragment_program(0),
-                        m_rasterizer(0), 
+                        m_rasterizer(0),
                         m_unitlength(1)
     {
         this->m_frame_buffer.set_resolution(this->m_width, this->m_height);
-        this->m_zbuffer.set_resolution(this->m_width, this->m_height); 
+        this->m_zbuffer.set_resolution(this->m_width, this->m_height);
     }
-    
+
     /**
      * Destroys the RenderPipeline.
      */
@@ -230,9 +230,9 @@ namespace graphics
     /**
      * Set Resolution.
      *
-     * @param width  The number of pixels in a row. Must be larger than 1 otherwise 
+     * @param width  The number of pixels in a row. Must be larger than 1 otherwise
      *               an exception is thrown.
-     * @param height The number of pixels in a colum. Must be larger than 1 otherwise 
+     * @param height The number of pixels in a colum. Must be larger than 1 otherwise
      *               an exception is thrown.
      */
     void set_resolution(int width, int height)
@@ -242,7 +242,7 @@ namespace graphics
         this->m_frame_buffer.set_resolution(this->m_width, this->m_height);
         this->m_zbuffer.set_resolution(this->m_width, this->m_height);
     }
-    
+
     /**
      * Get the resolution of the screen.
      *
@@ -278,10 +278,10 @@ namespace graphics
      * This method should be used to setup the background color and z-values before
      * doing any kind of drawing.
      *
-     * @param color   The color to be used to clear the buffer. 
-     *                Each color component must be in the interval [0..1] 
+     * @param color   The color to be used to clear the buffer.
+     *                Each color component must be in the interval [0..1]
      *                otherwise an exception is thrown.
-     * @param depth   The value to be used to clear the buffer. 
+     * @param depth   The value to be used to clear the buffer.
      *                Must be in the interval [0..1] otherwise an exception is thrown.
      *
      */
@@ -339,7 +339,7 @@ namespace graphics
         this->m_fragment_program = &program;
     }
 
-    
+
     protected:
     /**
      * This is the place where the "local variables" are declared.
@@ -356,7 +356,7 @@ namespace graphics
 
     /// The actual FragmentProgram. Initially == 0.
     fragment_program_type* m_fragment_program;
-    
+
     /// The actual FrameBuffer. Implemented with std::vector.
     frame_buffer_type      m_frame_buffer;
 
@@ -503,7 +503,7 @@ namespace graphics
 
 
     /**
-     * Draws a thin 2D line on the sreen (one pixel wide). 
+     * Draws a thin 2D line on the sreen (one pixel wide).
      * The start and end points are scaled by unit length. and no transformations are applied.
      * The method can be used for Debug purpurses.
      * @param v1    A vector3 which contains the start point (the third coordinate is ignored).
@@ -521,7 +521,7 @@ namespace graphics
     }
 
         /**
-     * Draws a thin 2D line on the sreen (one pixel wide). 
+     * Draws a thin 2D line on the sreen (one pixel wide).
      * The start and end points are scaled by unit length. and no transformations are applied.
      * The method can be used for Debug purpurses.
      * @param x1 The x-coordinate of the start point.
@@ -588,7 +588,7 @@ namespace graphics
         this->m_frame_buffer.write_pixel(x, y, color);
         }
         else {
-        this->draw_disk(x * this->m_unitlength, y * this->m_unitlength, 
+        this->draw_disk(x * this->m_unitlength, y * this->m_unitlength,
                 (this->m_unitlength - 1) / 2, color);
         }
     }
@@ -660,11 +660,11 @@ namespace graphics
 
         if(this->m_fragment_program == 0)
         throw std::logic_error("fragment program was not loaded");
-        
+
         //--- Temporaries used to hold output from vertex program
         vector3_type out_vertex1;
         vector3_type out_color1;
-        
+
         //--- Ask vertex program to process all the vertex data.
         this->m_vertex_program->run(this->state(),
                     in_vertex1,  in_color1,
@@ -679,11 +679,11 @@ namespace graphics
         //--- get screen location of the current fragment
         int screen_x = this->m_rasterizer->x();
         int screen_y = this->m_rasterizer->y();
-            
+
         //--- extract old and new z value and perform a z-test
         real_type z_old = this->m_zbuffer.read( screen_x, screen_y );
         real_type z_new = this->m_rasterizer->depth();
-        
+
         if( this->state().ztest( z_old, z_new ) )
         {
             //--- The fragment passed the z-test, now we need to ask
@@ -702,7 +702,7 @@ namespace graphics
             this->m_zbuffer.write( screen_x, screen_y, z_new);
             this->write_pixel_to_frame_buffer(screen_x, screen_y, out_color);
         }
-            
+
         //--- We finished processing the fragment, so we
         //--- can advance to the next fragment.
         this->m_rasterizer->next_fragment();
@@ -738,13 +738,13 @@ namespace graphics
 
         if(!m_fragment_program)
         throw std::logic_error("fragment program was not loaded");
-        
+
         //--- Temporaries used to hold output from vertex program
         vector3_type out_vertex1;
         vector3_type out_vertex2;
         vector3_type out_color1;
         vector3_type out_color2;
-        
+
         //--- Ask vertex program to process all the vertex data.
         m_vertex_program->run(this->state(),
                   in_vertex1,  in_color1,
@@ -757,18 +757,18 @@ namespace graphics
         //--- Initialize rasterizer with output from the vertex program
         m_rasterizer->init(out_vertex1, out_color1,
                    out_vertex2, out_color2);
-        
+
         //--- Keep on processing fragments until there are none left
         while( m_rasterizer->more_fragments() )
         {
         //--- get screen location of the current fragment
         int screen_x = m_rasterizer->x();
         int screen_y = m_rasterizer->y();
-            
+
         //--- extract old and new z value and perform a z-test
         real_type z_old = m_zbuffer.read( screen_x, screen_y );
         real_type z_new = m_rasterizer->depth();
-        
+
         if( this->state().ztest( z_old, z_new ) )
         {
             //--- The fragment passed the z-test, now we need to ask
@@ -787,7 +787,7 @@ namespace graphics
             m_zbuffer.write( screen_x, screen_y, z_new);
             this->write_pixel_to_frame_buffer(screen_x, screen_y, out_color);
         }
-            
+
         //--- We finished processing the fragment, so we
         //--- can advance to the next fragment.
         m_rasterizer->next_fragment();
@@ -833,7 +833,7 @@ namespace graphics
 
         if(!m_fragment_program)
         throw std::logic_error("fragment program was not loaded");
-        
+
         //--- Temporaries used to hold output from vertex program
         vector3_type out_vertex1;
         vector3_type out_vertex2;
@@ -844,7 +844,7 @@ namespace graphics
         vector3_type out_color1;
         vector3_type out_color2;
         vector3_type out_color3;
-        
+
         //--- Ask vertex program to process all the vertex data.
         m_vertex_program->run(this->state(),
                   in_vertex1,  in_normal1,  in_color1,
@@ -857,23 +857,23 @@ namespace graphics
         m_vertex_program->run(this->state(),
                   in_vertex3, in_normal3, in_color3,
                   out_vertex3, out_normal3,  out_color3);
-        
+
         //--- Initialize rasterizer with output from the vertex program
         m_rasterizer->init(out_vertex1, out_normal1, out_color1,
                    out_vertex2, out_normal2, out_color2,
                    out_vertex3, out_normal3, out_color3);
-        
+
         //--- Keep on processing fragments until there are none left
         while( m_rasterizer->more_fragments() )
         {
         //--- get screen location of the current fragment
         int screen_x = m_rasterizer->x();
         int screen_y = m_rasterizer->y();
-            
+
         //--- extract old and new z value and perform a z-test
         real_type z_old = m_zbuffer.read( screen_x, screen_y );
         real_type z_new = m_rasterizer->depth();
-        
+
         if(  this->state().ztest( z_old, z_new ) )
         {
             //--- The fragment passed the z-test, now we need to ask
@@ -886,19 +886,19 @@ namespace graphics
                         m_rasterizer->normal(),
                         m_rasterizer->color(),
                         out_color);
-            
+
             //--- Finally we write the new z-value to the z-buffer
             //--- and the new color to the frame buffer.
             m_zbuffer.write( screen_x, screen_y, z_new);
             this->write_pixel_to_frame_buffer(screen_x, screen_y, out_color);
         }
-            
+
         //--- We finished processing the fragment, so we
         //--- can advance to the next fragment.
         m_rasterizer->next_fragment();
         }
     }
-    
+
     /**
      * Flush to Screen.
      * When this method is invoked whatever content of

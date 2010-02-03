@@ -21,7 +21,7 @@ namespace graphics
 
   public:
 
-    virtual void run( 
+    virtual void run(
         graphics_state_type const & state
       , vector3_type const & in_position
       , vector3_type const & in_normal

@@ -17,10 +17,10 @@ namespace graphics
      *   template<typename math_types>
      *   class MyRasterizer : public Rasterizer<math_types>
      *   {
-     *       // add your implementation here 
+     *       // add your implementation here
      *   };
      *
-     * An instance of this new implementation can be passed to render pipeline 
+     * An instance of this new implementation can be passed to render pipeline
      * using the load_rasterizer-method.
      *
      */
@@ -156,7 +156,7 @@ namespace graphics
      * @return   The current (world coordinate) normal of the current fragment.
      */
     virtual vector3_type const& normal() const = 0;
-    
+
     /**
      * Get Color.
      *

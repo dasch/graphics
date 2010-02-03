@@ -38,7 +38,7 @@ namespace graphics
     /**
      * A Frame Buffer.
      * A framebuffer is basically a 2D array of pixel colors.
-     * Each row of the 2D array has ``width'' pixels and each column has ''height'' pixels. 
+     * Each row of the 2D array has ``width'' pixels and each column has ''height'' pixels.
      * Each pixel consist of three color components: red, green, and blue.
      * Notice that the (0,0) entry of the array corresponds to the lower-left corner
      * on the ``screen'' (width-1,height-1) location corresponds to upper right corner.
@@ -98,7 +98,7 @@ namespace graphics
         ++c;
         }
     }
-    
+
     /**
      * Set Resolution.
      *
@@ -164,7 +164,7 @@ namespace graphics
         throw std::invalid_argument("green color must be within [0..1]");
         if(value[3] < 0 || value[3] > 1)
         throw std::invalid_argument("blue color must be within [0..1]");
-        
+
         //--- Simple minded clipping against framebuffer
         if(x < 0)
         return;
@@ -209,7 +209,7 @@ namespace graphics
 
         // Get the pixel from the frame buffer
         value[1] = m_pixels[offset];
-        value[2] = m_pixels[offset+1]; 
+        value[2] = m_pixels[offset+1];
         value[3] = m_pixels[offset+2];
 
         return value;
@@ -223,7 +223,7 @@ namespace graphics
      * This method should be invoked when finished
      * drawing all triangles.
      */
-    void flush() 
+    void flush()
     {
         //--- Ask OpenGL to draw our pixel array into the the
         //--- real-thing, the frame buffer in the graphics hardware.

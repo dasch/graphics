@@ -117,7 +117,7 @@ namespace graphics
      */
     vector3_type&       light_position()       { return m_light_position; }
 
-    
+
     /**
      * The value of the ambient color.
      * @return A read-only reference to the ambient color.
@@ -129,7 +129,7 @@ namespace graphics
      * @return A writable reference to the ambient color.
      */
     vector3_type&       ambient_color()        { return m_ambient_color;  }
-    
+
         /**
      * The value of the diffuse color.
      * @return A read-only reference to the diffuse color.
@@ -164,7 +164,7 @@ namespace graphics
      * @return A writable reference to the scale factor of the ambient light source.
      */
     real_type&       ambient_intensity()        { return m_ambient_intensity;  }
-    
+
         /**
      * The value of the ambient intensity (k_d, in Foley)
      * @return A read-only reference to the scale factor of the diffuse light source.
@@ -176,7 +176,7 @@ namespace graphics
      * @return A writable reference to the scale factor of the diffuse light source.
      */
     real_type&       diffuse_intensity()        { return m_diffuse_intensity;  }
-    
+
     /**
      * The value of the specular intensity (k_s, in Foley)
      * @return A read-only reference to the scale factor of the specular light source.
@@ -238,7 +238,7 @@ namespace graphics
 
     /// Canonical volume to screen transformation matrix.
     matrix4x4_type m_window_viewport;
-    
+
 
     /**
      * The parameters of Phong's reflection model
@@ -246,7 +246,7 @@ namespace graphics
 
     /// Light source position.
     vector3_type m_light_position;
-    
+
     /// Ambient color.
     vector3_type    m_ambient_color;
 

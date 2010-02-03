@@ -29,7 +29,7 @@ namespace graphics
     typedef typename math_types::matrix4x4_type matrix4x4_type;
 
     public:
-      
+
     /**
      * Creates a Camera with a default (empty) state.
      */
@@ -46,7 +46,7 @@ namespace graphics
      * Initialize the Camera with a RenderPipeline.
      */
     void init(RenderPipeline<math_types>& R)
-    { 
+    {
         m_state = &(R.state());
     }
 
@@ -54,7 +54,7 @@ namespace graphics
      * Set the projection matrix.
      *
      * @param vrp          View reference point
-     * @param vpn         View-plane normal 
+     * @param vpn         View-plane normal
      * @param vup          View up vector
      * @param prp          Projection reference point
      * @param lower_left  Lower left corner of the view-plane
@@ -65,7 +65,7 @@ namespace graphics
     void set_projection(vector3_type const& vrp, vector3_type const& vpn,
                 vector3_type const& vup, vector3_type const& prp,
                 vector2_type const& lower_left,
-                vector2_type const& upper_right, 
+                vector2_type const& upper_right,
                 real_type    const& front_plane,
                 real_type    const& back_plane)
     {
@@ -82,7 +82,7 @@ namespace graphics
 
         this->m_state->projection() = M;
     }
-      
+
     /**
      * Get the projection matrix.
      * @return The current projection matrix from world to screen.
@@ -161,13 +161,13 @@ namespace graphics
                                   real_type    const& back_plane) = 0;
 
     /**
-     * Computes a projection matrix using the parameters for a perspective camera 
+     * Computes a projection matrix using the parameters for a perspective camera
      * given by Foley et al. (p.229-284; 2nd edition)
-     * The projection matrix should transforms from world coordinates to 
+     * The projection matrix should transforms from world coordinates to
      * normalized projection coordinates
      *
      * @param vrp          View reference point
-     * @param vpn         View-plane normal 
+     * @param vpn         View-plane normal
      * @param vup          View up vector
      * @param prp          Projection reference point
      * @param lower_left  Lower left corner of the view-plane
@@ -185,7 +185,7 @@ namespace graphics
                              real_type    const& back_plane) = 0;
 
     protected:
-    
+
     /**
      * Stores a pointer to the state of the graphics pipeline.
      */

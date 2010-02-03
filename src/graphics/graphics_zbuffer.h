@@ -21,7 +21,7 @@ namespace graphics
     /**
      * A Z-Buffer.
      * A z-buffer is basically a 2D array of z-values.
-     * Each row of the 2D array has ``width'' values and each column has ''height'' values. 
+     * Each row of the 2D array has ``width'' values and each column has ''height'' values.
      * Notice that the (0,0) entry of the array corresponds to the lower-left corner
      * on the ``screen'' (width-1,height-1) location corresponds to the upper right corner.
      */
@@ -85,7 +85,7 @@ namespace graphics
         throw std::invalid_argument("graphics_zbuffer::set_resolution: width must be larger than 1");
         if (height <= 1)
         throw std::invalid_argument("graphics_zbuffer::set_resolution: height must be larger than 1");
-        
+
         m_values.resize(width*height);
         m_width  = width;
         m_height = height;
@@ -121,7 +121,7 @@ namespace graphics
 
         //--- Determine memory location of the pixel that should be written
         int offset = (y * m_width + x);
-        
+
         //--- Wtite the pixel to the frame buffer
         m_values[offset]   = z_value;
     }
@@ -152,7 +152,7 @@ namespace graphics
         int offset = (y * m_width + x);
         return m_values[offset];
     }
-    
+
     };
 
 }// end namespace graphics
