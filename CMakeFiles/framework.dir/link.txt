@@ -1,0 +1,1 @@
+/usr/bin/c++   -trigraphs   CMakeFiles/framework.dir/src/main.o  -o framework -rdynamic -lGLU -lGL -lSM -lICE -lX11 -lXext -lglut -lXmu -lXi 
