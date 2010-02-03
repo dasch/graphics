@@ -21,7 +21,7 @@ namespace graphics {
     template<typename math_types, typename value_type>
     class Interpolator {
     public:
-	typedef typename math_types::vector3_type vector3_type;
+    typedef typename math_types::vector3_type vector3_type;
         typedef typename math_types::real_type    real_type;
 
 /*******************************************************************\
@@ -30,7 +30,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	Interpolator() {}
+    Interpolator() {}
 
 /*******************************************************************\
 *                                                                   *
@@ -38,7 +38,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	Interpolator(Interpolator const& new_interpolator) {}
+    Interpolator(Interpolator const& new_interpolator) {}
 
 /*******************************************************************\
 *                                                                   *
@@ -46,7 +46,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual ~Interpolator()	{}
+    virtual ~Interpolator()    {}
 
 /*******************************************************************\
 *                                                                   *
@@ -54,21 +54,21 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual void init(int t_start, int t_stop, value_type const& Vstart, value_type const& Vstop) = 0;
-	
+    virtual void init(int t_start, int t_stop, value_type const& Vstart, value_type const& Vstop) = 0;
+    
 /*******************************************************************\
 *                                                                   *
 *                             U s a g e                             *
 *                                                                   *
 \*******************************************************************/
 
-	// Usage:
+    // Usage:
         //    while (more_values()) {
-	//        value_type this_value = value();
-	//        ...
+    //        value_type this_value = value();
+    //        ...
         //        use this_value
-	//        ...
-	//        next_value();
+    //        ...
+    //        next_value();
         //    }
 
 /*******************************************************************\
@@ -77,7 +77,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual value_type const& value() const = 0;
+    virtual value_type const& value() const = 0;
 
 /*******************************************************************\
 *                                                                   *
@@ -85,7 +85,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual bool more_values() const = 0;
+    virtual bool more_values() const = 0;
 
 /*******************************************************************\
 *                                                                   *
@@ -93,7 +93,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual void next_value()  = 0;
+    virtual void next_value()  = 0;
 
 /*******************************************************************\
 *                                                                   *
@@ -101,7 +101,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	Interpolator<math_types, value_type> const& operator=(Interpolator const& new_interpolator) {}
+    Interpolator<math_types, value_type> const& operator=(Interpolator const& new_interpolator) {}
 
 /*******************************************************************\
 *                                                                   *
@@ -119,7 +119,7 @@ namespace graphics {
 
 
     private:
-	
+    
     };
 }
 

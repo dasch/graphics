@@ -44,7 +44,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	typedef typename math_types::vector3_type      vector3_type;
+    typedef typename math_types::vector3_type      vector3_type;
 
 /*******************************************************************\
 *                                                                   *
@@ -52,7 +52,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	typedef typename math_types::real_type         real_type;
+    typedef typename math_types::real_type         real_type;
 
 
 
@@ -70,8 +70,8 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	MyPointRasterizer() : zero_normal(0, 0, 0), valid(false), Debug(false)
-	{}
+    MyPointRasterizer() : zero_normal(0, 0, 0), valid(false), Debug(false)
+    {}
 
 
 /*******************************************************************\
@@ -80,7 +80,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual ~MyPointRasterizer() {}
+    virtual ~MyPointRasterizer() {}
 
 
 /*******************************************************************\
@@ -89,23 +89,23 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void init( vector3_type const& in_vertex1,
-		   vector3_type const& in_color1)
-	{
-	    // This is a point rasterizer
-	    // The vertex is in 3D screen coordinates
+    void init( vector3_type const& in_vertex1,
+           vector3_type const& in_color1)
+    {
+        // This is a point rasterizer
+        // The vertex is in 3D screen coordinates
 
-	    this->zero_normal = vector3_type(0, 0, 0);
+        this->zero_normal = vector3_type(0, 0, 0);
 
-	    // Convert (x, y) to integer coordinates
-	    this->x_start = static_cast<int>(round(in_vertex1[1]));
-	    this->y_start = static_cast<int>(round(in_vertex1[2]));
-	    this->z_start = in_vertex1[3];
+        // Convert (x, y) to integer coordinates
+        this->x_start = static_cast<int>(round(in_vertex1[1]));
+        this->y_start = static_cast<int>(round(in_vertex1[2]));
+        this->z_start = in_vertex1[3];
 
-	    this->color_start   = in_color1;
+        this->color_start   = in_color1;
 
-	    this->valid = true;
-	}
+        this->valid = true;
+    }
 
 
 /*******************************************************************\
@@ -114,13 +114,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	bool DebugOn()
-	{
-	    bool oldvalue = this->Debug;
-	    this->Debug = true;
+    bool DebugOn()
+    {
+        bool oldvalue = this->Debug;
+        this->Debug = true;
 
-	    return oldvalue;
-	}
+        return oldvalue;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -128,13 +128,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	bool DebugOff()
-	{
-	    bool oldvalue = this->Debug;
-	    this->Debug = false;
+    bool DebugOff()
+    {
+        bool oldvalue = this->Debug;
+        this->Debug = false;
 
-	    return oldvalue;
-	}
+        return oldvalue;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -142,13 +142,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	int x() const
-	{
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::x():Invalid State/Not Initialized");
-	    }
-	    return this->x_start;     
-	}
+    int x() const
+    {
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::x():Invalid State/Not Initialized");
+        }
+        return this->x_start;     
+    }
 
 
 /*******************************************************************\
@@ -157,13 +157,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	int y() const
-	{
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::y():Invalid State/Not Initialized");
-	    }
-	    return this->y_start;
-	}
+    int y() const
+    {
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::y():Invalid State/Not Initialized");
+        }
+        return this->y_start;
+    }
 
 
 /*******************************************************************\
@@ -172,13 +172,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	real_type depth() const     
-	{
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::depth():Invalid State/Not Initialized");
-	    }
-	    return this->z_start;
-	}
+    real_type depth() const     
+    {
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::depth():Invalid State/Not Initialized");
+        }
+        return this->z_start;
+    }
 
 
 /*******************************************************************\
@@ -187,13 +187,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type position() const 
+    vector3_type position() const 
         {
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::position():Invalid State/Not Initialized");
-	    }
-	    return vector3_type(this->x(), this->y(), this->depth());
-	}
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::position():Invalid State/Not Initialized");
+        }
+        return vector3_type(this->x(), this->y(), this->depth());
+    }
 
 
 /*******************************************************************\
@@ -202,13 +202,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type const& normal() const     
-	{
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::normal():Invalid State/Not Initialized");
-	    }
-	    return this->zero_normal;    // The program should never come here!
-	}
+    vector3_type const& normal() const     
+    {
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::normal():Invalid State/Not Initialized");
+        }
+        return this->zero_normal;    // The program should never come here!
+    }
 
 
 /*******************************************************************\
@@ -217,13 +217,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type const& color() const 
-	{
-	    if (!this->valid) {
-		throw std::runtime_error("MyPointRasterizer::color():Invalid State/Not Initialized");
-	    }
-	    return this->color_start;
-	}
+    vector3_type const& color() const 
+    {
+        if (!this->valid) {
+        throw std::runtime_error("MyPointRasterizer::color():Invalid State/Not Initialized");
+        }
+        return this->color_start;
+    }
 
 
 /*******************************************************************\
@@ -231,26 +231,26 @@ namespace graphics {
 *                  m o r e _ f r a g m e n t s ( )                  *
 *                                                                   *
 \*******************************************************************/
-	
+    
 
-	bool more_fragments() const 
-	{
+    bool more_fragments() const 
+    {
             // Usage:
-	    //    Assume a pointer variable rasterizer is set up probably
-	    //     while (rasterizer->more_fragments()) {
-	    //         int x = rasterize->x();
-	    //         int y = rasterizer->y();
-	    //         MyMathTypes::real_type depth = rasterizer->depth();
-	    //         MyMathTypes::vector3_type    = rasterizer->position();
-	    //         MyMathTypes::vector3_type    = rasterizer->color();
-	    //             ...
-	    //             use the values ...
-	    //             ...
-	    //         rasterizer->next_fragment();
-	    //    }
+        //    Assume a pointer variable rasterizer is set up probably
+        //     while (rasterizer->more_fragments()) {
+        //         int x = rasterize->x();
+        //         int y = rasterizer->y();
+        //         MyMathTypes::real_type depth = rasterizer->depth();
+        //         MyMathTypes::vector3_type    = rasterizer->position();
+        //         MyMathTypes::vector3_type    = rasterizer->color();
+        //             ...
+        //             use the values ...
+        //             ...
+        //         rasterizer->next_fragment();
+        //    }
 
-	    return this->valid;
-	}
+        return this->valid;
+    }
 
 
 /*******************************************************************\
@@ -259,10 +259,10 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void next_fragment()    
-	{
-	    if (this->valid) this->valid = false;
-     	}
+    void next_fragment()    
+    {
+        if (this->valid) this->valid = false;
+         }
 
 
 /*******************************************************************\
@@ -271,18 +271,18 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void print_variables()
-	{
-	    std::cout << "MyPointRasterizer: local variables" << std::endl;
-	    std::cout << "==================================" << std::endl;
-	    std::cout << "\tvalid     == " << this->valid    << std::endl;
-	    std::cout << std::endl;
-	    std::cout << "\tx_start   == " << this->x_start   << std::endl;
-	    std::cout << "\ty_start   == " << this->y_start   << std::endl;
-	    std::cout << std::endl;
-	    std::cout << "\tDebug == " << this->Debug << std::endl;
-	    std::cout << std::endl;
-	}
+    void print_variables()
+    {
+        std::cout << "MyPointRasterizer: local variables" << std::endl;
+        std::cout << "==================================" << std::endl;
+        std::cout << "\tvalid     == " << this->valid    << std::endl;
+        std::cout << std::endl;
+        std::cout << "\tx_start   == " << this->x_start   << std::endl;
+        std::cout << "\ty_start   == " << this->y_start   << std::endl;
+        std::cout << std::endl;
+        std::cout << "\tDebug == " << this->Debug << std::endl;
+        std::cout << std::endl;
+    }
 
     protected:
 
@@ -302,17 +302,17 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	int          x_start;
-	int          y_start;
-	real_type    z_start;
+    int          x_start;
+    int          y_start;
+    real_type    z_start;
 
-	vector3_type color_start;
+    vector3_type color_start;
 
-	vector3_type zero_normal;
+    vector3_type zero_normal;
 
-	bool         valid;
+    bool         valid;
 
-	bool         Debug;
+    bool         Debug;
     };
 
 }// end namespace graphics

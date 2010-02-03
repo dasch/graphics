@@ -17,8 +17,8 @@ namespace graphics {
     template <typename math_types>
     class Color {
     public:
-	typedef math_types::real_type    real_type;
-	typedef math_types::vector3_type vector3_type;
+    typedef math_types::real_type    real_type;
+    typedef math_types::vector3_type vector3_type;
 
     public:
 
@@ -28,8 +28,8 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	Color()
-	{}
+    Color()
+    {}
 
 /*******************************************************************\
 *                                                                   *
@@ -37,8 +37,8 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual ~Color()
-	{}
+    virtual ~Color()
+    {}
 
 /*******************************************************************\
 *                                                                   *
@@ -46,13 +46,13 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void init(real_type ka, vector3_type Oa,
-	          real_type kd, vector3_type Od,
-	          real_type ks, vector3_type Os,
-	          int shininess)
-	{
-	    // Initialize the state of a color
-	}
+    void init(real_type ka, vector3_type Oa,
+              real_type kd, vector3_type Od,
+              real_type ks, vector3_type Os,
+              int shininess)
+    {
+        // Initialize the state of a color
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -60,11 +60,11 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type AmbientColor()
-	{
-	    // Return the ambient color
-	    return this->dummy_color;
-	}
+    vector3_type AmbientColor()
+    {
+        // Return the ambient color
+        return this->dummy_color;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -72,11 +72,11 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type DiffuseColor()
-	{
-	    // Return the diffuse color
-	    return this->dummy_color;
-	}
+    vector3_type DiffuseColor()
+    {
+        // Return the diffuse color
+        return this->dummy_color;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -84,11 +84,11 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	vector3_type SpecularColor()
-	{
-	    // Return the specular color
-	    return this->dummy_color;
-	}
+    vector3_type SpecularColor()
+    {
+        // Return the specular color
+        return this->dummy_color;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -96,11 +96,11 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	int Shininess()
-	{
-	    // return the shininess
-	    return 1;
-	}
+    int Shininess()
+    {
+        // return the shininess
+        return 1;
+    }
 
 
     protected:
@@ -112,8 +112,8 @@ namespace graphics {
 \*******************************************************************/
 
     private:
-	real_type    dummy_k;
-	vector3_type dummy_color;
+    real_type    dummy_k;
+    vector3_type dummy_color;
     };
 }
 

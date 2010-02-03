@@ -22,21 +22,21 @@ namespace graphics {
     template <typename math_types, typename value_type>
     class LinearInterpolator : public Interpolator<math_types, value_type> {
     public:
-	typedef typename math_types::vector3_type vector3_type;
-	typedef typename math_types::real_type    real_type;
+    typedef typename math_types::vector3_type vector3_type;
+    typedef typename math_types::real_type    real_type;
 
     public:
-	LinearInterpolator() : Interpolator<math_types, value_type>()
-	{
-	    // implement the real version
-	}
+    LinearInterpolator() : Interpolator<math_types, value_type>()
+    {
+        // implement the real version
+    }
 
-	LinearInterpolator(LinearInterpolator const& new_linearinterpolator)
-	    : Interpolator<math_types, value_type>(new_linearinterpolator)
-	      
-	{
-	    // implement the real version
-	}
+    LinearInterpolator(LinearInterpolator const& new_linearinterpolator)
+        : Interpolator<math_types, value_type>(new_linearinterpolator)
+          
+    {
+        // implement the real version
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -44,7 +44,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	virtual ~LinearInterpolator() {}
+    virtual ~LinearInterpolator() {}
 
 
 /*******************************************************************\
@@ -53,10 +53,10 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void init(int t_start, int t_stop, value_type const& Vstart, value_type const& Vstop)
+    void init(int t_start, int t_stop, value_type const& Vstart, value_type const& Vstop)
         {
-	    // implement the real version
-	}
+        // implement the real version
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -64,12 +64,12 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	value_type const& value() const
-	{
-	    // implement the real version
+    value_type const& value() const
+    {
+        // implement the real version
 
-	    return this->dummy_value;
-	}
+        return this->dummy_value;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -77,10 +77,10 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	bool more_values() const
-	{
-	    return false;
-	}
+    bool more_values() const
+    {
+        return false;
+    }
 
 /*******************************************************************\
 *                                                                   *
@@ -88,27 +88,27 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-	void next_value()
-	{
-	    // implement the real version
-	}
+    void next_value()
+    {
+        // implement the real version
+    }
 
-	
+    
 /*******************************************************************\
 *                                                                   *
 *     o p e r a t o r = ( L i n e a r I n t e r p o l a t o r )     *
 *                                                                   *
 \*******************************************************************/
 
-	LinearInterpolator<math_types, value_type> const&
-	operator=(LinearInterpolator const& newlinearinterpolator)
-	{
-	    if (this != &newlinearinterpolator) {
-		// copy the state variables of the argument to this instance
-	    }
+    LinearInterpolator<math_types, value_type> const&
+    operator=(LinearInterpolator const& newlinearinterpolator)
+    {
+        if (this != &newlinearinterpolator) {
+        // copy the state variables of the argument to this instance
+        }
 
-	    return *this;
-	}
+        return *this;
+    }
 
 
 /*******************************************************************\
@@ -128,7 +128,7 @@ namespace graphics {
 \*******************************************************************/
 
     private:
-	value_type dummy_value;
+    value_type dummy_value;
     };
 }
 

@@ -15,22 +15,22 @@ namespace graphics {
     {
     public:
 
-	typedef typename FragmentProgram<math_types>::graphics_state_type graphics_state_type;
-	typedef typename math_types::vector3_type                         vector3_type;
+    typedef typename FragmentProgram<math_types>::graphics_state_type graphics_state_type;
+    typedef typename math_types::vector3_type                         vector3_type;
 
     public:
-	void run(graphics_state_type const & state,
-		 vector3_type const & in_position,
-		 vector3_type const & in_normal,
-		 vector3_type const & in_color,
-		 vector3_type & out_color)
-	{
-	    // >> TODO ADD YOUR OWN MAGIC HERE <<
+    void run(graphics_state_type const & state,
+         vector3_type const & in_position,
+         vector3_type const & in_normal,
+         vector3_type const & in_color,
+         vector3_type & out_color)
+    {
+        // >> TODO ADD YOUR OWN MAGIC HERE <<
 
-	    //std::cout << "fragment: [" << in_position[1] << ", " << in_position[2] << "]"
-	    //<< std::endl;
-	    out_color = in_color;
-	}
+        //std::cout << "fragment: [" << in_position[1] << ", " << in_position[2] << "]"
+        //<< std::endl;
+        out_color = in_color;
+    }
     };
 
 }// end namespace graphics

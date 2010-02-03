@@ -13,24 +13,24 @@ namespace graphics
     class VertexProgram
     {
     public:
-	typedef typename math_types::vector3_type     vector3_type;
-	typedef typename  math_types::real_type       real_type;
-	typedef GraphicsState<math_types>             graphics_state_type;
+    typedef typename math_types::vector3_type     vector3_type;
+    typedef typename  math_types::real_type       real_type;
+    typedef GraphicsState<math_types>             graphics_state_type;
 
     public:
-	virtual void run( graphics_state_type const& state,
-			  vector3_type const& in_vertex,
-			  vector3_type const& in_color,
-			  vector3_type& out_vertex,
-			  vector3_type& out_color ) = 0;
+    virtual void run( graphics_state_type const& state,
+              vector3_type const& in_vertex,
+              vector3_type const& in_color,
+              vector3_type& out_vertex,
+              vector3_type& out_color ) = 0;
 
-	virtual void run( graphics_state_type const& state,
-			  vector3_type const& in_vertex,
-			  vector3_type const& in_normal,
-			  vector3_type const& in_color,
-			  vector3_type& out_vertex,
-			  vector3_type& out_normal,
-			  vector3_type& out_color ) = 0;
+    virtual void run( graphics_state_type const& state,
+              vector3_type const& in_vertex,
+              vector3_type const& in_normal,
+              vector3_type const& in_color,
+              vector3_type& out_vertex,
+              vector3_type& out_normal,
+              vector3_type& out_color ) = 0;
 
     };
 
