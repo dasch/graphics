@@ -173,10 +173,10 @@ void DrawPoint()
 #endif
 
     for (int x = x_start; x < x_stop; ++x) {
-	for (int y = y_start; y < y_stop; ++y) {
-	    MyMathTypes::vector3_type point(x, y, depth);
-	    render_pipeline.draw_point(point, cyellow);
-	}
+        for (int y = y_start; y < y_stop; ++y) {
+            MyMathTypes::vector3_type point(x, y, depth);
+            render_pipeline.draw_point(point, cyellow);
+        }
     }
 
     x_start = 250;
@@ -194,10 +194,10 @@ void DrawPoint()
 #endif
 
     for (int x = x_start; x < x_stop; ++x) {
-	for (int y = y_start; y < y_stop; ++y) {
-	    MyMathTypes::vector3_type point(x, y, depth);
-	    render_pipeline.draw_point(point, cred);
-	}
+        for (int y = y_start; y < y_stop; ++y) {
+            MyMathTypes::vector3_type point(x, y, depth);
+            render_pipeline.draw_point(point, cred);
+        }
     }
 }
 

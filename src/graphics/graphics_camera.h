@@ -101,7 +101,7 @@ namespace graphics
         return this->m_state->view_orientation();
     }
 
-        /**
+    /**
      * Get View-Projection.
      * @return The transformation matrix which transforms from the eye-coordinate system to the canonical view-volume.
      */
@@ -110,7 +110,7 @@ namespace graphics
         return this->m_state->view_projection();
     }
 
-        /**
+    /**
      * Get window-viewport transformation.
      * @return The transformation matrix which transforms from the canonical view-volume to the screen-coordinate system.
      */
