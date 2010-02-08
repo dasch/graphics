@@ -147,7 +147,7 @@ namespace graphics {
         if (!this->valid) {
         throw std::runtime_error("MyPointRasterizer::x():Invalid State/Not Initialized");
         }
-        return this->x_start;     
+        return this->x_start;
     }
 
 
@@ -217,7 +217,7 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-    vector3_type const& color() const 
+    vector3_type const& color() const
     {
         if (!this->valid) {
         throw std::runtime_error("MyPointRasterizer::color():Invalid State/Not Initialized");
@@ -231,9 +231,9 @@ namespace graphics {
 *                  m o r e _ f r a g m e n t s ( )                  *
 *                                                                   *
 \*******************************************************************/
-    
 
-    bool more_fragments() const 
+
+    bool more_fragments() const
     {
             // Usage:
         //    Assume a pointer variable rasterizer is set up probably
@@ -259,10 +259,10 @@ namespace graphics {
 *                                                                   *
 \*******************************************************************/
 
-    void next_fragment()    
+    void next_fragment()
     {
         if (this->valid) this->valid = false;
-         }
+    }
 
 
 /*******************************************************************\
