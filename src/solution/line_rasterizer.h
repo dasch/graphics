@@ -48,28 +48,30 @@ namespace graphics {
                   vector3_type const& in_vertex2,
                   vector3_type const& in_color2)
         {
-            // This is a line rasterizer
-            // The vertices are in 3D screen coordinates
+            int x1 = in_vertex1[1];
+            int y1 = in_vertex1[2];
+            int x2 = in_vertex1[1];
+            int y2 = in_vertex2[2];
 
-            // Determine if the line is x-dominat or y-dominant
-            // if (?) {
-            // The line is x-dominant
+            int dx = x2 - x1;
+            int dy = y2 - y1;
 
-            // Set up a pointer for the inner-loop for an x-donmiant line
-            // This is a pointer to a private member function!
-            // Therefore it looks very strange, but this is how to do it!
-            
-                // this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
-            //}
-            //else {
-            // The line is y-dominant
+            int abs_2dx = std::abs(dx) << 1;
+            int abs_2dy = std::abs(dy) << 1;
 
-                    // Set up a pointer for the inner-loop for a y-donmiant line
-            // This is a pointer to a private member function!
-            // Therefore it looks very strange, but this is how to do it!
+            int x_step = (dx < 0) ? -1 : 1;
+            int y_step = (dy < 0) ? -1 : 1;
 
-            // this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
-            //}
+            bool x_dominant = (abs_2dx > abs_2dy);
+
+            this->m_x = x1;
+            this->m_y = y1;
+
+            if (x_dominant) {
+                this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
+            } else {
+                this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
+            }
 
             this->Debug = false;
             this->valid = true;
@@ -96,7 +98,7 @@ namespace graphics {
             if (!this->valid) {
             throw std::runtime_error("MyLineRasterizer::x():Invalid State/Not Initialized");
             }
-            return 0;     
+            return this->m_x;     
         }
 
         int y() const
@@ -104,7 +106,7 @@ namespace graphics {
             if (!this->valid) {
             throw std::runtime_error("MyLineRasterizer::y():Invalid State/Not Initialized");
             }
-            return 0;
+            return this->m_y;     
         }
 
         real_type depth() const     
@@ -158,7 +160,7 @@ namespace graphics {
             //         rasterizer->next_fragment();
             //    }
 
-            return false;
+            return this->valid;
         }
 
         void next_fragment()    
@@ -190,6 +192,8 @@ namespace graphics {
         bool         valid;
 
         bool         Debug;
+
+        int m_x, m_y;
 
         vector3_type dummy_vector;
     };
