@@ -245,10 +245,10 @@ void DebugPoint()
 #endif
 
     for (int x = x_start; x < x_stop; ++x) {
-	for (int y = y_start; y < y_stop; ++y) {
-	    MyMathTypes::vector3_type point(x, y, depth);
-	    render_pipeline.draw_point(point, cyellow);
-	}
+        for (int y = y_start; y < y_stop; ++y) {
+            MyMathTypes::vector3_type point(x, y, depth);
+            render_pipeline.draw_point(point, cyellow);
+        }
     }
 
     x_start = 250 / UnitLength;
@@ -266,10 +266,10 @@ void DebugPoint()
 #endif
 
     for (int x = x_start; x < x_stop; ++x) {
-	for (int y = y_start; y < y_stop; ++y) {
-	    MyMathTypes::vector3_type point(x, y, depth);
-	    render_pipeline.draw_point(point, cred);
-	}
+        for (int y = y_start; y < y_stop; ++y) {
+            MyMathTypes::vector3_type point(x, y, depth);
+            render_pipeline.draw_point(point, cred);
+        }
     }
 
     render_pipeline.draw_grid(XSpacing, YSpacing, cblack);
@@ -320,20 +320,20 @@ void DrawLines()
     MyMathTypes::vector3_type Pstart = Pold;
 
     for (double Angle = DeltaAngle; Angle < AngleStop; Angle += DeltaAngle) {
-//	render_pipeline.draw_line(Center, cwhite, Pold, cwhite);
-	render_pipeline.draw_line(Center, cblack, Pold, cwhite);
-	Pnew[1] = Center[1] + Radius * cos(Angle);
-	Pnew[2] = Center[2] + Radius * sin(Angle);
-	Pnew[3] = 0.0;
-	render_pipeline.draw_line(Pold, cwhite, Pnew, cwhite);
-//	render_pipeline.draw_line(Pold, cyellow, Pnew, cyellow);
-	Pold = Pnew;
+        // render_pipeline.draw_line(Center, cwhite, Pold, cwhite);
+        render_pipeline.draw_line(Center, cblack, Pold, cwhite);
+        Pnew[1] = Center[1] + Radius * cos(Angle);
+        Pnew[2] = Center[2] + Radius * sin(Angle);
+        Pnew[3] = 0.0;
+        render_pipeline.draw_line(Pold, cwhite, Pnew, cwhite);
+        // render_pipeline.draw_line(Pold, cyellow, Pnew, cyellow);
+        Pold = Pnew;
     }
     //std::cout << "Pstart = [" << Pstart << "], Pnew = [" << Pnew << "]" << std::endl;
-//    render_pipeline.draw_line(Center, cwhite, Pold, cwhite);
+    // render_pipeline.draw_line(Center, cwhite, Pold, cwhite);
     render_pipeline.draw_line(Center, cblack, Pold, cwhite);
     render_pipeline.draw_line(Pold, cwhite, Pstart, cwhite);
-//    render_pipeline.draw_line(Pold, cyellow, Pstart, cyellow);
+    // render_pipeline.draw_line(Pold, cyellow, Pstart, cyellow);
 }
 
 
@@ -466,7 +466,7 @@ void DrawTriangles()
     // Lower triangle
     MyMathTypes::vector3_type  v1( 400.0, 100.0, 0.0 );
     MyMathTypes::vector3_type  v2( 700.0, 100.0, 0.0 );
-    MyMathTypes::vector3_type  v3( 550.0, 400.0, 0.0 );    
+    MyMathTypes::vector3_type  v3( 550.0, 400.0, 0.0 );
 
     MyMathTypes::vector3_type  n1( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n2( 0.0, 0.0, 1.0 );
@@ -476,12 +476,12 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c2( 1.0, 0.0, 0.0 );
     MyMathTypes::vector3_type  c3( 1.0, 0.0, 0.0 );
 
-    render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);    
+    render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);
 
     // Upper triangle
     MyMathTypes::vector3_type  v4( 550.0, 400.0, 0.0 );
     MyMathTypes::vector3_type  v5( 700.0, 700.0, 0.0 );
-    MyMathTypes::vector3_type  v6( 400.0, 700.0, 0.0 );    
+    MyMathTypes::vector3_type  v6( 400.0, 700.0, 0.0 );
 
     MyMathTypes::vector3_type  n4( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n5( 0.0, 0.0, 1.0 );
@@ -491,12 +491,12 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c5( 0.0, 1.0, 0.0 );
     MyMathTypes::vector3_type  c6( 0.0, 1.0, 0.0 );
 
-    render_pipeline.draw_triangle(v4,  n4, c4,  v5,  n5, c5,  v6,  n6, c6);  
+    render_pipeline.draw_triangle(v4,  n4, c4,  v5,  n5, c5,  v6,  n6, c6);
 
     // Left triangle
     MyMathTypes::vector3_type  v7( 400.0, 400.0, 0.0 );
     MyMathTypes::vector3_type  v8( 100.0, 700.0, 0.0 );
-    MyMathTypes::vector3_type  v9( 400.0, 100.0, 0.0 );    
+    MyMathTypes::vector3_type  v9( 400.0, 100.0, 0.0 );
 
     MyMathTypes::vector3_type  n7( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n8( 0.0, 0.0, 1.0 );
@@ -515,7 +515,7 @@ void DrawTriangles()
     // Lower left triangle with a lower horizontal edge
     MyMathTypes::vector3_type  v1( 100.0, 100.0, 0.0 );
     MyMathTypes::vector3_type  v2( 400.0, 100.0, 0.0 );
-    MyMathTypes::vector3_type  v3( 250.0, 300.0, 0.0 );    
+    MyMathTypes::vector3_type  v3( 250.0, 300.0, 0.0 );
 
     MyMathTypes::vector3_type  n1( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n2( 0.0, 0.0, 1.0 );
@@ -525,12 +525,12 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c2( 1.0, 0.0, 0.0 );
     MyMathTypes::vector3_type  c3( 1.0, 0.0, 0.0 );
 
-    render_pipeline.draw_triangle(  v1,  n1, cyellow,  v2,  n2, cyellow,  v3,  n3, cyellow);    
+    render_pipeline.draw_triangle(  v1,  n1, cyellow,  v2,  n2, cyellow,  v3,  n3, cyellow);
 
     // Upper left triangle with a upper horizontal edge
     MyMathTypes::vector3_type  v4( 100.0, winHeight - v1[2], 0.0 );
     MyMathTypes::vector3_type  v5( 250.0, winHeight - v3[2], 0.0 );
-    MyMathTypes::vector3_type  v6( 400.0, winHeight - v2[2], 0.0 );    
+    MyMathTypes::vector3_type  v6( 400.0, winHeight - v2[2], 0.0 );
 
     MyMathTypes::vector3_type  n4( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n5( 0.0, 0.0, 1.0 );
@@ -540,12 +540,12 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c5( 1.0, 0.0, 0.0 );
     MyMathTypes::vector3_type  c6( 1.0, 0.0, 0.0 );
 
-    render_pipeline.draw_triangle(  v4,  n4, cyellow,  v5,  n5, cyellow,  v6,  n6, cyellow); 
+    render_pipeline.draw_triangle(  v4,  n4, cyellow,  v5,  n5, cyellow,  v6,  n6, cyellow);
 
     // General triangle with the third point the the right
     MyMathTypes::vector3_type  v7( winWidth /  2 + 200.0, 100.0, 0.0 );
     MyMathTypes::vector3_type  v8( winWidth /  2 + 100.0, 400.0, 0.0 );
-    MyMathTypes::vector3_type  v9( winWidth /  2 + 300.0, 250.0, 0.0 );    
+    MyMathTypes::vector3_type  v9( winWidth /  2 + 300.0, 250.0, 0.0 );
 
     MyMathTypes::vector3_type  n7( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n8( 0.0, 0.0, 1.0 );
@@ -555,12 +555,12 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c8( 1.0, 0.0, 0.0 );
     MyMathTypes::vector3_type  c9( 1.0, 0.0, 0.0 );
 
-    render_pipeline.draw_triangle(  v7,  n7, cyellow,  v8,  n8, cyellow,  v9,  n9, cyellow); 
+    render_pipeline.draw_triangle(  v7,  n7, cyellow,  v8,  n8, cyellow,  v9,  n9, cyellow);
 
     // General triangle with the third point the the left
     MyMathTypes::vector3_type  v10( winWidth /  2 + 250.0, winHeight - 100.0, 0.0 );
     MyMathTypes::vector3_type  v11( winWidth /  2 + 300.0, winHeight - 400.0, 0.0 );
-    MyMathTypes::vector3_type  v12( winWidth /  2 + 100.0, winHeight - 250.0, 0.0 );    
+    MyMathTypes::vector3_type  v12( winWidth /  2 + 100.0, winHeight - 250.0, 0.0 );
 
     MyMathTypes::vector3_type  n10( 0.0, 0.0, 1.0 );
     MyMathTypes::vector3_type  n11( 0.0, 0.0, 1.0 );
@@ -570,7 +570,7 @@ void DrawTriangles()
     MyMathTypes::vector3_type  c11( 1.0, 0.0, 0.0 );
     MyMathTypes::vector3_type  c12( 1.0, 0.0, 0.0 );
 
-    render_pipeline.draw_triangle( v10, n10, cyellow, v11, n11, cyellow, v12, n12, cyellow);    
+    render_pipeline.draw_triangle( v10, n10, cyellow, v11, n11, cyellow, v12, n12, cyellow);
 
 #endif
 }
@@ -736,23 +736,23 @@ void DebugTriangles()
     MyMathTypes::vector3_type V3(1, 9 ,0);
 
     render_pipeline.draw_triangle(V1, ZeroNormal, cwhite,
-				  V2, ZeroNormal, cwhite,
-				  V3, ZeroNormal, cwhite);
+                  V2, ZeroNormal, cwhite,
+                  V3, ZeroNormal, cwhite);
 
     render_pipeline.draw_grid(XSpacing, YSpacing, cblack);
 
     render_pipeline.draw_debugline(V1, V2, cwhite);
     render_pipeline.draw_debugline(V2, V3, cwhite);
     render_pipeline.draw_debugline(V3, V1, cwhite); // was cgreen
-    
+
 #else
     // Many triangles
 
     // The variable v is global, and don't worry about it - display() updates it!
 
     render_pipeline.draw_triangle(Vertex1[v], ZeroNormal, cwhite,
-				  Vertex2[v], ZeroNormal, cwhite,
-				  Vertex3[v], ZeroNormal, cwhite);
+                  Vertex2[v], ZeroNormal, cwhite,
+                  Vertex3[v], ZeroNormal, cwhite);
 
     render_pipeline.draw_grid(XSpacing, YSpacing, cblack);
 
@@ -839,8 +839,8 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
     switch (Key) {
     case 'h':
     case '?':
-	usage();
-	break;
+    usage();
+    break;
     case 'q':
     case 'Q':
         // quit the program
@@ -849,71 +849,71 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
         break;
     case 'c':
     case 'C':
-	// clear the screen
-	std::cout << "Clear Screen" << std::endl << std::flush;
-	figure = 'c';
-	glutPostRedisplay();
-	break;
+    // clear the screen
+    std::cout << "Clear Screen" << std::endl << std::flush;
+    figure = 'c';
+    glutPostRedisplay();
+    break;
     case 'p':
-	// draw points
-	std::cout << "Draw Point" << std::endl << std::flush;
-	figure = 'p';
-	glutPostRedisplay();
-	break;
+    // draw points
+    std::cout << "Draw Point" << std::endl << std::flush;
+    figure = 'p';
+    glutPostRedisplay();
+    break;
     case 'P':
-	// debug points
-	std::cout << "Debug Point" << std::endl << std::flush;
-	figure = 'P';
-	glutPostRedisplay();
-	break;
+    // debug points
+    std::cout << "Debug Point" << std::endl << std::flush;
+    figure = 'P';
+    glutPostRedisplay();
+    break;
     case 'l':
-	// draw lines
-	std::cout << "Draw Lines" << std::endl << std::flush;
-	figure = 'l';
-	glutPostRedisplay();
-	break;
+    // draw lines
+    std::cout << "Draw Lines" << std::endl << std::flush;
+    figure = 'l';
+    glutPostRedisplay();
+    break;
     case 'L':
-	// debug lines
-	std::cout << "Debug Lines - forward" << std::endl << std::flush;
-	++l;
-	if (l >= lmax) l = 1;
-	std::cout << "l = " << l << std::endl << std::flush;
-	figure = 'L';
-	glutPostRedisplay();
-	break;
+    // debug lines
+    std::cout << "Debug Lines - forward" << std::endl << std::flush;
+    ++l;
+    if (l >= lmax) l = 1;
+    std::cout << "l = " << l << std::endl << std::flush;
+    figure = 'L';
+    glutPostRedisplay();
+    break;
     case 'K':
-	// debug lines
-	std::cout << "Debug Lines - backward" << std::endl << std::flush;
-	--l;
-	if (l <= 0) l = lmax - 1;
-	std::cout << "l = " << l << std::endl << std::flush;
-	figure = 'K';
-	glutPostRedisplay();
-	break;
+    // debug lines
+    std::cout << "Debug Lines - backward" << std::endl << std::flush;
+    --l;
+    if (l <= 0) l = lmax - 1;
+    std::cout << "l = " << l << std::endl << std::flush;
+    figure = 'K';
+    glutPostRedisplay();
+    break;
     case 't':
-	// draw triangles
-	std::cout << "Draw Triangles" << std::endl << std::flush;
-	figure = 't';
-	glutPostRedisplay();
-	break;
+    // draw triangles
+    std::cout << "Draw Triangles" << std::endl << std::flush;
+    figure = 't';
+    glutPostRedisplay();
+    break;
     case 'T':
-	// debug triangles - forward
-	std::cout << "Debug Triangles - forward" << std::endl << std::flush;
-	++v;
-	if (v >= vmax) v = 1;
-	std::cout << "v = " << v << std::endl << std::flush;
-	figure = 'T';
-	glutPostRedisplay();
-	break;
+    // debug triangles - forward
+    std::cout << "Debug Triangles - forward" << std::endl << std::flush;
+    ++v;
+    if (v >= vmax) v = 1;
+    std::cout << "v = " << v << std::endl << std::flush;
+    figure = 'T';
+    glutPostRedisplay();
+    break;
     case 'R':
- 	// debug triangles - backward
-	std::cout << "Debug Triangles - backward" << std::endl << std::flush;
-	--v;
-	if (v <= 0) v = vmax - 1;
-	std::cout << "v = " << v << std::endl << std::flush;
-	figure = 'T';
-	glutPostRedisplay();
-	break;
+     // debug triangles - backward
+    std::cout << "Debug Triangles - backward" << std::endl << std::flush;
+    --v;
+    if (v <= 0) v = vmax - 1;
+    std::cout << "v = " << v << std::endl << std::flush;
+    figure = 'T';
+    glutPostRedisplay();
+    break;
     case 'd':
     case 'D':
         // call the DisplayCallback as soon as possible
@@ -924,13 +924,13 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
     case 'G':
         // toggle the grid on and off
         std::cout << "Toggle Grid";
-	figure = 'g';
+    figure = 'g';
         GridVisible = GridVisible ? 0 : 1;
-	//glutPostRedisplay();
+    //glutPostRedisplay();
         break;
     default:
-	std::cout << "No action defined for key '" << Key << "'" << std::endl << std::flush;
-	std::cout << std::endl << std::flush;
+    std::cout << "No action defined for key '" << Key << "'" << std::endl << std::flush;
+    std::cout << std::endl << std::flush;
     }
     std::cout << std::endl << std::flush;
     usage();
@@ -952,8 +952,8 @@ void display()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glMatrixMode( GL_MODELVIEW );
     //////////////////////////////////////////////////////////////////
-    
-    // >> TODO USE YOUR SOFTWARE RENDERPIPEINE TO DRAW << 
+
+    // >> TODO USE YOUR SOFTWARE RENDERPIPEINE TO DRAW <<
 
 #ifdef KENNY_ZBUFFER
     MyMathTypes::real_type     infinty  =  1.0;
@@ -962,10 +962,10 @@ void display()
 #endif
 
     MyMathTypes::vector3_type  color( 0.0, 0.0, 1.0 );   // Blue Screen of Death Color
-    
+
     //  camera.set_model_view( ...... );
     //  camera.set_projection( ...... );
-        
+
     render_pipeline.clear( infinity, color );
 
 
@@ -989,7 +989,7 @@ void display()
 
 #if DRAWPOINTS
     if (figure == 'p') {
-	DrawPoint();
+    DrawPoint();
     }
 #endif
 
@@ -1001,7 +1001,7 @@ void display()
 
 #if DEBUGPOINTS
     if (figure == 'P') {
-	DebugPoint();
+    DebugPoint();
     }
 #endif
 
@@ -1013,7 +1013,7 @@ void display()
 
 #if DRAWLINES
     if (figure == 'l') {
-	DrawLines();
+    DrawLines();
     }
 #endif
 
@@ -1039,10 +1039,10 @@ void display()
 
 #if DEBUGLINES
     if (figure == 'L') {
-	DebugLines();
+    DebugLines();
     }
     if (figure == 'K') {
-	DebugLines();
+    DebugLines();
     }
 #endif
 
@@ -1055,7 +1055,7 @@ void display()
 
 #if DRAWTRIANGLES
     if (figure == 't') {
-	DrawTriangles();
+    DrawTriangles();
     }
 #endif
 
@@ -1068,25 +1068,25 @@ void display()
 
 #if DEBUGTRIANGLES
     if (figure == 'T') {
-	DebugTriangles();
+    DebugTriangles();
     }
     if (figure == 'R') {
-	//--v;
-	DebugTriangles();
+    //--v;
+    DebugTriangles();
     }
 #endif
 
     render_pipeline.flush();
-    
+
     glFinish();
     bool AnyErrors = false;
     GLenum ErrorCode = GL_NO_ERROR;
     while ((ErrorCode = glGetError()) != GL_NO_ERROR) {
-	std::cout << "display(): " << gluErrorString(ErrorCode) << std::endl;
+    std::cout << "display(): " << gluErrorString(ErrorCode) << std::endl;
         AnyErrors = true;
     }
     if (AnyErrors) {
-	std::ostringstream errormessage;
+    std::ostringstream errormessage;
         //errormessage << "file " << __FILE__ << ": line " << __LINE__ << ':' << std::endl;
         //errormessage << "    " << typeid(*this).name() << "::draw(): " << std::endl;
         errormessage << "display(): " << "OpenGL Rendering Failure" << std::ends;
@@ -1107,51 +1107,50 @@ void display()
 int main( int argc, char **argv )
 {
     try {
-	glutInit( &argc, argv );
-    
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_STENCIL);
-	glutInitWindowSize( winWidth, winHeight );
-	glutInitWindowPosition( 50, 50 );
-	glutCreateWindow( "Blue Screen of Death" );
-    
-	glClearColor( 1, 1, 1, 0 );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	glutSwapBuffers();
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	glFinish();
+        glutInit( &argc, argv );
 
-	//////////////////////////////////////////////////////////////////
-    
-	// >> TODO INITIALIZE YOUR RENDERPIPELINE << 
-    
-	//--- connect hardware
-	render_pipeline.load_vertex_program( vertex_program );
-	render_pipeline.load_fragment_program( fragment_program );
+        glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_STENCIL);
+        glutInitWindowSize( winWidth, winHeight );
+        glutInitWindowPosition( 50, 50 );
+        glutCreateWindow( "Blue Screen of Death" );
 
-	// Load the appropriate rasterizer when it is needed,
-	// i.e. render_pipeline.load_rasterizer(line_rasterizer | triangle_rasterizer);
-        // old: render_pipeline.load_rasterizer( rasterizer);
-	
-	//--- allocate memory
-	render_pipeline.set_resolution(winWidth, winHeight );
-    
-	//--- set up graphics state
-	render_pipeline.state().ambient_intensity() = 0.5;
-	
-	//--- init camera
-	camera.init( render_pipeline );
-	
-	usage();
+        glClearColor( 1, 1, 1, 0 );
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glutSwapBuffers();
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glFinish();
 
-	//////////////////////////////////////////////////////////////////
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutKeyboardFunc(keyboard);
+        //////////////////////////////////////////////////////////////////
 
-	glutMainLoop();
-    }
-    catch (std::exception const& Exception) {
-	std::cout << Exception.what() << std::endl;
+        // >> TODO INITIALIZE YOUR RENDERPIPELINE <<
+
+        //--- connect hardware
+        render_pipeline.load_vertex_program( vertex_program );
+        render_pipeline.load_fragment_program( fragment_program );
+
+        // Load the appropriate rasterizer when it is needed,
+        // i.e. render_pipeline.load_rasterizer(line_rasterizer | triangle_rasterizer);
+            // old: render_pipeline.load_rasterizer( rasterizer);
+
+        //--- allocate memory
+        render_pipeline.set_resolution(winWidth, winHeight );
+
+        //--- set up graphics state
+        render_pipeline.state().ambient_intensity() = 0.5;
+
+        //--- init camera
+        camera.init( render_pipeline );
+
+        usage();
+
+        //////////////////////////////////////////////////////////////////
+        glutDisplayFunc(display);
+        glutReshapeFunc(reshape);
+        glutKeyboardFunc(keyboard);
+
+        glutMainLoop();
+    } catch (std::exception const& Exception) {
+        std::cout << Exception.what() << std::endl;
     }
 
     return 0;

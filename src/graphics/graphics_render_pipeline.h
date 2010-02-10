@@ -676,36 +676,36 @@ namespace graphics
         //--- Keep on processing fragments until there are none left
         while( this->m_rasterizer->more_fragments() )
         {
-        //--- get screen location of the current fragment
-        int screen_x = this->m_rasterizer->x();
-        int screen_y = this->m_rasterizer->y();
+            //--- get screen location of the current fragment
+            int screen_x = this->m_rasterizer->x();
+            int screen_y = this->m_rasterizer->y();
 
-        //--- extract old and new z value and perform a z-test
-        real_type z_old = this->m_zbuffer.read( screen_x, screen_y );
-        real_type z_new = this->m_rasterizer->depth();
+            //--- extract old and new z value and perform a z-test
+            real_type z_old = this->m_zbuffer.read( screen_x, screen_y );
+            real_type z_new = this->m_rasterizer->depth();
 
-        if( this->state().ztest( z_old, z_new ) )
-        {
-            //--- The fragment passed the z-test, now we need to ask
-            //--- the fragment program to compute the color of the fragment.
-            vector3_type out_color;               // uninitialized!
-            out_color = this->m_rasterizer->color();    // now initialized!
+            if( this->state().ztest( z_old, z_new ) )
+            {
+                //--- The fragment passed the z-test, now we need to ask
+                //--- the fragment program to compute the color of the fragment.
+                vector3_type out_color;               // uninitialized!
+                out_color = this->m_rasterizer->color();    // now initialized!
 
-            this->m_fragment_program->run(this->state(),
-                          m_rasterizer->position(),
-                          m_rasterizer->normal(),
-                          m_rasterizer->color(),
-                          out_color);
+                this->m_fragment_program->run(this->state(),
+                              m_rasterizer->position(),
+                              m_rasterizer->normal(),
+                              m_rasterizer->color(),
+                              out_color);
 
-            //--- Finally we write the new z-value to the z-buffer
-            //--- and the new color to the frame buffer.
-            this->m_zbuffer.write( screen_x, screen_y, z_new);
-            this->write_pixel_to_frame_buffer(screen_x, screen_y, out_color);
-        }
+                //--- Finally we write the new z-value to the z-buffer
+                //--- and the new color to the frame buffer.
+                this->m_zbuffer.write( screen_x, screen_y, z_new);
+                this->write_pixel_to_frame_buffer(screen_x, screen_y, out_color);
+            }
 
-        //--- We finished processing the fragment, so we
-        //--- can advance to the next fragment.
-        this->m_rasterizer->next_fragment();
+            //--- We finished processing the fragment, so we
+            //--- can advance to the next fragment.
+            this->m_rasterizer->next_fragment();
         }
     }
 
