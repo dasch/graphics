@@ -48,24 +48,24 @@ namespace graphics {
                   vector3_type const& in_vertex2,
                   vector3_type const& in_color2)
         {
-            int x1 = in_vertex1[1];
-            int y1 = in_vertex1[2];
-            int x2 = in_vertex1[1];
-            int y2 = in_vertex2[2];
+            m_x1 = in_vertex1[1];
+            m_y1 = in_vertex1[2];
+            m_x2 = in_vertex1[1];
+            m_y2 = in_vertex2[2];
 
-            int dx = x2 - x1;
-            int dy = y2 - y1;
+            m_dx = m_x2 - m_x1;
+            m_dy = m_y2 - m_y1;
 
-            int abs_2dx = std::abs(dx) << 1;
-            int abs_2dy = std::abs(dy) << 1;
+            m_abs_2dx = std::abs(m_dx) << 1;
+            m_abs_2dy = std::abs(m_dy) << 1;
 
-            int x_step = (dx < 0) ? -1 : 1;
-            int y_step = (dy < 0) ? -1 : 1;
+            m_x_step = (m_dx < 0) ? -1 : 1;
+            m_y_step = (m_dy < 0) ? -1 : 1;
 
-            bool x_dominant = (abs_2dx > abs_2dy);
+            bool x_dominant = (m_abs_2dx > m_abs_2dy);
 
-            this->m_x = x1;
-            this->m_y = y1;
+            m_x = m_x1;
+            m_y = m_y1;
 
             if (x_dominant) {
                 this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
@@ -194,6 +194,11 @@ namespace graphics {
         bool         Debug;
 
         int m_x, m_y;
+        int m_x1, m_y1;
+        int m_x2, m_y2;
+        int m_dx, m_dy;
+        int m_abs_2dx , m_abs_2dy;
+        int m_x_step, m_y_step;
 
         vector3_type dummy_vector;
     };
