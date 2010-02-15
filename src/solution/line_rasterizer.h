@@ -48,31 +48,31 @@ namespace graphics {
                   vector3_type const& in_vertex2,
                   vector3_type const& in_color2)
         {
-            m_x1 = in_vertex1[1];
-            m_y1 = in_vertex1[2];
-            m_x2 = in_vertex2[1];
-            m_y2 = in_vertex2[2];
+            x_start = in_vertex1[1];
+            y_start = in_vertex1[2];
+            x_stop = in_vertex2[1];
+            y_stop = in_vertex2[2];
 
-            m_dx = m_x2 - m_x1;
-            m_dy = m_y2 - m_y1;
+            dx = x_stop - x_start;
+            dy = y_stop - y_start;
 
-            m_abs_2dx = std::abs(m_dx) << 1;
-            m_abs_2dy = std::abs(m_dy) << 1;
+            abs_2dx = std::abs(dx) << 1;
+            abs_2dy = std::abs(dy) << 1;
 
-            m_x_step = (m_dx < 0) ? -1 : 1;
-            m_y_step = (m_dy < 0) ? -1 : 1;
+            x_step = (dx < 0) ? -1 : 1;
+            y_step = (dy < 0) ? -1 : 1;
 
-            bool x_dominant = (m_abs_2dx > m_abs_2dy);
-            bool left_right = x_dominant ? (m_x_step > 0) : (m_y_step > 0);
+            bool x_dominant = (abs_2dx > abs_2dy);
+            bool left_right = x_dominant ? (x_step > 0) : (y_step > 0);
 
-            m_x = m_x1;
-            m_y = m_y1;
+            x_current = x_start;
+            y_current = y_start;
 
             if (x_dominant) {
-                m_d = m_abs_2dy - (m_abs_2dx >> 1);
+                d = abs_2dy - (abs_2dx >> 1);
                 this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
             } else {
-                m_d = m_abs_2dx - (m_abs_2dy >> 1);
+                d = abs_2dx - (abs_2dy >> 1);
                 this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
             }
 
@@ -101,7 +101,7 @@ namespace graphics {
             if (!this->valid) {
             throw std::runtime_error("MyLineRasterizer::x():Invalid State/Not Initialized");
             }
-            return this->m_x;     
+            return this->x_current;     
         }
 
         int y() const
@@ -109,7 +109,7 @@ namespace graphics {
             if (!this->valid) {
             throw std::runtime_error("MyLineRasterizer::y():Invalid State/Not Initialized");
             }
-            return this->m_y;     
+            return this->y_current;     
         }
 
         real_type depth() const     
@@ -170,28 +170,28 @@ namespace graphics {
 
         void x_dominant_innerloop()
         {
-            if (m_d >= 0) {
-                m_y += m_y_step;
-                m_d -= m_abs_2dx;
+            if (d >= 0) {
+                y_current += y_step;
+                d -= abs_2dx;
             }
 
-            m_x += m_x_step;
-            m_d += m_abs_2dy;
+            x_current += x_step;
+            d += abs_2dy;
 
-            this->valid = (m_x != m_x2);
+            this->valid = (x_current != x_stop);
         }
 
         void y_dominant_innerloop()
         {
-            if (m_d >= 0) {
-                m_x += m_x_step;
-                m_d -= m_abs_2dy;
+            if (d >= 0) {
+                x_current += x_step;
+                d -= abs_2dy;
             }
 
-            m_y += m_y_step;
-            m_d += m_abs_2dx;
+            y_current += y_step;
+            d += abs_2dx;
 
-            this->valid = (m_y != m_y2);
+            this->valid = (y_current != y_stop);
         }
 
         // This looks strange, byt it is the definition of a pointer to a 
@@ -202,13 +202,13 @@ namespace graphics {
 
         bool         Debug;
 
-        int m_x, m_y;
-        int m_x1, m_y1;
-        int m_x2, m_y2;
-        int m_dx, m_dy;
-        int m_abs_2dx , m_abs_2dy;
-        int m_x_step, m_y_step;
-        int m_d;
+        int x_current, y_current;
+        int x_start, y_start;
+        int x_stop, y_stop;
+        int dx, dy;
+        int abs_2dx , abs_2dy;
+        int x_step, y_step;
+        int d;
 
         vector3_type dummy_vector;
     };
