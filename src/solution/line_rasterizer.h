@@ -63,7 +63,7 @@ namespace graphics {
             y_step = (dy < 0) ? -1 : 1;
 
             bool x_dominant = (abs_2dx > abs_2dy);
-            bool left_right = x_dominant ? (x_step > 0) : (y_step > 0);
+            left_right = x_dominant ? (x_step > 0) : (y_step > 0);
 
             x_current = x_start;
             y_current = y_start;
@@ -78,6 +78,10 @@ namespace graphics {
 
             this->Debug = false;
             this->valid = true;
+
+            if (!left_right) {
+                (this->*innerloop)();
+            }
         }
 
         bool DebugOn()
@@ -170,7 +174,7 @@ namespace graphics {
 
         void x_dominant_innerloop()
         {
-            if (d >= 0) {
+            if (d > 0 || (d == 0 && left_right)) {
                 y_current += y_step;
                 d -= abs_2dx;
             }
@@ -183,7 +187,7 @@ namespace graphics {
 
         void y_dominant_innerloop()
         {
-            if (d >= 0) {
+            if (d > 0 || (d == 0 && left_right)) {
                 x_current += x_step;
                 d -= abs_2dy;
             }
@@ -209,6 +213,7 @@ namespace graphics {
         int abs_2dx , abs_2dy;
         int x_step, y_step;
         int d;
+        bool left_right;
 
         vector3_type dummy_vector;
     };
