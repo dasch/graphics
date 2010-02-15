@@ -50,7 +50,7 @@ namespace graphics {
         {
             m_x1 = in_vertex1[1];
             m_y1 = in_vertex1[2];
-            m_x2 = in_vertex1[1];
+            m_x2 = in_vertex2[1];
             m_y2 = in_vertex2[2];
 
             m_dx = m_x2 - m_x1;
@@ -63,13 +63,16 @@ namespace graphics {
             m_y_step = (m_dy < 0) ? -1 : 1;
 
             bool x_dominant = (m_abs_2dx > m_abs_2dy);
+            bool left_right = x_dominant ? (m_x_step > 0) : (m_y_step > 0);
 
             m_x = m_x1;
             m_y = m_y1;
 
             if (x_dominant) {
+                m_d = m_abs_2dy - (m_abs_2dx >> 1);
                 this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
             } else {
+                m_d = m_abs_2dx - (m_abs_2dy >> 1);
                 this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
             }
 
@@ -146,20 +149,6 @@ namespace graphics {
 
         bool more_fragments() const 
         {
-            // Usage:
-            //    Assume a pointer variable rasterizer is set up probably
-            //     while (rasterizer->more_fragments()) {
-            //         int x = rasterize->x();
-            //         int y = rasterizer->y();
-            //         MyMathTypes::real_type depth = rasterizer->depth();
-            //         MyMathTypes::vector3_type    = rasterizer->position();
-            //         MyMathTypes::vector3_type    = rasterizer->color();
-            //             ...
-            //             use the values ...
-            //             ...
-            //         rasterizer->next_fragment();
-            //    }
-
             return this->valid;
         }
 
@@ -180,10 +169,30 @@ namespace graphics {
         private:
 
         void x_dominant_innerloop()
-        {}
+        {
+            if (m_d >= 0) {
+                m_y += m_y_step;
+                m_d -= m_abs_2dx;
+            }
+
+            m_x += m_x_step;
+            m_d += m_abs_2dy;
+
+            this->valid = (m_x != m_x2);
+        }
 
         void y_dominant_innerloop()
-        {}
+        {
+            if (m_d >= 0) {
+                m_x += m_x_step;
+                m_d -= m_abs_2dy;
+            }
+
+            m_y += m_y_step;
+            m_d += m_abs_2dx;
+
+            this->valid = (m_y != m_y2);
+        }
 
         // This looks strange, byt it is the definition of a pointer to a 
         // private member function! That is how it is done!
@@ -199,6 +208,7 @@ namespace graphics {
         int m_dx, m_dy;
         int m_abs_2dx , m_abs_2dy;
         int m_x_step, m_y_step;
+        int m_d;
 
         vector3_type dummy_vector;
     };
