@@ -78,10 +78,6 @@ namespace graphics {
 
             this->Debug = false;
             this->valid = true;
-
-            if (!left_right) {
-                (this->*innerloop)();
-            }
         }
 
         bool DebugOn()
@@ -174,28 +170,32 @@ namespace graphics {
 
         void x_dominant_innerloop()
         {
-            if (d > 0 || (d == 0 && left_right)) {
-                y_current += y_step;
-                d -= abs_2dx;
+            if (x_current == x_stop) {
+                valid = false;
+            } else {
+                if (d > 0 || (d == 0 && left_right)) {
+                    y_current += y_step;
+                    d -= abs_2dx;
+                }
+
+                x_current += x_step;
+                d += abs_2dy;
             }
-
-            x_current += x_step;
-            d += abs_2dy;
-
-            this->valid = (x_current != x_stop);
         }
 
         void y_dominant_innerloop()
         {
-            if (d > 0 || (d == 0 && left_right)) {
-                x_current += x_step;
-                d -= abs_2dy;
+            if (y_current == y_stop) {
+                valid = false;
+            } else {
+                if (d > 0 || (d == 0 && left_right)) {
+                    x_current += x_step;
+                    d -= abs_2dy;
+                }
+
+                y_current += y_step;
+                d += abs_2dx;
             }
-
-            y_current += y_step;
-            d += abs_2dx;
-
-            this->valid = (y_current != y_stop);
         }
 
         // This looks strange, byt it is the definition of a pointer to a 
