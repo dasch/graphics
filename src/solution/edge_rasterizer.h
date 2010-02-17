@@ -46,26 +46,6 @@ namespace graphics {
             this->valid = true;
         }
 
-        void init(vector3_type const& in_vertex1,
-                  vector3_type const& in_normal1,
-                  vector3_type const& in_color1,
-                  vector3_type const& in_vertex2,
-                  vector3_type const& in_normal2,
-                  vector3_type const& in_color2,
-                  vector3_type const& in_vertex3,
-                  vector3_type const& in_normal3,
-                  vector3_type const& in_color3)
-        {
-            // Save the original parameters
-
-            std::cout << "edge_rasterizer::init(...) - Two Edges" << std::endl;
-
-            // There are two edges
-
-            this->valid = true;
-        }
-
-
         int x() const
         {
             if (!this->valid) {
