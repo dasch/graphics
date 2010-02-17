@@ -17,132 +17,138 @@ namespace graphics {
     template<typename math_types>
     class MyEdgeRasterizer
     {
-    public:
-    typedef typename math_types::real_type    real_type;
-    typedef typename math_types::vector3_type vector3_type;
+        public:
+        typedef typename math_types::real_type    real_type;
+        typedef typename math_types::vector3_type vector3_type;
 
-    public:
-    MyEdgeRasterizer() : valid(false)
-    {
-        std::cout << "MyEdgeRasterizer::MyEdgeRasterizer(): called" << std::endl;
-    }
-
-    virtual ~MyEdgeRasterizer()
-    {}
-
-    void init(vector3_type const& in_vertex1,
-          vector3_type const& in_normal1,
-          vector3_type const& in_color1,
-          vector3_type const& in_vertex2,
-          vector3_type const& in_normal2,
-          vector3_type const& in_color2)
+        public:
+        MyEdgeRasterizer() : valid(false)
         {
-        // Save the original parameters
-
-        std::cout << "edge_rasterizer::init(...) - One Edge" << std::endl;
-
-        // There is only one edge
-
-        this->valid = true;
+            std::cout << "MyEdgeRasterizer::MyEdgeRasterizer(): called" << std::endl;
         }
-    
-    void init(vector3_type const& in_vertex1,
-          vector3_type const& in_normal1,
-          vector3_type const& in_color1,
-          vector3_type const& in_vertex2,
-          vector3_type const& in_normal2,
-          vector3_type const& in_color2,
-          vector3_type const& in_vertex3,
-          vector3_type const& in_normal3,
-          vector3_type const& in_color3)
+
+        virtual ~MyEdgeRasterizer()
+        {}
+
+        void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_normal1,
+                  vector3_type const& in_color1,
+                  vector3_type const& in_vertex2,
+                  vector3_type const& in_normal2,
+                  vector3_type const& in_color2)
         {
-        // Save the original parameters
+            // Save the original parameters
 
-        std::cout << "edge_rasterizer::init(...) - Two Edges" << std::endl;
+            std::cout << "edge_rasterizer::init(...) - One Edge" << std::endl;
 
-        // There are two edges
+            // There is only one edge
 
-        this->valid = true;
+            this->valid = true;
         }
-    
 
-    int x() const
-    {
-        if (!this->valid) {
-        throw std::runtime_error("MyEdgeRasterizer::x():Invalid State/Not Initialized");
+        void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_normal1,
+                  vector3_type const& in_color1,
+                  vector3_type const& in_vertex2,
+                  vector3_type const& in_normal2,
+                  vector3_type const& in_color2,
+                  vector3_type const& in_vertex3,
+                  vector3_type const& in_normal3,
+                  vector3_type const& in_color3)
+        {
+            // Save the original parameters
+
+            std::cout << "edge_rasterizer::init(...) - Two Edges" << std::endl;
+
+            // There are two edges
+
+            this->valid = true;
+        }
+
+
+        int x() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyEdgeRasterizer::x():Invalid State/Not Initialized");
             }
-        return 0;
-    }
 
-    int y() const
-    {
-        if (!this->valid) {
-        throw std::runtime_error("MyEdgeRasterizer::y():Invalid State/Not Initialized");
+            return 0;
+        }
+
+        int y() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyEdgeRasterizer::y():Invalid State/Not Initialized");
             }
-        return 0;
-    }
 
-    real_type depth() const
-    {
-        if (!this->valid) {
-        throw std::runtime_error("MyEdgeRasterizer::depth():Invalid State/Not Initialized");
+            return 0;
+        }
+
+        real_type depth() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyEdgeRasterizer::depth():Invalid State/Not Initialized");
             }
-        return 0;
-    }
 
-    vector3_type position() const
+            return 0;
+        }
+
+        vector3_type position() const
         {
             if (!this->valid) {
                 throw std::runtime_error("MyEdgeRasterizer::position():Invalid State/Not Initialized");
             }
+
             return vector3_type(this->x(), this->y(), this->depth());
         }
 
-    vector3_type normal() const
+        vector3_type normal() const
         {
             if (!this->valid) {
                 throw std::runtime_error("MyEdgeRasterizer::normal():Invalid State/Not Initialized");
             }
+
             return vector3_type(0.0, 0.0, 0.0);
         }
 
-    vector3_type color() const
+        vector3_type color() const
         {
             if (!this->valid) {
                 throw std::runtime_error("MyEdgeRasterizer::color():Invalid State/Not Initialized");
             }
+
             return vector3_type(0.0, 0.0, 0.0);
         }
 
-    void print_variables()
+        void print_variables()
         {
-        std::cout << "MyEdgeRasterizer: local variables" << std::endl;
-        std::cout << "=================================" << std::endl;
-        std::cout << std::endl;
-    }
+            std::cout << "MyEdgeRasterizer: local variables" << std::endl;
+            std::cout << "=================================" << std::endl;
+            std::cout << std::endl;
+        }
 
-    bool more_fragments() const
-    {
-        // Implement the real version
-        return false;
-    }
-
-    void next_fragment()
+        bool more_fragments() const
         {
-        // Implement the real version
-    }
+            // Implement the real version
+            return false;
+        }
 
-    protected:
+        void next_fragment()
+        {
+            // Implement the real version
+        }
 
-    private:
-    void initialize_current_edge(int start_index, int stop_index)
-    {
-        // Ensure that the edge has its first vertex lower than the second one
+        protected:
 
-        // Implement the real version
-    }
+        private:
+        void initialize_current_edge(int start_index, int stop_index)
+        {
+            // Ensure that the edge has its first vertex lower than the second one
 
-    bool valid;
+            // Implement the real version
+        }
+
+        bool valid;
     };
 
 }// end namespace graphics
