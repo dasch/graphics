@@ -114,6 +114,8 @@ namespace graphics {
                 x_current = left_edge.x();
                 y_current = left_edge.y();
 
+                x_stop = right_edge.x();
+
                 left_edge.next_fragment();
                 right_edge.next_fragment();
             }
