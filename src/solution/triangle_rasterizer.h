@@ -99,7 +99,7 @@ namespace graphics {
                                 vertices[upper_left], normals[upper_left], colors[upper_left]);
 
             } else {
-                throw new std::runtime_error("DEGENERATE!!!");
+                return;
             }
 
             x_current = left_edge.x();
@@ -223,8 +223,9 @@ namespace graphics {
             x_current++;
 
             while (SearchForNonEmptyScanline()) {
-                y_current++;
                 x_current = left_edge.x();
+                y_current = left_edge.y();
+
                 x_stop = right_edge.x();
 
                 left_edge.next_fragment();

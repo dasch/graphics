@@ -97,8 +97,6 @@ namespace graphics {
         int x() const
         {
             if (!this->valid) {
-                std::cout << "x: " << x_current << "\n";
-                std::cout << "y: " << y_current << "\n";
                 throw std::runtime_error("MyEdgeRasterizer::x():Invalid State/Not Initialized");
             }
 
