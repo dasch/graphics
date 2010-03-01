@@ -22,7 +22,7 @@ namespace graphics {
         typedef typename math_types::vector3_type vector3_type;
 
         public:
-        MyEdgeRasterizer() : valid(false)
+        MyEdgeRasterizer() : valid(true)
         {
             std::cout << "MyEdgeRasterizer::MyEdgeRasterizer(): called" << std::endl;
         }
@@ -37,11 +37,21 @@ namespace graphics {
                   vector3_type const& in_normal2,
                   vector3_type const& in_color2)
         {
-            // Save the original parameters
+            x_start = in_vertex1[1];
+            y_start = in_vertex1[2];
 
-            std::cout << "edge_rasterizer::init(...) - One Edge" << std::endl;
+            x_stop = in_vertex2[1];
+            y_stop = in_vertex2[2];
 
-            // There is only one edge
+            x_current = x_start;
+            y_current = y_start;
+
+            dx = x_stop - x_start;
+            x_step = (dx < 0) ? -1 : 1;
+
+            numerator = std::abs(dx);
+            denominator = y_stop - y_start;
+            accumulator = (dx > 0) ? denominator : 1;
 
             this->valid = true;
         }
@@ -52,7 +62,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::x():Invalid State/Not Initialized");
             }
 
-            return 0;
+            return x_current;
         }
 
         int y() const
@@ -61,7 +71,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::y():Invalid State/Not Initialized");
             }
 
-            return 0;
+            return y_current;
         }
 
         real_type depth() const
@@ -109,26 +119,30 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            // Implement the real version
-            return false;
+            return (y_current < y_stop);
         }
 
         void next_fragment()
         {
-            // Implement the real version
+            y_current++;
+            accumulator += numerator;
+
+            while (accumulator > denominator) {
+                x_current += x_step;
+                accumulator -= denominator;
+            }
         }
 
         protected:
 
         private:
-        void initialize_current_edge(int start_index, int stop_index)
-        {
-            // Ensure that the edge has its first vertex lower than the second one
-
-            // Implement the real version
-        }
 
         bool valid;
+        int x_start, y_start;
+        int x_current, y_current;
+        int x_stop, y_stop;
+        int dx, x_step;
+        int numerator, denominator, accumulator;
     };
 
 }// end namespace graphics

@@ -26,6 +26,7 @@ namespace graphics {
 
         protected:
 
+        MyEdgeRasterizer<MyMathTypes> left_edge, right_edge;
 
         public:
         MyTriangleRasterizer() : valid(false), Debug(false)
@@ -46,8 +47,42 @@ namespace graphics {
                   vector3_type const& in_normal3,
                   vector3_type const& in_color3) 
         {
-            // This is a triangle rasterizer
-            // Save the original parameters
+            edges[0] = in_vertex1;
+            edges[1] = in_vertex2;
+            edges[2] = in_vertex3;
+
+            normals[0] = in_normal1;
+            normals[1] = in_normal2;
+            normals[2] = in_normal3;
+
+            colors[0] = in_color1;
+            colors[1] = in_color2;
+            colors[2] = in_color3;
+
+            vertices[0][1] = static_cast<int>(round(edges[0][1]));
+            vertices[0][2] = static_cast<int>(round(edges[0][2]));
+            vertices[0][3] = 0;
+
+            vertices[1][1] = static_cast<int>(round(edges[1][1]));
+            vertices[1][2] = static_cast<int>(round(edges[1][2]));
+            vertices[1][3] = 0;
+
+            vertices[2][1] = static_cast<int>(round(edges[2][1]));
+            vertices[2][2] = static_cast<int>(round(edges[2][2]));
+            vertices[2][3] = 0;
+
+            lower_left = LowerLeft();
+            upper_left = UpperLeft();
+            the_other = 3 - lower_left - upper_left;
+
+            left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                           edges[upper_left], normals[upper_left], colors[upper_left]);
+
+            right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                            edges[the_other], normals[the_other], colors[the_other]);
+
+            x_current = left_edge.x();
+            y_current = left_edge.y();
 
             this->Debug = false;
             this->valid = true;
@@ -72,7 +107,7 @@ namespace graphics {
         bool Valid() const
         {
             // implement the real version
-            return true;
+            return valid;
         }
 
         bool Degenerate() const
@@ -87,7 +122,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::x():Invalid State/Not Initialized");
             }
 
-            return 0;
+            return x_current;
         }
 
         int y() const
@@ -96,7 +131,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::y():Invalid State/Not Initialized");
             }
 
-            return 0;
+            return y_current;
         }
 
         real_type depth() const
@@ -145,23 +180,27 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            // implement the real version
-            return false;
+            return left_edge.more_fragments();
         }
 
         void next_fragment()
         {
-            // implement the real version
+            if (x_current > right_edge.x()) {
+                throw std::runtime_error("UH OH!");
+            }
+
+            if (x_current == right_edge.x()) {
+                left_edge.next_fragment();
+                right_edge.next_fragment();
+
+                y_current++;
+                x_current = left_edge.x();
+            } else {
+                x_current++;
+            }
         }
 
         private:
-        // Initialize the current triangle for rasterization
-        void initialize_triangle()
-        {
-            // implement the real version
-            this->valid = true;    // necessary?
-        }
-
 
         // A triangle is degenerate if all three points are co-linear
         bool degenerate()
@@ -176,7 +215,19 @@ namespace graphics {
         // The computations should be done in integer coordinates.
         int LowerLeft()
         {
-            return 0;
+            int ll = 0;
+            vector3_type a, b;
+
+            for (int i = ll + 1; i < 3; ++i) {
+                a = vertices[i];
+                b = vertices[ll];
+
+                if (a[2] < b[2] || (a[2] == b[2] && a[1] < b[1])) {
+                    ll = i;
+                }
+            }
+
+            return ll;
         }
 
         // UpperLeft() returns the index of the vertex with the greatest y-coordinate
@@ -185,7 +236,19 @@ namespace graphics {
         // The computations should be done in integer coordinates.
         int UpperLeft()
         {
-            return 0;
+            int ul = 0;
+            vector3_type a, b;
+
+            for (int i = ul + 1; i < 3; ++i) {
+                a = vertices[i];
+                b = vertices[ul];
+
+                if (a[2] > b[2] || (a[2] == b[2] && a[1] < b[1])) {
+                    ul = i;
+                }
+            }
+
+            return ul;
         }
 
         bool SearchForNonEmptyScanline()
@@ -220,6 +283,11 @@ namespace graphics {
         int lower_left;
         int upper_left;
         int the_other;
+
+        vector3_type edges[3], normals[3], colors[3];
+        vector3_type vertices[3];
+
+        int x_current, y_current;
 
         bool valid;
     };
