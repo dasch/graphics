@@ -105,10 +105,12 @@ namespace graphics {
             x_current = left_edge.x();
             y_current = left_edge.y();
 
+            x_stop = right_edge.x();
+
             this->Debug = false;
             this->valid = true;
 
-            while (x_current >= right_edge.x()) {
+            while (SearchForNonEmptyScanline()) {
                 x_current = left_edge.x();
                 y_current = left_edge.y();
 
@@ -209,24 +211,22 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            return left_edge.more_fragments() || right_edge.more_fragments();
+            return left_edge.more_fragments()
+                || right_edge.more_fragments()
+                || x_current < x_stop;
         }
 
         void next_fragment()
         {
-            if (x_current > right_edge.x()) {
-                std::cout << "Current x: " << x_current << "\n";
-                throw std::runtime_error("UH OH!");
-            }
+            x_current++;
 
-            if (x_current == right_edge.x()) {
+            while (SearchForNonEmptyScanline()) {
                 y_current++;
                 x_current = left_edge.x();
+                x_stop = right_edge.x();
 
                 left_edge.next_fragment();
                 right_edge.next_fragment();
-            } else {
-                x_current++;
             }
         }
 
@@ -283,10 +283,8 @@ namespace graphics {
 
         bool SearchForNonEmptyScanline()
         {
-            // Assumes that the current scanline is empty!
-
-            // implement the real version
-            return this->valid;
+            return (x_current == x_stop)
+                && (left_edge.more_fragments() || right_edge.more_fragments());
         }
 
         void choose_color(int x)
@@ -318,6 +316,7 @@ namespace graphics {
         vector3_type vertices[3];
 
         int x_current, y_current;
+        int x_stop;
 
         bool valid;
     };

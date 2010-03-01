@@ -91,12 +91,14 @@ namespace graphics {
             denominator = y_stop - y_start;
             accumulator = (dx > 0) ? denominator : 1;
 
-            this->valid = true;
+            this->valid = (y_current < y_stop);
         }
 
         int x() const
         {
             if (!this->valid) {
+                std::cout << "x: " << x_current << "\n";
+                std::cout << "y: " << y_current << "\n";
                 throw std::runtime_error("MyEdgeRasterizer::x():Invalid State/Not Initialized");
             }
 
