@@ -75,17 +75,46 @@ namespace graphics {
             upper_left = UpperLeft();
             the_other = 3 - lower_left - upper_left;
 
-            left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                           edges[upper_left], normals[upper_left], colors[upper_left]);
+            vector3_type ll, ul, ot;
 
-            right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                            edges[the_other], normals[the_other], colors[the_other]);
+            ll = vertices[lower_left];
+            ul = vertices[upper_left];
+            ot = vertices[the_other];
+
+            vector3_type cross = Cross(ul - ll, ot - ll);
+
+            if (cross[3] < 0) {
+                left_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
+                               vertices[upper_left], normals[upper_left], colors[upper_left]);
+
+                right_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
+                                vertices[the_other], normals[the_other], colors[the_other],
+                                vertices[upper_left], normals[upper_left], colors[upper_left]);
+            } else if (cross[3] > 0) {
+                left_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
+                               vertices[the_other], normals[the_other], colors[the_other],
+                               vertices[upper_left], normals[upper_left], colors[upper_left]);
+
+                right_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
+                                vertices[upper_left], normals[upper_left], colors[upper_left]);
+
+            } else {
+                throw new std::runtime_error("DEGENERATE!!!");
+            }
 
             x_current = left_edge.x();
             y_current = left_edge.y();
 
             this->Debug = false;
             this->valid = true;
+
+            while (x_current >= right_edge.x()) {
+                x_current = left_edge.x();
+                y_current = left_edge.y();
+
+                left_edge.next_fragment();
+                right_edge.next_fragment();
+            }
         }
 
         bool DebugOn()
@@ -180,21 +209,22 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            return left_edge.more_fragments();
+            return left_edge.more_fragments() || right_edge.more_fragments();
         }
 
         void next_fragment()
         {
             if (x_current > right_edge.x()) {
+                std::cout << "Current x: " << x_current << "\n";
                 throw std::runtime_error("UH OH!");
             }
 
             if (x_current == right_edge.x()) {
-                left_edge.next_fragment();
-                right_edge.next_fragment();
-
                 y_current++;
                 x_current = left_edge.x();
+
+                left_edge.next_fragment();
+                right_edge.next_fragment();
             } else {
                 x_current++;
             }
@@ -218,7 +248,7 @@ namespace graphics {
             int ll = 0;
             vector3_type a, b;
 
-            for (int i = ll + 1; i < 3; ++i) {
+            for (int i = 0; i < 3; i++) {
                 a = vertices[i];
                 b = vertices[ll];
 
@@ -239,7 +269,7 @@ namespace graphics {
             int ul = 0;
             vector3_type a, b;
 
-            for (int i = ul + 1; i < 3; ++i) {
+            for (int i = 0; i < 3; i++) {
                 a = vertices[i];
                 b = vertices[ul];
 

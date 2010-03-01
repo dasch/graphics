@@ -35,13 +35,51 @@ namespace graphics {
                   vector3_type const& in_color1,
                   vector3_type const& in_vertex2,
                   vector3_type const& in_normal2,
+                  vector3_type const& in_color2,
+                  vector3_type const& in_vertex3,
+                  vector3_type const& in_normal3,
+                  vector3_type const& in_color3)
+        {
+            vertices[0] = in_vertex1;
+            vertices[1] = in_vertex2;
+            vertices[2] = in_vertex3;
+
+            if (in_vertex1[2] == in_vertex2[2]) {
+                two_edges = false;
+                initialize_edge(1, 2);
+            } else {
+                two_edges = true;
+                initialize_edge(0, 1);
+            }
+        }
+
+        void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_normal1,
+                  vector3_type const& in_color1,
+                  vector3_type const& in_vertex2,
+                  vector3_type const& in_normal2,
                   vector3_type const& in_color2)
         {
-            x_start = in_vertex1[1];
-            y_start = in_vertex1[2];
+            vertices[0] = in_vertex1;
+            vertices[1] = in_vertex2;
 
-            x_stop = in_vertex2[1];
-            y_stop = in_vertex2[2];
+            two_edges = false;
+
+            initialize_edge(0, 1);
+        }
+
+        void initialize_edge(int i, int j)
+        {
+            vector3_type start, stop;
+
+            start = vertices[i];
+            stop  = vertices[j];
+
+            x_start = start[1];
+            y_start = start[2];
+
+            x_stop = stop[1];
+            y_stop = stop[2];
 
             x_current = x_start;
             y_current = y_start;
@@ -119,17 +157,27 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            return (y_current < y_stop);
+            return valid;
         }
 
         void next_fragment()
         {
             y_current++;
-            accumulator += numerator;
 
-            while (accumulator > denominator) {
-                x_current += x_step;
-                accumulator -= denominator;
+            if (y_current == y_stop) {
+                if (!two_edges) {
+                    valid = false;
+                } else {
+                    initialize_edge(1, 2);
+                    two_edges = false;
+                }
+            } else {
+                accumulator += numerator;
+
+                while (accumulator > denominator) {
+                    x_current += x_step;
+                    accumulator -= denominator;
+                }
             }
         }
 
@@ -137,12 +185,14 @@ namespace graphics {
 
         private:
 
-        bool valid;
+        bool valid, two_edges;
         int x_start, y_start;
         int x_current, y_current;
         int x_stop, y_stop;
         int dx, x_step;
         int numerator, denominator, accumulator;
+
+        vector3_type vertices[3];
     };
 
 }// end namespace graphics
