@@ -280,6 +280,245 @@ void DebugPoint()
 
 /*******************************************************************\
 *                                                                   *
+*                         H o u s e D a t a                         *
+*                                                                   *
+\*******************************************************************/
+
+// Front Wall
+MyMathTypes::real_type const front_depth = 54.0;
+MyMathTypes::vector3_type FrontWall[] = {
+    MyMathTypes::vector3_type( 0.0,  0.0, front_depth),
+    MyMathTypes::vector3_type(16.0,  0.0, front_depth),
+    MyMathTypes::vector3_type(16.0, 10.0, front_depth),
+    MyMathTypes::vector3_type( 8.0, 16.0, front_depth),
+    MyMathTypes::vector3_type( 0.0, 10.0, front_depth)
+};
+int const NFrontWallVertices = sizeof(FrontWall) / sizeof(MyMathTypes::vector3_type);
+
+// Back Wall
+MyMathTypes::real_type const back_depth = 30.0;
+//MyMathTypes::real_type const back_depth = -100.0;
+MyMathTypes::vector3_type BackWall[] = {
+    MyMathTypes::vector3_type( 0.0,  0.0, back_depth),
+    MyMathTypes::vector3_type(16.0,  0.0, back_depth),
+    MyMathTypes::vector3_type(16.0, 10.0, back_depth),
+    MyMathTypes::vector3_type( 8.0, 16.0, back_depth),
+    MyMathTypes::vector3_type( 0.0, 10.0, back_depth)
+};
+int const NBackWallVertices = sizeof(BackWall) / sizeof(MyMathTypes::vector3_type);
+
+
+/*******************************************************************\
+*                                                                   *
+*                       D r a w H o u s e ( )                       *
+*                                                                   *
+\*******************************************************************/
+
+void DrawHouse()
+{
+    // Test program for the transformations and projections
+
+    //std::cout << "Test program for the transformations and projections" << std::endl;
+
+    // Draw the front wall
+    for (int i = 1; i < NFrontWallVertices; ++i) {
+	render_pipeline.draw_line( FrontWall[i-1], cwhite,
+				   FrontWall[i], cwhite );
+    }
+    render_pipeline.draw_line( FrontWall[NFrontWallVertices-1], cwhite, 
+			       FrontWall[0], cwhite );
+
+    // Draw the back wall
+    for (int i = 1; i < NBackWallVertices; ++i) {
+	render_pipeline.draw_line(BackWall[i-1], cred, 
+				  BackWall[i], cred );
+    }
+    render_pipeline.draw_line( BackWall[NBackWallVertices-1], cred, 
+			       BackWall[0], cred );
+
+    // Draw the side walls
+    for (int i = 0; i < NFrontWallVertices; ++i) {
+	render_pipeline.draw_line( FrontWall[i], cgreen, 
+				   BackWall[i], cgreen );
+    }
+
+    // Reset the framebuffer resolution to the original values
+    //render_pipeline.set_resolution(::winWidth, ::winHeight);
+    // TODO: Uncomment this:
+    //camera.reset();
+}
+
+
+/*******************************************************************\
+*                                                                   *
+*                  F o l e y _ F i g _ 6 _ 2 7 ( )                  *
+*                                                                   *
+\*******************************************************************/
+
+void Foley_Fig_6_27()
+{
+    std::cout << "Draw the House in Foley, Fig 6.27." << std::endl;
+
+    render_pipeline.load_rasterizer( line_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(0, 0, 0);
+    MyMathTypes::vector3_type vpn(0, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(8, 6, 84);
+
+    MyMathTypes::vector2_type lower_left( -50.0, -50.0);
+    MyMathTypes::vector2_type upper_right( 50.0,  50.0);
+
+    MyMathTypes::real_type    front_plane(60.0);
+    MyMathTypes::real_type    back_plane( 25.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    DrawHouse();
+}
+
+
+/*******************************************************************\
+*                                                                   *
+*                  F o l e y _ F i g _ 6 _ 2 8 ( )                  *
+*                                                                   *
+\*******************************************************************/
+
+void Foley_Fig_6_28()
+{
+    std::cout << "Draw the House in Foley, Fig 6.28." << std::endl;
+
+    render_pipeline.load_rasterizer( line_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(0, 0, 54);
+    MyMathTypes::vector3_type vpn(0, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(8, 6, 30);
+
+    MyMathTypes::vector2_type lower_left( -1.0, -1.0);
+    MyMathTypes::vector2_type upper_right(17.0, 17.0);
+
+    MyMathTypes::real_type    front_plane(  1.0);
+    MyMathTypes::real_type    back_plane( -35.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    DrawHouse();
+}
+
+
+/*******************************************************************\
+*                                                                   *
+*                  F o l e y _ F i g _ 6 _ 3 1 ( )                  *
+*                                                                   *
+\*******************************************************************/
+
+void Foley_Fig_6_31()
+{
+    std::cout << "Draw the House in Foley, Fig 6.31." << std::endl;
+
+    render_pipeline.load_rasterizer( line_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(16, 0, 54);
+    MyMathTypes::vector3_type vpn(0, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(20, 25, 20);
+
+    MyMathTypes::vector2_type lower_left( -20.0, -5.0);
+    MyMathTypes::vector2_type upper_right( 20.0,  35.0);
+
+    MyMathTypes::real_type    front_plane(  1.0);
+    MyMathTypes::real_type    back_plane( -35.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    DrawHouse();
+}
+
+
+/*******************************************************************\
+*                                                                   *
+*                  F o l e y _ F i g _ 6 _ 2 2 ( )                  *
+*                                                                   *
+\*******************************************************************/
+
+void Foley_Fig_6_22()
+{
+    std::cout << "Draw the House in Foley, Fig 6.22." << std::endl;
+
+    render_pipeline.load_rasterizer( line_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(16, 0, 54);
+    MyMathTypes::vector3_type vpn(1, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(0, 25, 20 * sqrt(2.0));
+
+    MyMathTypes::vector2_type lower_left( -20.0, -5.0);
+    MyMathTypes::vector2_type upper_right( 20.0,  35.0);
+
+    MyMathTypes::real_type    front_plane(  1.0);
+    MyMathTypes::real_type    back_plane( -35.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    DrawHouse();
+}
+
+
+/*******************************************************************\
+*                                                                   *
+*                  F o l e y _ F i g _ 6 _ 3 4 ( )                  *
+*                                                                   *
+\*******************************************************************/
+
+void Foley_Fig_6_34()
+{
+    std::cout << "Draw the House in Foley, Fig 6.34." << std::endl;
+
+    render_pipeline.load_rasterizer( line_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(16, 0, 54);
+    MyMathTypes::vector3_type vpn(1, 0, 1);
+    MyMathTypes::vector3_type vup(-sin(10.0 * M_PI / 180.0),
+				   cos(10.0 * M_PI / 180.0),
+				   sin(10.0 * M_PI / 180.0));
+    //std::cout << "vup = [" << vup << "]^T" << std::endl;
+    MyMathTypes::vector3_type prp(0, 25, 20 * sqrt(2.0));
+
+    MyMathTypes::vector2_type lower_left( -20.0, -5.0);
+    MyMathTypes::vector2_type upper_right( 20.0,  35.0);
+
+    MyMathTypes::real_type    front_plane(  1.0);
+    MyMathTypes::real_type    back_plane( -35.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    DrawHouse();
+}
+
+
+/*******************************************************************\
+*                                                                   *
 *                       D r a w L i n e s ( )                       *
 *                                                                   *
 \*******************************************************************/
@@ -914,6 +1153,11 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
     figure = 'T';
     glutPostRedisplay();
     break;
+    case 'f':
+        std::cout << "Debug House" << std::endl << std::flush;
+        Foley_Fig_6_27();
+        glutPostRedisplay();
+        break;
     case 'd':
     case 'D':
         // call the DisplayCallback as soon as possible

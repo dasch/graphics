@@ -67,9 +67,11 @@ namespace graphics
                 vector2_type const& lower_left,
                 vector2_type const& upper_right,
                 real_type    const& front_plane,
-                real_type    const& back_plane)
+                real_type    const& back_plane,
+                int          const& winWidth,
+                int          const& winHeight)
     {
-        this->m_state->view_orientation() = this->compute_view_orientation(vrp, vpn, vup);
+        this->m_state->view_orientation() = this->compute_view_orientation_matrix(vrp, vpn, vup);
 
         this->m_state->view_projection()  = this->compute_view_projection_matrix(prp,
                                              lower_left,
