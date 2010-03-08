@@ -61,11 +61,7 @@ namespace graphics {
                                    vector3_type const& vpn,
                                    vector3_type const& vup)
         {
-            matrix4x4_type M;    // The identity matrix.
-            M[1][1] = 1, M[1][2] = 0, M[1][3] = 0, M[1][4] = 0;
-            M[2][1] = 0, M[2][2] = 1, M[2][3] = 0, M[2][4] = 0; 
-            M[3][1] = 0, M[3][2] = 0, M[3][3] = 1, M[3][4] = 0; 
-            M[4][1] = 0, M[4][2] = 0, M[4][3] = 0, M[4][4] = 1;
+            matrix4x4_type M = identity();
 
             return M;
         }
@@ -86,11 +82,7 @@ namespace graphics {
                                   real_type    const& front_plane,
                                   real_type    const& back_plane)
             {
-            matrix4x4_type M;    // The identity matrix.
-            M[1][1] = 1, M[1][2] = 0, M[1][3] = 0, M[1][4] = 0;
-            M[2][1] = 0, M[2][2] = 1, M[2][3] = 0, M[2][4] = 0; 
-            M[3][1] = 0, M[3][2] = 0, M[3][3] = 1, M[3][4] = 0; 
-            M[4][1] = 0, M[4][2] = 0, M[4][3] = 0, M[4][4] = 1;
+            matrix4x4_type M = identity();
 
             return M;
         }
@@ -119,13 +111,7 @@ namespace graphics {
                              real_type    const& front_plane,
                              real_type    const& back_plane)
         {
-            // ToDo add your magic here!
-
-            matrix4x4_type M;    // The identity matrix.
-            M[1][1] = 1, M[1][2] = 0, M[1][3] = 0, M[1][4] = 0;
-            M[2][1] = 0, M[2][2] = 1, M[2][3] = 0, M[2][4] = 0; 
-            M[3][1] = 0, M[3][2] = 0, M[3][3] = 1, M[3][4] = 0; 
-            M[4][1] = 0, M[4][2] = 0, M[4][3] = 0, M[4][4] = 1;
+            matrix4x4_type M = identity();
 
             return M;
         }
@@ -162,13 +148,21 @@ namespace graphics {
             return euc;
         }
 
-        matrix4x4_type translate(vector3_type diff)
+        matrix4x4_type identity()
         {
-            matrix4x4_type M;    // The identity matrix.
+            matrix4x4_type M;
+
             M[1][1] = 1, M[1][2] = 0, M[1][3] = 0, M[1][4] = 0;
             M[2][1] = 0, M[2][2] = 1, M[2][3] = 0, M[2][4] = 0; 
             M[3][1] = 0, M[3][2] = 0, M[3][3] = 1, M[3][4] = 0; 
             M[4][1] = 0, M[4][2] = 0, M[4][3] = 0, M[4][4] = 1;
+
+            return M;
+        }
+
+        matrix4x4_type translate(vector3_type diff)
+        {
+            matrix4x4_type M = identity();
 
             M[1][4] = diff[1];
             M[2][4] = diff[2];
