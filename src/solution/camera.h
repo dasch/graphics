@@ -171,6 +171,83 @@ namespace graphics {
             return M;
         }
 
+        matrix4x4_type scale(vector3_type factor)
+        {
+            matrix4x4_type M = identity();
+
+            M[1][1] = factor[1];
+            M[2][2] = factor[2];
+            M[3][3] = factor[3];
+
+            return M;
+        }
+
+        matrix4x4_type x_rotate(real_type angle)
+        {
+            matrix4x4_type M = identity();
+
+            M[2][2] = cos(angle);
+            M[2][3] = -sin(angle);
+            M[3][2] = sin(angle);
+            M[3][3] = cos(angle);
+
+            return M;
+        }
+
+        matrix4x4_type y_rotate(real_type angle)
+        {
+            matrix4x4_type M = identity();
+
+            M[1][1] = cos(angle);
+            M[1][3] = sin(angle);
+            M[3][1] = -sin(angle);
+            M[3][3] = cos(angle);
+
+            return M;
+        }
+
+        matrix4x4_type z_rotate(real_type angle)
+        {
+            matrix4x4_type M = identity();
+
+            M[1][1] = cos(angle);
+            M[1][2] = -sin(angle);
+            M[2][1] = sin(angle);
+            M[2][2] = cos(angle);
+
+            return M;
+        }
+
+        matrix4x4_type xy_shear(real_type sx, real_type sy)
+        {
+            matrix4x4_type M = identity();
+
+            M[1][3] = sx;
+            M[2][3] = sy;
+
+            return M;
+        }
+
+        matrix4x4_type xz_shear(real_type sx, real_type sz)
+        {
+            matrix4x4_type M = identity();
+
+            M[1][2] = sx;
+            M[3][2] = sz;
+
+            return M;
+        }
+
+        matrix4x4_type yz_shear(real_type sy, real_type sz)
+        {
+            matrix4x4_type M = identity();
+
+            M[2][1] = sy;
+            M[3][1] = sz;
+
+            return M;
+        }
+
     };
 
 }// end namespace graphics
