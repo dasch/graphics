@@ -162,6 +162,21 @@ namespace graphics {
             return euc;
         }
 
+        matrix4x4_type translate(vector3_type diff)
+        {
+            matrix4x4_type M;    // The identity matrix.
+            M[1][1] = 1, M[1][2] = 0, M[1][3] = 0, M[1][4] = 0;
+            M[2][1] = 0, M[2][2] = 1, M[2][3] = 0, M[2][4] = 0; 
+            M[3][1] = 0, M[3][2] = 0, M[3][3] = 1, M[3][4] = 0; 
+            M[4][1] = 0, M[4][2] = 0, M[4][3] = 0, M[4][4] = 1;
+
+            M[1][4] = diff[1];
+            M[2][4] = diff[2];
+            M[3][4] = diff[3];
+
+            return M;
+        }
+
     };
 
 }// end namespace graphics
