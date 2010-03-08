@@ -26,6 +26,9 @@ namespace graphics {
         /// The actual type of a vector3.
         typedef typename math_types::vector3_type   vector3_type;
 
+        /// The actual type of a vector4.
+        typedef typename math_types::vector4_type   vector4_type;
+
         /// The actual type of a matrix4x4.
         typedef typename math_types::matrix4x4_type matrix4x4_type;
     
@@ -126,6 +129,39 @@ namespace graphics {
 
             return M;
         }
+
+    private:
+
+        /**
+         * Convert a Euclidean vector to a homogeneous one.
+         */
+        vector4_type homogeneous(vector3_type vector)
+        {
+            vector4_type homo;
+
+            homo[1] = vector[1];
+            homo[2] = vector[2];
+            homo[3] = vector[3];
+            homo[4] = 1;
+
+            return homo;
+        }
+
+        /**
+         * Convert a homogeneous vector to a Euclidean one.
+         */
+        vector3_type euclidean(vector4_type vector)
+        {
+            vector3_type euc;
+            real_type w = vector[4];
+
+            euc[1] = vector[1] / w;
+            euc[2] = vector[2] / w;
+            euc[3] = vector[3] / w;
+
+            return euc;
+        }
+
     };
 
 }// end namespace graphics
