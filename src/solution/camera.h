@@ -102,8 +102,8 @@ namespace graphics {
         {
             matrix4x4_type M = identity();
 
-            M = M * translate(vector3_type(1, 1, 0));
             M = M * scale(vector3_type(width / 2.0, height / 2.0, 1));
+            M = M * translate(vector3_type(1, 1, 0));
 
             return M;
         }
