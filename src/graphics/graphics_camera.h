@@ -79,6 +79,8 @@ namespace graphics
                                              front_plane,
                                              back_plane);
 
+        this->m_state->window_viewport() = this->compute_window_viewport(winWidth, winHeight);
+
         matrix4x4_type M;
         M = this->m_state->view_projection() * this->m_state->view_orientation();
 
@@ -145,6 +147,8 @@ namespace graphics
     virtual matrix4x4_type compute_view_orientation_matrix(vector3_type const& vrp,
                                    vector3_type const& vpn,
                                    vector3_type const& vup) = 0;
+
+    virtual matrix4x4_type compute_window_viewport(int width, int height) = 0;
 
     /**
      * Computes a matrix which transforms from the Eye-coordinate system to the Canonical View Volume.

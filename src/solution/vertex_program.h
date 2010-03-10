@@ -27,8 +27,9 @@ namespace graphics {
              vector3_type& out_color)
         {
             matrix4x4_type M = state.projection();
+            matrix4x4_type N = state.window_viewport();
             
-            out_vertex = euclidean(M * homogeneous(in_vertex));
+            out_vertex = euclidean(M * N * homogeneous(in_vertex));
 
             out_color =  in_color;
         }

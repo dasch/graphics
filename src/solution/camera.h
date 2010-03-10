@@ -62,10 +62,10 @@ namespace graphics {
                                         vector3_type const& vpn,
                                         vector3_type const& vup)
         {
-            matrix4x4_type M;
+            matrix4x4_type M = identity();
             
-            M = translate(-vrp)
-              * eye_to_world_rotation(vrp, vpn, vup);
+            M = M * translate(-vrp);
+            M = M * eye_to_world_rotation(vrp, vpn, vup);
 
             return M;
         }
@@ -88,15 +88,25 @@ namespace graphics {
                                        real_type    const& front_plane,
                                        real_type    const& back_plane)
         {
-            matrix4x4_type M;
+            matrix4x4_type M = identity();
 
-            M = translate(-prp)
-              * shear_to_z_axis(prp, lower_left, upper_right)
-              * scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
+            M = M * translate(-prp);
+            M = M * shear_to_z_axis(prp, lower_left, upper_right);
+            M = M * scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
 
             return M;
         }
 
+        matrix4x4_type
+        compute_window_viewport(int width, int height)
+        {
+            matrix4x4_type M = identity();
+
+            M = M * translate(vector3_type(1, 1, 0));
+            M = M * scale(vector3_type(width / 2.0, height / 2.0, 1));
+
+            return M;
+        }
 
         /**
          * Computes a projection matrix using the parameters for a perspective camera 

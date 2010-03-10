@@ -100,7 +100,7 @@ namespace graphics
      * Transform from Canonical-coordinates to Screen-coordinates.
      * @return A writable reference to the matrix which transforms from the Canonical-coordinate system to the Screen-coordinate system.
      */
-    matrix4x4_type&       window_viewport()       { return this->m_window_viewporty; }
+    matrix4x4_type&       window_viewport()       { return this->m_window_viewport; }
 
 
     // The Phong Light model parameters
