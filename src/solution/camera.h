@@ -64,8 +64,8 @@ namespace graphics {
         {
             matrix4x4_type M;
             
-            M = translate(-vrp);
-            M = M * eye_to_world_rotation(vrp, vpn, vup);
+            M = translate(-vrp)
+              * eye_to_world_rotation(vrp, vpn, vup);
 
             return M;
         }
@@ -90,8 +90,9 @@ namespace graphics {
         {
             matrix4x4_type M;
 
-            M = translate(-prp);
-            M = M * shear_to_z_axis(prp, lower_left, upper_right);
+            M = translate(-prp)
+              * shear_to_z_axis(prp, lower_left, upper_right)
+              * scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
 
             return M;
         }
@@ -124,11 +125,7 @@ namespace graphics {
                                   real_type    const& front_plane,
                                   real_type    const& back_plane)
         {
-            matrix4x4_type M;
-
-            M = scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
-
-            return M;
+            return identity();
         }
 
 
