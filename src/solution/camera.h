@@ -90,6 +90,7 @@ namespace graphics {
         {
             matrix4x4_type M = identity();
 
+            M = M * clip_to_parallel(prp, front_plane, back_plane);
             M = M * scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
             M = M * shear_to_z_axis(prp, lower_left, upper_right);
             M = M * translate(-prp);
@@ -136,6 +137,23 @@ namespace graphics {
                                   real_type    const& back_plane)
         {
             return identity();
+        }
+
+
+        matrix4x4_type
+        clip_to_parallel(vector3_type const& prp,
+                         real_type    const& front_plane,
+                         real_type    const& back_plane)
+        {
+            matrix4x4_type M = identity();
+
+            real_type zmax = (prp[3] + front_plane) / (-prp[3] + back_plane);
+
+            M[3][3] = 1 / (1 + zmax);
+            M[3][4] = -zmax / (1 + zmax);
+            M[4][3] = -1;
+
+            return M;
         }
 
 
