@@ -65,27 +65,7 @@ namespace graphics {
             matrix4x4_type M;
             
             M = translate(-vrp);
-            M = M * compute_eye_to_world_rotation(vrp, vpn, vup);
-
-            return M;
-        }
-
-        matrix4x4_type
-        compute_eye_to_world_rotation(vector3_type const& vrp,
-                                      vector3_type const& vpn,
-                                      vector3_type const& vup)
-        {
-            matrix4x4_type M = identity();
-
-            vector3_type rx, ry, rz;
-
-            rz = vpn / Norm(vpn);
-            rx = Cross(vup, rz) / Norm(Cross(vup, rz));
-            ry = Cross(rz, rx);
-
-            M[1][1] = rx[1], M[1][2] = rx[2], M[1][3] = rx[3];
-            M[1][1] = ry[1], M[1][2] = ry[2], M[1][3] = ry[3];
-            M[1][1] = rz[1], M[1][2] = rz[2], M[1][3] = rz[3];
+            M = M * eye_to_world_rotation(vrp, vpn, vup);
 
             return M;
         }
@@ -111,45 +91,11 @@ namespace graphics {
             matrix4x4_type M;
 
             M = translate(-prp);
-            M = M * compute_shear_to_z_axis(prp, lower_left, upper_right);
+            M = M * shear_to_z_axis(prp, lower_left, upper_right);
 
             return M;
         }
 
-        matrix4x4_type
-        compute_shear_to_z_axis(vector3_type const &prp,
-                                vector2_type const &lower_left,
-                                vector2_type const &upper_right)
-        {
-            // Center of window.
-            vector3_type cw;
-
-            // Direction of projection.
-            vector3_type dop;
-
-            cw[1] = (lower_left[1] + upper_right[1]) / 2;
-            cw[2] = (lower_left[2] + upper_right[2]) / 2;
-            cw[3] = 0;
-
-            dop = prp - cw;
-
-            return xy_shear(-dop[1] / dop[3], -dop[2] / dop[3]);
-        }
-
-        matrix4x4_type
-        scale_to_canonical_perspective(vector3_type const &prp,
-                                       vector2_type const &lower_left,
-                                       vector2_type const &upper_right,
-                                       real_type    const &back_plane)
-        {
-            vector3_type factor;
-
-            factor[1] = (-2 * prp[3]) / ((upper_right[1] - lower_left[1]) * (back_plane - prp[3]));
-            factor[2] = (-2 * prp[3]) / ((upper_right[2] - lower_left[2]) * (back_plane - prp[3]));
-            factor[3] = -1 / (back_plane - prp[3]);
-
-            return scale(factor);
-        }
 
         /**
          * Computes a projection matrix using the parameters for a perspective camera 
@@ -185,37 +131,64 @@ namespace graphics {
             return M;
         }
 
+
+        matrix4x4_type
+        eye_to_world_rotation(vector3_type const& vrp,
+                              vector3_type const& vpn,
+                              vector3_type const& vup)
+        {
+            matrix4x4_type M = identity();
+
+            vector3_type rx, ry, rz;
+
+            rz = vpn / Norm(vpn);
+            rx = Cross(vup, rz) / Norm(Cross(vup, rz));
+            ry = Cross(rz, rx);
+
+            M[1][1] = rx[1], M[1][2] = rx[2], M[1][3] = rx[3];
+            M[1][1] = ry[1], M[1][2] = ry[2], M[1][3] = ry[3];
+            M[1][1] = rz[1], M[1][2] = rz[2], M[1][3] = rz[3];
+
+            return M;
+        }
+
+
+        matrix4x4_type
+        shear_to_z_axis(vector3_type const &prp,
+                        vector2_type const &lower_left,
+                        vector2_type const &upper_right)
+        {
+            // Center of window.
+            vector3_type cw;
+
+            // Direction of projection.
+            vector3_type dop;
+
+            cw[1] = (lower_left[1] + upper_right[1]) / 2;
+            cw[2] = (lower_left[2] + upper_right[2]) / 2;
+            cw[3] = 0;
+
+            dop = prp - cw;
+
+            return xy_shear(-dop[1] / dop[3], -dop[2] / dop[3]);
+        }
+
+        matrix4x4_type
+        scale_to_canonical_perspective(vector3_type const &prp,
+                                       vector2_type const &lower_left,
+                                       vector2_type const &upper_right,
+                                       real_type    const &back_plane)
+        {
+            vector3_type factor;
+
+            factor[1] = (-2 * prp[3]) / ((upper_right[1] - lower_left[1]) * (back_plane - prp[3]));
+            factor[2] = (-2 * prp[3]) / ((upper_right[2] - lower_left[2]) * (back_plane - prp[3]));
+            factor[3] = -1 / (back_plane - prp[3]);
+
+            return scale(factor);
+        }
+
     private:
-
-        /**
-         * Convert a Euclidean vector to a homogeneous one.
-         */
-        vector4_type homogeneous(vector3_type vector)
-        {
-            vector4_type homo;
-
-            homo[1] = vector[1];
-            homo[2] = vector[2];
-            homo[3] = vector[3];
-            homo[4] = 1;
-
-            return homo;
-        }
-
-        /**
-         * Convert a homogeneous vector to a Euclidean one.
-         */
-        vector3_type euclidean(vector4_type vector)
-        {
-            vector3_type euc;
-            real_type w = vector[4];
-
-            euc[1] = vector[1] / w;
-            euc[2] = vector[2] / w;
-            euc[3] = vector[3] / w;
-
-            return euc;
-        }
 
         matrix4x4_type identity()
         {
