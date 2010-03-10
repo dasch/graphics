@@ -57,14 +57,39 @@ namespace graphics {
          * @param vup The View Up Vector.
          * @return    The view_orientation matrix.
          */
-        matrix4x4_type compute_view_orientation_matrix(vector3_type const& vrp,
-                                   vector3_type const& vpn,
-                                   vector3_type const& vup)
+        matrix4x4_type
+        compute_view_orientation_matrix(vector3_type const& vrp,
+                                        vector3_type const& vpn,
+                                        vector3_type const& vup)
         {
-            matrix4x4_type M = identity();
+            matrix4x4_type M;
+            
+            M = translate(-vrp);
+            M = M * compute_eye_to_world_rotation(vrp, vpn, vup);
 
             return M;
         }
+
+        matrix4x4_type
+        compute_eye_to_world_rotation(vector3_type const& vrp,
+                                      vector3_type const& vpn,
+                                      vector3_type const& vup)
+        {
+            matrix4x4_type M = identity();
+
+            vector3_type rx, ry, rz;
+
+            rz = vpn / Norm(vpn);
+            rx = Cross(vup, rz) / Norm(Cross(vup, rz));
+            ry = Cross(rz, rx);
+
+            M[1][1] = rx[1], M[1][2] = rx[2], M[1][3] = rx[3];
+            M[1][1] = ry[1], M[1][2] = ry[2], M[1][3] = ry[3];
+            M[1][1] = rz[1], M[1][2] = rz[2], M[1][3] = rz[3];
+
+            return M;
+        }
+
 
         /**
          * Computes a matrix which transforms from the Eye-coordinate system to the Canonical View Volume.
@@ -76,15 +101,54 @@ namespace graphics {
          * @param back_plane  The farthest distance from the origin in Eye-coordinates.
          * @return The view_projection matrix.
          */
-        matrix4x4_type compute_view_projection_matrix(vector3_type const& prp,
-                                  vector2_type const& lower_left,
-                                  vector2_type const& upper_right,
-                                  real_type    const& front_plane,
-                                  real_type    const& back_plane)
-            {
-            matrix4x4_type M = identity();
+        matrix4x4_type
+        compute_view_projection_matrix(vector3_type const& prp,
+                                       vector2_type const& lower_left,
+                                       vector2_type const& upper_right,
+                                       real_type    const& front_plane,
+                                       real_type    const& back_plane)
+        {
+            matrix4x4_type M;
+
+            M = translate(-prp);
+            M = M * compute_shear_to_z_axis(prp, lower_left, upper_right);
 
             return M;
+        }
+
+        matrix4x4_type
+        compute_shear_to_z_axis(vector3_type const &prp,
+                                vector2_type const &lower_left,
+                                vector2_type const &upper_right)
+        {
+            // Center of window.
+            vector3_type cw;
+
+            // Direction of projection.
+            vector3_type dop;
+
+            cw[1] = (lower_left[1] + upper_right[1]) / 2;
+            cw[2] = (lower_left[2] + upper_right[2]) / 2;
+            cw[3] = 0;
+
+            dop = prp - cw;
+
+            return xy_shear(-dop[1] / dop[3], -dop[2] / dop[3]);
+        }
+
+        matrix4x4_type
+        scale_to_canonical_perspective(vector3_type const &prp,
+                                       vector2_type const &lower_left,
+                                       vector2_type const &upper_right,
+                                       real_type    const &back_plane)
+        {
+            vector3_type factor;
+
+            factor[1] = (-2 * prp[3]) / ((upper_right[1] - lower_left[1]) * (back_plane - prp[3]));
+            factor[2] = (-2 * prp[3]) / ((upper_right[2] - lower_left[2]) * (back_plane - prp[3]));
+            factor[3] = -1 / (back_plane - prp[3]);
+
+            return scale(factor);
         }
 
         /**
@@ -104,14 +168,19 @@ namespace graphics {
          * @param front_plane Distance to front clipping plane
          * @param back_plane  Distance to back clipping plane
          */
-        matrix4x4_type compute_projection_matrix(vector3_type const& vrp, vector3_type const& vpn,
-                             vector3_type const& vup, vector3_type const& prp,
-                             vector2_type const& lower_left,
-                             vector2_type const& upper_right,
-                             real_type    const& front_plane,
-                             real_type    const& back_plane)
+        matrix4x4_type
+        compute_projection_matrix(vector3_type const& vrp,
+                                  vector3_type const& vpn,
+                                  vector3_type const& vup,
+                                  vector3_type const& prp,
+                                  vector2_type const& lower_left,
+                                  vector2_type const& upper_right,
+                                  real_type    const& front_plane,
+                                  real_type    const& back_plane)
         {
-            matrix4x4_type M = identity();
+            matrix4x4_type M;
+
+            M = scale_to_canonical_perspective(prp, lower_left, upper_right, back_plane);
 
             return M;
         }
