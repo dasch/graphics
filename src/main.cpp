@@ -1156,6 +1156,9 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
     break;
     case 'f':
         std::cout << "Debug House" << std::endl << std::flush;
+
+        v++;
+
         figure = 'f';
         glutPostRedisplay();
         break;
@@ -1307,7 +1310,23 @@ void display()
 
 #if DRAWHOUSE
     if (figure == 'f') {
-        Foley_Fig_6_27();
+        switch (v) {
+        case 1:
+            Foley_Fig_6_27();
+            break;
+        case 2:
+            Foley_Fig_6_28();
+            break;
+        case 3:
+            Foley_Fig_6_31();
+            break;
+        case 4:
+            Foley_Fig_6_22();
+            break;
+        case 5:
+            Foley_Fig_6_34();
+            break;
+        }
     }
 #endif
 
