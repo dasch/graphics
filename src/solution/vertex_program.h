@@ -31,8 +31,6 @@ namespace graphics {
             
             out_vertex = euclidean(N * M * homogeneous(in_vertex));
 
-            std::cout << "(" << out_vertex[1] << ", " << out_vertex[2] << ")" << std::endl;
-
             out_color =  in_color;
         }
 
@@ -49,8 +47,6 @@ namespace graphics {
             matrix4x4_type N = state.window_viewport();
             
             out_vertex = euclidean(N * M * homogeneous(in_vertex));
-
-            std::cout << "(" << out_vertex[1] << ", " << out_vertex[2] << ")" << std::endl;
 
             out_normal = in_normal;
             out_color =  in_color;
