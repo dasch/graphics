@@ -29,7 +29,9 @@ namespace graphics {
             matrix4x4_type M = state.projection();
             matrix4x4_type N = state.window_viewport();
             
-            out_vertex = euclidean(M * N * homogeneous(in_vertex));
+            out_vertex = euclidean(N * M * homogeneous(in_vertex));
+
+            std::cout << "(" << out_vertex[1] << ", " << out_vertex[2] << ")" << std::endl;
 
             out_color =  in_color;
         }
@@ -44,8 +46,11 @@ namespace graphics {
              vector3_type& out_color)
         {
             matrix4x4_type M = state.projection();
+            matrix4x4_type N = state.window_viewport();
             
-            out_vertex = euclidean(M * homogeneous(in_vertex));
+            out_vertex = euclidean(N * M * homogeneous(in_vertex));
+
+            std::cout << "(" << out_vertex[1] << ", " << out_vertex[2] << ")" << std::endl;
 
             out_normal = in_normal;
             out_color =  in_color;
