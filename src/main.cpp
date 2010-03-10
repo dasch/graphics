@@ -13,6 +13,7 @@
 #define DRAWPOINTS     1
 #define DEBUGPOINTS    1
 #define DRAWLINES      1
+#define DRAWHOUSE      1
 #define DEBUGLINES     1
 #define DRAWTRIANGLES  1
 #define DEBUGTRIANGLES 1
@@ -1155,7 +1156,7 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
     break;
     case 'f':
         std::cout << "Debug House" << std::endl << std::flush;
-        Foley_Fig_6_27();
+        figure = 'f';
         glutPostRedisplay();
         break;
     case 'd':
@@ -1300,6 +1301,13 @@ void display()
 #if DRAWTRIANGLES
     if (figure == 't') {
     DrawTriangles();
+    }
+#endif
+
+
+#if DRAWHOUSE
+    if (figure == 'f') {
+        Foley_Fig_6_27();
     }
 #endif
 
