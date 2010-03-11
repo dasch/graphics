@@ -1310,6 +1310,8 @@ void display()
 
 #if DRAWHOUSE
     if (figure == 'f') {
+        v = (v - 1) % 5 + 1;
+
         switch (v) {
         case 1:
             Foley_Fig_6_27();
