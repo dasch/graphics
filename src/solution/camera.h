@@ -122,6 +122,7 @@ namespace graphics {
             M[3][3] = 1 / (1 + zmax);
             M[3][4] = -zmax / (1 + zmax);
             M[4][3] = -1;
+            M[4][4] = 0;
 
             return M;
         }
@@ -176,9 +177,9 @@ namespace graphics {
         {
             vector3_type factor;
 
-            factor[1] = (-2 * prp[3]) / ((upper_right[1] - lower_left[1]) * (back_plane - prp[3]));
-            factor[2] = (-2 * prp[3]) / ((upper_right[2] - lower_left[2]) * (back_plane - prp[3]));
-            factor[3] = -1 / (back_plane - prp[3]);
+            factor[1] = (-2 * prp[3]) / ((upper_right[1] - lower_left[1]) * (back_plane + prp[3]));
+            factor[2] = (-2 * prp[3]) / ((upper_right[2] - lower_left[2]) * (back_plane + prp[3]));
+            factor[3] = -1 / (back_plane + prp[3]);
 
             return scale(factor);
         }
