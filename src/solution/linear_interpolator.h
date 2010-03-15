@@ -16,6 +16,13 @@ namespace graphics {
     template <typename math_types, typename value_type>
     class LinearInterpolator : public Interpolator<math_types, value_type> {
 
+    private:
+
+        bool valid;
+
+        value_type v_start, v_stop, v_current, v_delta;
+        int t_start, t_stop, t_current, t_delta;
+
     public:
 
         typedef typename math_types::vector3_type vector3_type;
@@ -23,38 +30,50 @@ namespace graphics {
 
         LinearInterpolator() : Interpolator<math_types, value_type>()
         {
-            // implement the real version
+            valid = false;
         }
 
         LinearInterpolator(LinearInterpolator const& new_linearinterpolator)
             : Interpolator<math_types, value_type>(new_linearinterpolator)
               
         {
-            // implement the real version
+            valid = false;
         }
 
         virtual ~LinearInterpolator() {}
 
-        void init(int t_start, int t_stop, value_type const& Vstart, value_type const& Vstop)
+        void init(int t_start, int t_stop, value_type const& v_start, value_type const& v_stop)
         {
-            // implement the real version
+            this->t_start = t_start;
+            this->t_stop = t_stop;
+            this->t_current = t_start;
+            this->t_delta = (t_start <= t_stop) ? 1 : -1;
+
+            this->v_start = v_start;
+            this->v_stop = v_stop;
+            this->v_current = v_start;
+            this->v_delta = ((v_stop - v_start) / std::fabs(t_stop - t_start)) * t_delta;
+
+            valid = true;
         }
 
         value_type const& value() const
         {
-            // implement the real version
-
-            return this->dummy_value;
+            return v_current;
         }
 
         bool more_values() const
         {
-            return false;
+            return valid;
         }
 
         void next_value()
         {
-            // implement the real version
+            t_current++;
+            v_current += v_delta;
+
+            if (t_current == t_stop)
+                valid = false;
         }
 
         LinearInterpolator<math_types, value_type> const&
@@ -66,11 +85,6 @@ namespace graphics {
 
             return *this;
         }
-
-
-    private:
-
-        value_type dummy_value;
 
     };
 }
