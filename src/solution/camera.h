@@ -104,7 +104,7 @@ namespace graphics {
             matrix4x4_type M = identity();
 
             M = M * scale(vector3_type(width / 2.0, height / 2.0, 1));
-            M = M * translate(vector3_type(1, 1, 0));
+            M = M * translate(vector3_type(1, 1, 1));
 
             return M;
         }
@@ -117,7 +117,7 @@ namespace graphics {
         {
             matrix4x4_type M = identity();
 
-            real_type zmax = (prp[3] + front_plane) / (-prp[3] + back_plane);
+            real_type zmax = -(front_plane - prp[3]) / (back_plane - prp[3]);
 
             M[3][3] = 1 / (1 + zmax);
             M[3][4] = -zmax / (1 + zmax);
