@@ -149,6 +149,45 @@ void DrawGrid()
 
 /*******************************************************************\
 *                                                                   *
+*                        D r a w L i n e z ( )                      *
+*                                                                   *
+\*******************************************************************/
+
+void DrawLinez()
+{
+    MyMathTypes::vector3_type red(1.0, 0.0, 0.0);
+
+    MyMathTypes::vector3_type  p0(-30.0, -30.0, -100.0);
+    MyMathTypes::vector3_type  p1( 30.0, -30.0, -100.0);
+    MyMathTypes::vector3_type  p2(  0.0,  30.0, -100.0);
+
+    MyMathTypes::vector3_type  n(0.0, 0.0, 1.0);
+
+    render_pipeline.load_rasterizer( triangle_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(0, 0, 0);
+    MyMathTypes::vector3_type vpn(0, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(8, 6, 84);
+
+    MyMathTypes::vector2_type lower_left( -50.0, -50.0);
+    MyMathTypes::vector2_type upper_right( 50.0,  50.0);
+
+    MyMathTypes::real_type    front_plane(60.0);
+    MyMathTypes::real_type    back_plane( 25.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    render_pipeline.draw_triangle(p0, n, red, p1, n, red, p2, n, red);
+}
+
+
+/*******************************************************************\
+*                                                                   *
 *                       D r a w P o i n t  ( )                      *
 *                                                                   *
 \*******************************************************************/
@@ -1162,6 +1201,14 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
         figure = 'f';
         glutPostRedisplay();
         break;
+    case 'u':
+        std::cout << "Debug Linez" << std::endl << std::flush;
+
+        v++;
+
+        figure = 'u';
+        glutPostRedisplay();
+        break;
     case 'd':
     case 'D':
         // call the DisplayCallback as soon as possible
@@ -1306,6 +1353,11 @@ void display()
     DrawTriangles();
     }
 #endif
+
+
+    if (figure == 'u') {
+        DrawLinez();
+    }
 
 
 #if DRAWHOUSE
