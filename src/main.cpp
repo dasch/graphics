@@ -156,10 +156,17 @@ void DrawGrid()
 void DrawLinez()
 {
     MyMathTypes::vector3_type red(1.0, 0.0, 0.0);
+    MyMathTypes::vector3_type green(0.0, 1.0, 0.0);
 
-    MyMathTypes::vector3_type  p0(-30.0, -30.0, -100.0);
-    MyMathTypes::vector3_type  p1( 30.0, -30.0, -100.0);
-    MyMathTypes::vector3_type  p2(  0.0,  30.0, -100.0);
+    MyMathTypes::vector3_type  p0(-30.0, -30.0, -10.0);
+    MyMathTypes::vector3_type  p1( 30.0, -30.0, -10.0);
+    MyMathTypes::vector3_type  p2(  0.0,  30.0, -10.0);
+
+    MyMathTypes::vector3_type  p3(0.0, 0.0, 0.0);
+    MyMathTypes::vector3_type  p4(0.0, 0.0, -10.0);
+
+    MyMathTypes::vector3_type  p5(-50.0, 0.0, 0.0);
+    MyMathTypes::vector3_type  p6(50.0, 0.0, 0.0);
 
     MyMathTypes::vector3_type  n(0.0, 0.0, 1.0);
 
@@ -169,20 +176,29 @@ void DrawLinez()
     MyMathTypes::vector3_type vrp(0, 0, 0);
     MyMathTypes::vector3_type vpn(0, 0, 1);
     MyMathTypes::vector3_type vup(0, 1, 0);
-    MyMathTypes::vector3_type prp(8, 6, 84);
+    MyMathTypes::vector3_type prp(0, 0, 1);
 
     MyMathTypes::vector2_type lower_left( -50.0, -50.0);
     MyMathTypes::vector2_type upper_right( 50.0,  50.0);
 
-    MyMathTypes::real_type    front_plane(60.0);
-    MyMathTypes::real_type    back_plane( 25.0);
+    MyMathTypes::real_type    front_plane(0.0);
+    MyMathTypes::real_type    back_plane(-11.0);
 
     camera.set_projection(vrp, vpn, vup, prp,
 			  lower_left, upper_right,
 			  front_plane, back_plane,
 			  winWidth, winHeight);
 
+    std::cout << "drawing triangle" << std::endl;
     render_pipeline.draw_triangle(p0, n, red, p1, n, red, p2, n, red);
+
+    render_pipeline.load_rasterizer(line_rasterizer);
+
+    std::cout << "drawing line along z axis" << std::endl;
+    render_pipeline.draw_line(p3, green, p4, green);
+
+    std::cout << "drawing line x axis" << std::endl;
+    render_pipeline.draw_line(p5, green, p6, green);
 }
 
 

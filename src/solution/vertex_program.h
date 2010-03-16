@@ -50,6 +50,8 @@ namespace graphics {
             
             out_vertex = euclidean(N * M * homogeneous(in_vertex));
 
+            std::cout << "out: " << out_vertex << std::endl;
+
             out_normal = in_normal;
             out_color =  in_color;
         }
