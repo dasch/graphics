@@ -193,7 +193,7 @@ namespace graphics
      * The exponent of the specular light in Phong's equation. Big means narrow, and small means broad.
      * @return A read-only reference to the fall-off exponent in Phong's equation.
      */
-    real_type const& fall_off () const { m_fall_off; }
+    real_type const& fall_off () const { return m_fall_off; }
 
         /**
      * The exponent of the specular light in Phong's equation. Big means narrow, and small means broad.
