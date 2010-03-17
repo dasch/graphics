@@ -21,6 +21,9 @@ namespace graphics {
         typedef typename math_types::real_type    real_type;
         typedef typename math_types::vector3_type vector3_type;
 
+        private:
+        LinearInterpolator<math_types, typename math_types::real_type> depth_interpolator;
+
         public:
         MyEdgeRasterizer() : valid(true)
         {
@@ -91,6 +94,8 @@ namespace graphics {
             denominator = y_stop - y_start;
             accumulator = (dx > 0) ? denominator : 1;
 
+            depth_interpolator.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
+
             this->valid = (y_current < y_stop);
         }
 
@@ -118,7 +123,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::depth():Invalid State/Not Initialized");
             }
 
-            return 0;
+            return depth_interpolator.value();;
         }
 
         vector3_type position() const
@@ -179,6 +184,8 @@ namespace graphics {
                     accumulator -= denominator;
                 }
             }
+
+            depth_interpolator.next_value();
         }
 
         protected:

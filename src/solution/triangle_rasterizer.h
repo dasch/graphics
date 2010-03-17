@@ -24,6 +24,9 @@ namespace graphics {
         typedef typename math_types::vector3_type vector3_type;
         typedef typename math_types::real_type    real_type;
 
+        private:
+        LinearInterpolator<math_types, typename math_types::real_type> depth_interpolator;
+
         protected:
 
         MyEdgeRasterizer<MyMathTypes> left_edge, right_edge;
@@ -119,6 +122,8 @@ namespace graphics {
                 left_edge.next_fragment();
                 right_edge.next_fragment();
             }
+
+            depth_interpolator.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
         }
 
         bool DebugOn()
@@ -173,7 +178,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::depth():Invalid State/Not Initialized");
             }
 
-            return 0.0;
+            return depth_interpolator.value();
         }
 
         vector3_type position() const
@@ -231,6 +236,8 @@ namespace graphics {
                 left_edge.next_fragment();
                 right_edge.next_fragment();
             }
+
+            depth_interpolator.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
         }
 
         private:
