@@ -146,6 +146,44 @@ void DrawGrid()
     render_pipeline.unit_length(1);
 }
 
+void DrawFinalTriangle()
+{
+  std::cout << "Test triangle for final assignment" << std::endl;
+  
+  render_pipeline.load_rasterizer( triangle_rasterizer );
+  render_pipeline.load_vertex_program( vertex_program );
+
+  MyMathTypes::vector3_type vrp(0.0, 0.0, 125.0);
+  MyMathTypes::vector3_type vpn(0.0, 0.0, 1.0);
+  MyMathTypes::vector3_type vup(0.0, 1.0, 0.0);
+  MyMathTypes::vector3_type prp(0.0, 0.0, 50.0);
+
+  MyMathTypes::vector2_type lower_left( -25.0, -25.0);
+  MyMathTypes::vector2_type upper_right( 25.0,  25.0);
+
+  MyMathTypes::real_type    front_plane(10.0);
+  MyMathTypes::real_type    back_plane(-800.0);
+
+  camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+  MyMathTypes::vector3_type  v1( -33.978017, -34.985076, 50.214926 );
+  MyMathTypes::vector3_type  v2( 84.192943, -13.784394, -50.214926 );
+  MyMathTypes::vector3_type  v3( -16.236910, 83.754546, -50.214926 );
+
+  MyMathTypes::vector3_type  n1( 0.0, 0.0, 1.0 );
+  MyMathTypes::vector3_type  n2( 0.0, 0.0, 1.0 );
+  MyMathTypes::vector3_type  n3( 0.0, 0.0, 1.0 );
+
+  MyMathTypes::vector3_type  c1( 1.0, 0.0, 0.0 );
+  MyMathTypes::vector3_type  c2( 1.0, 0.0, 0.0 );
+  MyMathTypes::vector3_type  c3( 1.0, 0.0, 0.0 );
+
+  render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);
+}
+
 
 /*******************************************************************\
 *                                                                   *
