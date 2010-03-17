@@ -30,15 +30,34 @@ namespace graphics {
     template<typename math_types>
     class MyLineRasterizer : public Rasterizer<math_types>
     {
-    private:
-
-        LinearInterpolator<math_types, typename math_types::real_type> depth_interpolator;
-
     public:
 
         typedef typename math_types::vector3_type      vector3_type;
 
         typedef typename math_types::real_type         real_type;
+
+    private:
+
+        LinearInterpolator<math_types, typename math_types::real_type> depth_interpolator;
+
+        void         (MyLineRasterizer::*innerloop)();
+
+        bool         valid;
+
+        bool         Debug;
+
+        int x_current, y_current;
+        int x_start, y_start;
+        int x_stop, y_stop;
+        int dx, dy;
+        int abs_2dx , abs_2dy;
+        int x_step, y_step;
+        int d;
+        bool left_right;
+
+        vector3_type dummy_vector;
+
+    public:
 
         MyLineRasterizer() : Debug(false), valid(false)
         {}
@@ -174,7 +193,7 @@ namespace graphics {
             std::cout << "\tvalid     == " << this->valid    << std::endl;
         }
 
-        private:
+    private:
 
         void x_dominant_innerloop()
         {
@@ -205,25 +224,6 @@ namespace graphics {
                 d += abs_2dx;
             }
         }
-
-        // This looks strange, byt it is the definition of a pointer to a 
-        // private member function! That is how it is done!
-        void         (MyLineRasterizer::*innerloop)();
-
-        bool         valid;
-
-        bool         Debug;
-
-        int x_current, y_current;
-        int x_start, y_start;
-        int x_stop, y_stop;
-        int dx, dy;
-        int abs_2dx , abs_2dy;
-        int x_step, y_step;
-        int d;
-        bool left_right;
-
-        vector3_type dummy_vector;
     };
 
 }// end namespace graphics
