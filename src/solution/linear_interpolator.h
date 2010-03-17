@@ -52,7 +52,7 @@ namespace graphics {
             this->v_start = v_start;
             this->v_stop = v_stop;
             this->v_current = v_start;
-            this->v_delta = ((v_stop - v_start) / std::fabs(t_stop - t_start)) * t_delta;
+            this->v_delta = ((v_stop - v_start) / std::fabs(t_stop - t_start));
 
             valid = true;
         }
@@ -69,7 +69,7 @@ namespace graphics {
 
         void next_value()
         {
-            t_current++;
+            t_current += t_delta;
             v_current += v_delta;
 
             if (t_current == t_stop)
