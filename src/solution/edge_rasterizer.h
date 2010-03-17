@@ -75,11 +75,11 @@ namespace graphics {
             start = vertices[i];
             stop  = vertices[j];
 
-            x_start = start[1];
-            y_start = start[2];
+            x_start = static_cast<int>(round(start[1]));
+            y_start = static_cast<int>(round(start[2]));
 
-            x_stop = stop[1];
-            y_stop = stop[2];
+            x_stop = static_cast<int>(round(stop[1]));
+            y_stop = static_cast<int>(round(stop[2]));
 
             x_current = x_start;
             y_current = y_start;

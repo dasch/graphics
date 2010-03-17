@@ -84,19 +84,19 @@ namespace graphics {
             vector3_type cross = Cross(ul - ll, ot - ll);
 
             if (cross[3] < 0) {
-                left_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
-                               vertices[upper_left], normals[upper_left], colors[upper_left]);
+                left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                               edges[upper_left], normals[upper_left], colors[upper_left]);
 
-                right_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
-                                vertices[the_other], normals[the_other], colors[the_other],
-                                vertices[upper_left], normals[upper_left], colors[upper_left]);
+                right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                                edges[the_other], normals[the_other], colors[the_other],
+                                edges[upper_left], normals[upper_left], colors[upper_left]);
             } else if (cross[3] > 0) {
-                left_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
-                               vertices[the_other], normals[the_other], colors[the_other],
-                               vertices[upper_left], normals[upper_left], colors[upper_left]);
+                left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                               edges[the_other], normals[the_other], colors[the_other],
+                               edges[upper_left], normals[upper_left], colors[upper_left]);
 
-                right_edge.init(vertices[lower_left], normals[lower_left], colors[lower_left],
-                                vertices[upper_left], normals[upper_left], colors[upper_left]);
+                right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
+                                edges[upper_left], normals[upper_left], colors[upper_left]);
 
             } else {
                 return;
