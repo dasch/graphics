@@ -125,6 +125,9 @@ namespace graphics {
 
                 left_edge.next_fragment();
                 right_edge.next_fragment();
+
+                depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
+                i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
             }
         }
 
