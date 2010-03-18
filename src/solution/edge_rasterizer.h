@@ -178,6 +178,9 @@ namespace graphics {
         {
             y_current++;
 
+            depths.next_value();
+            i_colors.next_value();
+
             if (y_current == y_stop) {
                 if (!two_edges) {
                     valid = false;
@@ -193,9 +196,6 @@ namespace graphics {
                     accumulator -= denominator;
                 }
             }
-
-            depths.next_value();
-            i_colors.next_value();
         }
 
         protected:
