@@ -38,7 +38,7 @@ namespace graphics {
 
     private:
 
-        LinearInterpolator<math_types, typename math_types::real_type> depth_interpolator;
+        LinearInterpolator<math_types, real_type> depths;
 
         void         (MyLineRasterizer::*innerloop)();
 
@@ -94,11 +94,11 @@ namespace graphics {
             if (x_dominant) {
                 d = abs_2dy - (abs_2dx >> 1);
                 this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
-                depth_interpolator.init(x_start, x_stop, in_vertex1[3], in_vertex2[3]);
+                depths.init(x_start, x_stop, in_vertex1[3], in_vertex2[3]);
             } else {
                 d = abs_2dx - (abs_2dy >> 1);
                 this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
-                depth_interpolator.init(y_start, y_stop, in_vertex1[3], in_vertex2[3]);
+                depths.init(y_start, y_stop, in_vertex1[3], in_vertex2[3]);
             }
 
             this->Debug = false;
@@ -143,7 +143,7 @@ namespace graphics {
             throw std::runtime_error("MyLineRasterizer::depth():Invalid State/Not Initialized");
             }
 
-            return depth_interpolator.value();
+            return depths.value();
         }
 
         vector3_type position() const 
@@ -183,7 +183,7 @@ namespace graphics {
             // Dereference a pointer to a private member function.
             // It looks strange, but it is the way to do it!
             (this->*innerloop)();
-            depth_interpolator.next_value();
+            depths.next_value();
         }
 
         void print_variables()
