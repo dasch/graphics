@@ -39,6 +39,7 @@ namespace graphics {
     private:
 
         LinearInterpolator<math_types, real_type> depths;
+        LinearInterpolator<math_types, vector3_type> colors;
 
         void         (MyLineRasterizer::*innerloop)();
 
@@ -95,10 +96,12 @@ namespace graphics {
                 d = abs_2dy - (abs_2dx >> 1);
                 this->innerloop = &MyLineRasterizer::x_dominant_innerloop;
                 depths.init(x_start, x_stop, in_vertex1[3], in_vertex2[3]);
+                colors.init(x_start, x_stop, in_color1, in_color2);
             } else {
                 d = abs_2dx - (abs_2dy >> 1);
                 this->innerloop = &MyLineRasterizer::y_dominant_innerloop;
                 depths.init(y_start, y_stop, in_vertex1[3], in_vertex2[3]);
+                colors.init(y_start, y_stop, in_color1, in_color2);
             }
 
             this->Debug = false;
@@ -170,7 +173,7 @@ namespace graphics {
                 throw std::runtime_error("MyLineRasterizer::color():Invalid State/Not Initialized");
             }
 
-            return this->dummy_vector;
+            return colors.value();
         }
 
         bool more_fragments() const 
@@ -184,6 +187,7 @@ namespace graphics {
             // It looks strange, but it is the way to do it!
             (this->*innerloop)();
             depths.next_value();
+            colors.next_value();
         }
 
         void print_variables()
