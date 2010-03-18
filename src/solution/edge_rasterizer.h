@@ -23,6 +23,7 @@ namespace graphics {
 
         private:
         LinearInterpolator<math_types, real_type> depths;
+        LinearInterpolator<math_types, vector3_type> i_colors;
 
         public:
         MyEdgeRasterizer() : valid(true)
@@ -47,6 +48,10 @@ namespace graphics {
             vertices[1] = in_vertex2;
             vertices[2] = in_vertex3;
 
+            colors[0] = in_color1;
+            colors[1] = in_color2;
+            colors[2] = in_color3;
+
             if (in_vertex1[2] == in_vertex2[2]) {
                 two_edges = false;
                 initialize_edge(1, 2);
@@ -65,6 +70,9 @@ namespace graphics {
         {
             vertices[0] = in_vertex1;
             vertices[1] = in_vertex2;
+
+            colors[0] = in_color1;
+            colors[1] = in_color2;
 
             two_edges = false;
 
@@ -95,6 +103,7 @@ namespace graphics {
             accumulator = (dx > 0) ? denominator : 1;
 
             depths.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
+            i_colors.init(y_start, y_stop, colors[i], colors[j]);
 
             this->valid = (y_current < y_stop);
         }
@@ -150,7 +159,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::color():Invalid State/Not Initialized");
             }
 
-            return vector3_type(0.0, 0.0, 0.0);
+            return i_colors.value();
         }
 
         void print_variables()
@@ -186,6 +195,7 @@ namespace graphics {
             }
 
             depths.next_value();
+            i_colors.next_value();
         }
 
         protected:
@@ -199,7 +209,7 @@ namespace graphics {
         int dx, x_step;
         int numerator, denominator, accumulator;
 
-        vector3_type vertices[3];
+        vector3_type vertices[3], colors[3];
     };
 
 }// end namespace graphics

@@ -26,6 +26,7 @@ namespace graphics {
 
         private:
         LinearInterpolator<math_types, real_type> depths;
+        LinearInterpolator<math_types, vector3_type> i_colors;
 
         protected:
 
@@ -124,6 +125,7 @@ namespace graphics {
             }
 
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
+            i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
         }
 
         bool DebugOn()
@@ -205,7 +207,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::color():Invalid State/Not Initialized");
             }
 
-            return this->dummy_vector;
+            return i_colors.value();
         }
 
         void print_variables()
@@ -238,6 +240,7 @@ namespace graphics {
             }
 
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
+            i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
         }
 
         private:
