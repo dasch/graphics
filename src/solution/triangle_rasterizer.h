@@ -117,18 +117,7 @@ namespace graphics {
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
             i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
 
-            while (SearchForNonEmptyScanline()) {
-                x_current = left_edge.x();
-                y_current = left_edge.y();
-
-                x_stop = right_edge.x();
-
-                depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
-                i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
-
-                left_edge.next_fragment();
-                right_edge.next_fragment();
-            }
+            SearchForNonEmptyScanline();
         }
 
         bool DebugOn()
@@ -235,18 +224,7 @@ namespace graphics {
             depths.next_value();
             i_colors.next_value();
 
-            while (SearchForNonEmptyScanline()) {
-                x_current = left_edge.x();
-                y_current = left_edge.y();
-
-                x_stop = right_edge.x();
-
-                depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
-                i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
-
-                left_edge.next_fragment();
-                right_edge.next_fragment();
-            }
+            SearchForNonEmptyScanline();
         }
 
         private:
@@ -300,10 +278,20 @@ namespace graphics {
             return ul;
         }
 
-        bool SearchForNonEmptyScanline()
+        void SearchForNonEmptyScanline()
         {
-            return (x_current == x_stop)
-                && (left_edge.more_fragments() || right_edge.more_fragments());
+            while (x_current == x_stop && (left_edge.more_fragments() || right_edge.more_fragments())) {
+                x_current = left_edge.x();
+                y_current = left_edge.y();
+
+                x_stop = right_edge.x();
+
+                depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
+                i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
+
+                left_edge.next_fragment();
+                right_edge.next_fragment();
+            }
         }
 
         void choose_color(int x)
