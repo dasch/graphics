@@ -52,7 +52,9 @@ namespace graphics {
             this->v_start = v_start;
             this->v_stop = v_stop;
             this->v_current = v_start;
-            this->v_delta = ((v_stop - v_start) / std::fabs(t_stop - t_start));
+
+            if (t_start != t_stop)
+                this->v_delta = (v_stop - v_start) / std::fabs(t_stop - t_start);
 
             valid = true;
         }
