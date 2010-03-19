@@ -210,7 +210,7 @@ Type ColumnVector<Type,N>::operator*(ColumnVector<Type,N> const& Vec) const
     Trace("ColumnVector<Type,N>", "operator*(ColumnVector<Type,N>&)");
 
     Type dotproduct = Type();
-    for (unsigned int i = 1; i < N; ++i) {
+    for (unsigned int i = 1; i <= N; ++i) {
         dotproduct += this->Value(i) * Vec[i];
     }
     return dotproduct;
