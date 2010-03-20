@@ -54,8 +54,6 @@ namespace graphics {
             this->Debug = false;
             this->valid = true;
 
-            std::cout << "HELLO!" << std::endl;
-
             edges[0] = in_vertex1;
             edges[1] = in_vertex2;
             edges[2] = in_vertex3;

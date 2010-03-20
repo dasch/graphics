@@ -94,6 +94,9 @@ namespace graphics {
             x_stop = static_cast<int>(round(stop[1]));
             y_stop = static_cast<int>(round(stop[2]));
 
+            if (y_start == y_stop)
+                valid = false;
+
             x_current = x_start;
             y_current = y_start;
 
