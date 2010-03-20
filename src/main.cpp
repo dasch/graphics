@@ -200,11 +200,11 @@ void DrawLinez()
     MyMathTypes::vector3_type  p1( 30.0, -30.0, -10.0);
     MyMathTypes::vector3_type  p2(  0.0,  30.0, -10.0);
 
-    MyMathTypes::vector3_type  p3(0.0, 0.0, 0.0);
-    MyMathTypes::vector3_type  p4(0.0, 0.0, -10.0);
+    MyMathTypes::vector3_type  p3(0.0, -1.0, 0.0);
+    MyMathTypes::vector3_type  p4(0.0, -1.0, -10.0);
 
-    MyMathTypes::vector3_type  p5(-50.0, 0.0, 0.0);
-    MyMathTypes::vector3_type  p6(50.0, 0.0, 0.0);
+    MyMathTypes::vector3_type  p5(-50.0, 0.0, -11.0);
+    MyMathTypes::vector3_type  p6( 50.0, 0.0,  -9.0);
 
     MyMathTypes::vector3_type  n(0.0, 0.0, 1.0);
 
@@ -228,15 +228,15 @@ void DrawLinez()
 			  winWidth, winHeight);
 
     std::cout << "drawing triangle" << std::endl;
-    render_pipeline.draw_triangle(p0, n, red, p1, n, red, p2, n, red);
+    render_pipeline.draw_triangle(p0, n, cred, p1, n, cgreen, p2, n, cyellow);
 
     render_pipeline.load_rasterizer(line_rasterizer);
 
     std::cout << "drawing line along z axis" << std::endl;
-    render_pipeline.draw_line(p3, green, p4, green);
+    render_pipeline.draw_line(p3, cblack, p4, cblack);
 
     std::cout << "drawing line x axis" << std::endl;
-    render_pipeline.draw_line(p5, green, p6, green);
+    render_pipeline.draw_line(p5, cwhite, p6, cblack);
 }
 
 

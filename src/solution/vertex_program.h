@@ -31,6 +31,8 @@ namespace graphics {
             
             out_vertex = euclidean(N * M * homogeneous(in_vertex));
 
+            std::cout << "vertex: (" << in_vertex << ") -> (" << out_vertex << ")" << std::endl;
+
             out_color =  in_color;
         }
 

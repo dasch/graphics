@@ -51,6 +51,11 @@ namespace graphics {
                   vector3_type const& in_normal3,
                   vector3_type const& in_color3) 
         {
+            this->Debug = false;
+            this->valid = true;
+
+            std::cout << "HELLO!" << std::endl;
+
             edges[0] = in_vertex1;
             edges[1] = in_vertex2;
             edges[2] = in_vertex3;
@@ -103,16 +108,19 @@ namespace graphics {
                                 edges[upper_left], normals[upper_left], colors[upper_left]);
 
             } else {
-                return;
+                std::cout << edges[0] << edges[1] << edges[2] << std::endl;
+                std::cout << lower_left << ", " << upper_left << ", " << the_other << std::endl;
+                std::cout << "TriangleRasterizer: UH OH!" << std::endl;
+                std::cout << "lower_left: " << edges[lower_left] << std::endl;
+                std::cout << "upper_left: " << edges[upper_left] << std::endl;
+                std::cout << "the_other:  " << edges[the_other] << std::endl;
+                throw new std::runtime_error("UH OH!");
             }
 
             x_current = left_edge.x();
             y_current = left_edge.y();
 
             x_stop = right_edge.x();
-
-            this->Debug = false;
-            this->valid = true;
 
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
             i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
