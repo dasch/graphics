@@ -135,7 +135,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::depth():Invalid State/Not Initialized");
             }
 
-            return depths.value();;
+            return depths.value();
         }
 
         vector3_type position() const
