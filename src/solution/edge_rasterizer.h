@@ -81,8 +81,6 @@ namespace graphics {
 
         void initialize_edge(int i, int j)
         {
-            this->valid = true;
-
             vector3_type start, stop;
 
             start = vertices[i];
@@ -109,6 +107,7 @@ namespace graphics {
 
             depths.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
             i_colors.init(y_start, y_stop, colors[i], colors[j]);
+            this->valid = y_current < y_stop;
         }
 
         int x() const
