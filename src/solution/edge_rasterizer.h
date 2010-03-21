@@ -92,9 +92,6 @@ namespace graphics {
             x_stop = static_cast<int>(round(stop[1]));
             y_stop = static_cast<int>(round(stop[2]));
 
-            if (y_start == y_stop)
-                valid = false;
-
             x_current = x_start;
             y_current = y_start;
 
@@ -107,6 +104,7 @@ namespace graphics {
 
             depths.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
             i_colors.init(y_start, y_stop, colors[i], colors[j]);
+
             this->valid = y_current < y_stop;
         }
 
