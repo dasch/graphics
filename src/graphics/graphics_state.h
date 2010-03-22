@@ -117,6 +117,10 @@ namespace graphics
      */
     vector3_type&       light_position()       { return m_light_position; }
 
+    vector3_type const& eye_position() const { return m_eye_position; }
+
+    vector3_type&       eye_position()       { return m_eye_position; }
+
 
     /**
      * The value of the ambient color.
@@ -246,6 +250,8 @@ namespace graphics
 
     /// Light source position.
     vector3_type m_light_position;
+
+    vector3_type m_eye_position;
 
     /// Ambient color.
     vector3_type    m_ambient_color;

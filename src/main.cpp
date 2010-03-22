@@ -146,42 +146,86 @@ void DrawGrid()
     render_pipeline.unit_length(1);
 }
 
+MyMathTypes::vector3_type
+get_normal(MyMathTypes::vector3_type v1,
+           MyMathTypes::vector3_type v2,
+           MyMathTypes::vector3_type common)
+{
+  MyMathTypes::vector3_type v3, v4;
+  v3 = common - v1;
+  v4 = common - v2;
+  return Cross(v3, v4) / Norm(Cross(v3, v4));
+}
+
 void DrawFinalTriangle()
 {
-  std::cout << "Test triangle for final assignment" << std::endl;
-  
-  render_pipeline.load_rasterizer( triangle_rasterizer );
-  render_pipeline.load_vertex_program( vertex_program );
+    std::cout << "Test triangle for final assignment" << std::endl;
 
-  MyMathTypes::vector3_type vrp(0.0, 0.0, 125.0);
-  MyMathTypes::vector3_type vpn(0.0, 0.0, 1.0);
-  MyMathTypes::vector3_type vup(0.0, 1.0, 0.0);
-  MyMathTypes::vector3_type prp(0.0, 0.0, 50.0);
+    render_pipeline.load_rasterizer( triangle_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
 
-  MyMathTypes::vector2_type lower_left( -25.0, -25.0);
-  MyMathTypes::vector2_type upper_right( 25.0,  25.0);
+    // Set up Phong light source
+    // Ambient
+    render_pipeline.state().ambient_intensity() = MyMathTypes::real_type(0.5);
+    render_pipeline.state().ambient_color() = MyMathTypes::vector3_type(0.0, 1.0, 0.0);
+    // Diffuse
+    render_pipeline.state().light_position() = MyMathTypes::vector3_type(266.395325, 274.291267, -43.696048);
+    render_pipeline.state().diffuse_color() = MyMathTypes::vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().diffuse_intensity() = MyMathTypes::real_type(0.75);
+    // Specular
+    render_pipeline.state().specular_color() = MyMathTypes::vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().specular_intensity() = MyMathTypes::real_type(0.9);
 
-  MyMathTypes::real_type    front_plane(10.0);
-  MyMathTypes::real_type    back_plane(-800.0);
+    MyMathTypes::vector3_type vrp(0.0, 0.0, 125.0);
+    MyMathTypes::vector3_type vpn(0.0, 0.0, 1.0);
+    MyMathTypes::vector3_type vup(0.0, 1.0, 0.0);
+    MyMathTypes::vector3_type prp(0.0, 0.0, 50.0);
 
-  camera.set_projection(vrp, vpn, vup, prp,
-			  lower_left, upper_right,
-			  front_plane, back_plane,
-			  winWidth, winHeight);
+    MyMathTypes::vector2_type lower_left( -25.0, -25.0);
+    MyMathTypes::vector2_type upper_right( 25.0,  25.0);
 
-  MyMathTypes::vector3_type  v1( -33.978017, -34.985076, 50.214926 );
-  MyMathTypes::vector3_type  v2( 84.192943, -13.784394, -50.214926 );
-  MyMathTypes::vector3_type  v3( -16.236910, 83.754546, -50.214926 );
+    MyMathTypes::real_type    front_plane(10.0);
+    MyMathTypes::real_type    back_plane(-800.0);
 
-  MyMathTypes::vector3_type  n1( 0.0, 0.0, 1.0 );
-  MyMathTypes::vector3_type  n2( 0.0, 0.0, 1.0 );
-  MyMathTypes::vector3_type  n3( 0.0, 0.0, 1.0 );
+    // Set eye_position
+    render_pipeline.state().eye_position() = vrp;
+    // Init camera
+    camera.set_projection(vrp, vpn, vup, prp,
+      		  lower_left, upper_right,
+      		  front_plane, back_plane,
+      		  winWidth, winHeight);
 
-  MyMathTypes::vector3_type  c1( 1.0, 0.0, 0.0 );
-  MyMathTypes::vector3_type  c2( 1.0, 0.0, 0.0 );
-  MyMathTypes::vector3_type  c3( 1.0, 0.0, 0.0 );
+    MyMathTypes::vector3_type  v1( -33.978017, -34.985076, 50.214926 );
+    MyMathTypes::vector3_type  v2( 84.192943, -13.784394, -50.214926 );
+    MyMathTypes::vector3_type  v3( -16.236910, 83.754546, -50.214926 );
 
-  render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);
+    MyMathTypes::vector3_type  n1 = get_normal(v2, v3, v1);
+    MyMathTypes::vector3_type  n2 = get_normal(v3, v1, v2);
+    MyMathTypes::vector3_type  n3 = get_normal(v1, v2, v3);
+
+    std::cout << n1 << std::endl;
+    std::cout << n2 << std::endl;
+    std::cout << n3 << std::endl;
+
+    MyMathTypes::vector3_type  c1( 1.0, 1.0, 1.0 );
+    MyMathTypes::vector3_type  c2( 1.0, 1.0, 1.0 );
+    MyMathTypes::vector3_type  c3( 1.0, 1.0, 1.0 );
+
+    render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);
+    
+    // Draw normals
+    render_pipeline.load_rasterizer( line_rasterizer );
+    MyMathTypes::vector3_type l1 = v1;
+    MyMathTypes::vector3_type l2 = v1 + n1;
+    render_pipeline.draw_line(l1, cred, l2, cred);
+
+    MyMathTypes::vector3_type l3 = v2;
+    MyMathTypes::vector3_type l4 = v2 + n2;
+    render_pipeline.draw_line(l3, cred, l4, cred);
+
+    MyMathTypes::vector3_type l5 = v3;
+    MyMathTypes::vector3_type l6 = v3 + n3;
+    render_pipeline.draw_line(l5, cred, l6, cred);
 }
 
 
@@ -1263,6 +1307,12 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
         figure = 'u';
         glutPostRedisplay();
         break;
+    case '9':
+        std::cout << "Debug Linez" << std::endl << std::flush;
+
+        figure = '9';
+        glutPostRedisplay();
+        break;
     case 'd':
     case 'D':
         // call the DisplayCallback as soon as possible
@@ -1411,6 +1461,10 @@ void display()
 
     if (figure == 'u') {
         DrawLinez();
+    }
+
+    if (figure == '9') {
+        DrawFinalTriangle();
     }
 
 

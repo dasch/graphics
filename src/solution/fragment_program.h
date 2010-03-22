@@ -8,6 +8,8 @@
 #include <iomanip>
 #include "graphics/graphics.h"
 
+#define N 20
+
 namespace graphics {
 
     template<typename math_types>
@@ -25,10 +27,6 @@ namespace graphics {
          vector3_type const & in_color,
          vector3_type & out_color)
     {
-        // >> TODO ADD YOUR OWN MAGIC HERE <<
-
-        //std::cout << "fragment: [" << in_position[1] << ", " << in_position[2] << "]"
-        //<< std::endl;
         out_color = in_color;
     }
     };
