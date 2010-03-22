@@ -27,12 +27,15 @@ namespace graphics {
              vector3_type const & in_color,
              vector3_type & out_color)
         {
-            if (Norm(in_normal) == 0)
-                std::cout << "normal: " << in_normal << std::endl;
-
             vector3_type normal = in_normal / Norm(in_normal);
-            out_color = ambient(state)
-                + in_color * diffuse(state, in_position, normal) * specular(state, in_position, normal);
+
+            vector3_type A = ambient(state);
+            vector3_type D = diffuse(state, in_position, normal);
+            vector3_type S = specular(state, in_position, normal);
+
+            vector3_type light = A + D + S;
+
+            out_color = vector3_type(in_color[1] * light[1], in_color[2] * light[2], in_color[3] * light[3]);
         }
 
         vector3_type
@@ -58,9 +61,14 @@ namespace graphics {
                  vector3_type const & in_normal)
         {
             vector3_type L = state.light_position() - in_position;
-            vector3_type R = in_normal * 2 * Dot(in_normal, L) - L;
+            L = L / Norm(L);
 
-            return state.specular_intensity() * state.specular_color() * pow(Dot(R, state.eye_position()), N);
+            vector3_type R = (in_normal * 2) * Dot(in_normal, L) - L;
+
+            vector3_type V = state.eye_position() - in_position;
+            V = V / Norm(V);
+
+            return state.specular_intensity() * state.specular_color() * pow(Dot(R, V), N);
         }
     };
 

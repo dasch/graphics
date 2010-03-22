@@ -218,15 +218,15 @@ void DrawFinalTriangle()
     // Draw normals
     render_pipeline.load_rasterizer( line_rasterizer );
     MyMathTypes::vector3_type l1 = v1;
-    MyMathTypes::vector3_type l2 = (v1 + n1) * 10;
+    MyMathTypes::vector3_type l2 = (n1 * 10 + v1);
     render_pipeline.draw_line(l1, cred, l2, cblack);
 
     MyMathTypes::vector3_type l3 = v2;
-    MyMathTypes::vector3_type l4 = (v2 + n2) * 10;
+    MyMathTypes::vector3_type l4 = (n2 * 10 + v2);
     render_pipeline.draw_line(l3, cred, l4, cblack);
 
     MyMathTypes::vector3_type l5 = v3;
-    MyMathTypes::vector3_type l6 = (v3 + n3) * 10;
+    MyMathTypes::vector3_type l6 = (n3 * 10 + v3);
     render_pipeline.draw_line(l5, cred, l6, cblack);
 }
 
