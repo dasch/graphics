@@ -131,6 +131,42 @@ MyMathTypes::vector3_type cblue(0.0, 0.0, 1.0);
 MyMathTypes::vector3_type cyellow(255.0 / 255.0, 245.0 / 255.0, 6.0 / 255.0);
 
 
+void DrawInterpolationExample()
+{
+    MyMathTypes::vector3_type  p0(-30.0, -30.0, -1.0);
+    MyMathTypes::vector3_type  p1( 30.0, -30.0, -1.0);
+    MyMathTypes::vector3_type  p2(  0.0,  30.0, -1.0);
+
+    MyMathTypes::vector3_type  p3(-5.0, -5.0, 0.0);
+    MyMathTypes::vector3_type  p4(30.0, 30.0, -2.0);
+    MyMathTypes::vector3_type  p5(30.0, 0.0, -2.0);
+
+    MyMathTypes::vector3_type  n(0.0, 0.0, 1.0);
+
+    render_pipeline.load_rasterizer( triangle_rasterizer );
+    render_pipeline.load_vertex_program( vertex_program );
+
+    MyMathTypes::vector3_type vrp(0, 0, 0);
+    MyMathTypes::vector3_type vpn(0, 0, 1);
+    MyMathTypes::vector3_type vup(0, 1, 0);
+    MyMathTypes::vector3_type prp(0, 0, 1);
+
+    MyMathTypes::vector2_type lower_left( -25.0, -25.0);
+    MyMathTypes::vector2_type upper_right( 25.0,  25.0);
+
+    MyMathTypes::real_type    front_plane(0.0);
+    MyMathTypes::real_type    back_plane(-11.0);
+
+    camera.set_projection(vrp, vpn, vup, prp,
+			  lower_left, upper_right,
+			  front_plane, back_plane,
+			  winWidth, winHeight);
+
+    render_pipeline.draw_triangle(p0, n, cred, p1, n, cred, p2, n, cred);
+    render_pipeline.draw_triangle(p3, n, cgreen, p4, n, cgreen, p5, n, cgreen);
+}
+
+
 /*******************************************************************\
 *                                                                   *
 *                        D r a w G r i d ( )                        *
@@ -1310,6 +1346,10 @@ void keyboard(unsigned char Key, int Xmouse, int Ymouse)
         figure = 'u';
         glutPostRedisplay();
         break;
+    case '8':
+        figure = '8';
+        glutPostRedisplay();
+        break;
     case '9':
         std::cout << "Debug Linez" << std::endl << std::flush;
 
@@ -1468,6 +1508,10 @@ void display()
 
     if (figure == '9') {
         DrawFinalTriangle();
+    }
+
+    if (figure == '8') {
+        DrawInterpolationExample();
     }
 
 
