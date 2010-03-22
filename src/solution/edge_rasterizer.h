@@ -173,7 +173,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::normal():Invalid State/Not Initialized");
             }
 
-            return i_normal.value();
+            return i_normal.value() / Norm(i_normal.value());
         }
 
         vector3_type color() const
@@ -201,6 +201,11 @@ namespace graphics {
         {
             y_current++;
 
+            depths.next_value();
+            i_colors.next_value();
+            i_world.next_value();
+            i_normal.next_value();
+
             if (y_current == y_stop) {
                 if (!two_edges) {
                     valid = false;
@@ -209,11 +214,6 @@ namespace graphics {
                     two_edges = false;
                 }
             } else {
-                depths.next_value();
-                i_colors.next_value();
-                i_world.next_value();
-                i_normal.next_value();
-
                 accumulator += numerator;
 
                 while (accumulator > denominator) {

@@ -212,20 +212,22 @@ void DrawFinalTriangle()
     MyMathTypes::vector3_type  c3( 1.0, 1.0, 1.0 );
 
     render_pipeline.draw_triangle(v1,  n1, c1,  v2,  n2, c2,  v3,  n3, c3);
+
+    std::cout << std::endl << "Drawing normals: " << std::endl;
     
     // Draw normals
     render_pipeline.load_rasterizer( line_rasterizer );
     MyMathTypes::vector3_type l1 = v1;
-    MyMathTypes::vector3_type l2 = v1 + n1;
-    render_pipeline.draw_line(l1, cred, l2, cred);
+    MyMathTypes::vector3_type l2 = (v1 + n1) * 10;
+    render_pipeline.draw_line(l1, cred, l2, cblack);
 
     MyMathTypes::vector3_type l3 = v2;
-    MyMathTypes::vector3_type l4 = v2 + n2;
-    render_pipeline.draw_line(l3, cred, l4, cred);
+    MyMathTypes::vector3_type l4 = (v2 + n2) * 10;
+    render_pipeline.draw_line(l3, cred, l4, cblack);
 
     MyMathTypes::vector3_type l5 = v3;
-    MyMathTypes::vector3_type l6 = v3 + n3;
-    render_pipeline.draw_line(l5, cred, l6, cred);
+    MyMathTypes::vector3_type l6 = (v3 + n3) * 10;
+    render_pipeline.draw_line(l5, cred, l6, cblack);
 }
 
 

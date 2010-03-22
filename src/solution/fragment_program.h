@@ -21,14 +21,47 @@ namespace graphics {
     typedef typename math_types::vector3_type                         vector3_type;
 
     public:
-    void run(graphics_state_type const & state,
-         vector3_type const & in_position,
-         vector3_type const & in_normal,
-         vector3_type const & in_color,
-         vector3_type & out_color)
-    {
-        out_color = in_color;
-    }
+        void run(graphics_state_type const & state,
+             vector3_type const & in_position,
+             vector3_type const & in_normal,
+             vector3_type const & in_color,
+             vector3_type & out_color)
+        {
+            if (Norm(in_normal) == 0)
+                std::cout << "normal: " << in_normal << std::endl;
+
+            vector3_type normal = in_normal / Norm(in_normal);
+            out_color = ambient(state)
+                + in_color * diffuse(state, in_position, normal) * specular(state, in_position, normal);
+        }
+
+        vector3_type
+        ambient(graphics_state_type const& state)
+        {
+            return state.ambient_intensity() * state.ambient_color();
+        }
+
+        vector3_type
+        diffuse(graphics_state_type const& state, 
+                vector3_type const & in_position,
+                vector3_type const & in_normal)
+        {
+            vector3_type L = state.light_position() - in_position;
+            L = L / Norm(L);
+
+            return state.diffuse_color() * state.diffuse_intensity() * Dot(in_normal, L);
+        }
+
+        vector3_type
+        specular(graphics_state_type const& state, 
+                 vector3_type const & in_position,
+                 vector3_type const & in_normal)
+        {
+            vector3_type L = state.light_position() - in_position;
+            vector3_type R = in_normal * 2 * Dot(in_normal, L) - L;
+
+            return state.specular_intensity() * state.specular_color() * pow(Dot(R, state.eye_position()), N);
+        }
     };
 
 }// end namespace graphics

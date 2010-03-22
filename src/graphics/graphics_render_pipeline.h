@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <stdexcept>
 #include <cmath>
+#include <algorithm>
 
 #include "graphics_vertex_program.h"
 #include "graphics_rasterizer.h"
@@ -782,6 +783,11 @@ namespace graphics
                         m_rasterizer->color(),
                         out_color);
 
+            for (int i = 1; i <= 3; i++) {
+                out_color[i] = fmin(out_color[i], 1.0);
+                out_color[i] = fmax(out_color[i], 0.0);
+            }
+
             //--- Finally we write the new z-value to the z-buffer
             //--- and the new color to the frame buffer.
             m_zbuffer.write( screen_x, screen_y, z_new);
@@ -886,6 +892,11 @@ namespace graphics
                         m_rasterizer->normal(),
                         m_rasterizer->color(),
                         out_color);
+
+            for (int i = 1; i <= 3; i++) {
+                out_color[i] = fmin(out_color[i], 1.0);
+                out_color[i] = fmax(out_color[i], 0.0);
+            }
 
             //--- Finally we write the new z-value to the z-buffer
             //--- and the new color to the frame buffer.

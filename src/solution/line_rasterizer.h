@@ -72,6 +72,8 @@ namespace graphics {
                   vector3_type const& in_vertex2,
                   vector3_type const& in_color2)
         {
+            dummy_vector = vector3_type(0, 0, 1);
+
             x_start = in_vertex1[1];
             y_start = in_vertex1[2];
             x_stop = in_vertex2[1];
