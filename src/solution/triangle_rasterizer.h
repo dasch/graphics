@@ -27,6 +27,7 @@ namespace graphics {
         private:
         LinearInterpolator<math_types, real_type> depths;
         LinearInterpolator<math_types, vector3_type> i_colors;
+        LinearInterpolator<math_types, vector3_type> i_world;
 
         protected:
 
@@ -42,12 +43,15 @@ namespace graphics {
 
 
         void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_world1,
                   vector3_type const& in_normal1,
                   vector3_type const& in_color1,
                   vector3_type const& in_vertex2,
+                  vector3_type const& in_world2,
                   vector3_type const& in_normal2,
                   vector3_type const& in_color2,
                   vector3_type const& in_vertex3,
+                  vector3_type const& in_world3,
                   vector3_type const& in_normal3,
                   vector3_type const& in_color3) 
         {
@@ -65,6 +69,10 @@ namespace graphics {
             colors[0] = in_color1;
             colors[1] = in_color2;
             colors[2] = in_color3;
+
+            world[0] = in_world1;
+            world[1] = in_world2;
+            world[2] = in_world3;
 
             vertices[0][1] = static_cast<int>(round(edges[0][1]));
             vertices[0][2] = static_cast<int>(round(edges[0][2]));
@@ -91,19 +99,19 @@ namespace graphics {
             vector3_type cross = Cross(ul - ll, ot - ll);
 
             if (cross[3] < 0) {
-                left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                               edges[upper_left], normals[upper_left], colors[upper_left]);
+                left_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                               edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
 
-                right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                                edges[the_other], normals[the_other], colors[the_other],
-                                edges[upper_left], normals[upper_left], colors[upper_left]);
+                right_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                                edges[the_other],  world[the_other],  normals[the_other],  colors[the_other],
+                                edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
             } else if (cross[3] > 0) {
-                left_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                               edges[the_other], normals[the_other], colors[the_other],
-                               edges[upper_left], normals[upper_left], colors[upper_left]);
+                left_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                               edges[the_other],  world[the_other],  normals[the_other],  colors[the_other],
+                               edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
 
-                right_edge.init(edges[lower_left], normals[lower_left], colors[lower_left],
-                                edges[upper_left], normals[upper_left], colors[upper_left]);
+                right_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                                edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
 
             } else {
                 std::cout << edges[0] << edges[1] << edges[2] << std::endl;
@@ -122,6 +130,7 @@ namespace graphics {
 
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
             i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
+            i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
 
             SearchForNonEmptyScanline();
         }
@@ -187,7 +196,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::position():Invalid State/Not Initialized");
             }
 
-            return vector3_type(this->x(), this->y(), this->depth());
+            return i_world.value();
         }
 
         vector3_type const& normal() const
@@ -229,6 +238,7 @@ namespace graphics {
 
             depths.next_value();
             i_colors.next_value();
+            i_world.next_value();
 
             SearchForNonEmptyScanline();
         }
@@ -294,6 +304,7 @@ namespace graphics {
 
                 depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
                 i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
+                i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
 
                 left_edge.next_fragment();
                 right_edge.next_fragment();
@@ -326,7 +337,7 @@ namespace graphics {
         int the_other;
 
         vector3_type edges[3], normals[3], colors[3];
-        vector3_type vertices[3];
+        vector3_type vertices[3], world[3];
 
         int x_current, y_current;
         int x_stop;

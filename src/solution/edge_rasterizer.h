@@ -24,6 +24,7 @@ namespace graphics {
         private:
         LinearInterpolator<math_types, real_type> depths;
         LinearInterpolator<math_types, vector3_type> i_colors;
+        LinearInterpolator<math_types, vector3_type> i_world;
 
         public:
         MyEdgeRasterizer() : valid(true)
@@ -35,12 +36,15 @@ namespace graphics {
         {}
 
         void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_world1,
                   vector3_type const& in_normal1,
                   vector3_type const& in_color1,
                   vector3_type const& in_vertex2,
+                  vector3_type const& in_world2,
                   vector3_type const& in_normal2,
                   vector3_type const& in_color2,
                   vector3_type const& in_vertex3,
+                  vector3_type const& in_world3,
                   vector3_type const& in_normal3,
                   vector3_type const& in_color3)
         {
@@ -52,6 +56,10 @@ namespace graphics {
             colors[1] = in_color2;
             colors[2] = in_color3;
 
+            world[0] = in_world1;
+            world[1] = in_world2;
+            world[2] = in_world3;
+
             if (in_vertex1[2] == in_vertex2[2]) {
                 two_edges = false;
                 initialize_edge(1, 2);
@@ -62,9 +70,11 @@ namespace graphics {
         }
 
         void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_world1,
                   vector3_type const& in_normal1,
                   vector3_type const& in_color1,
                   vector3_type const& in_vertex2,
+                  vector3_type const& in_world2,
                   vector3_type const& in_normal2,
                   vector3_type const& in_color2)
         {
@@ -73,6 +83,9 @@ namespace graphics {
 
             colors[0] = in_color1;
             colors[1] = in_color2;
+
+            world[0] = in_world1;
+            world[1] = in_world2;
 
             two_edges = false;
 
@@ -104,6 +117,7 @@ namespace graphics {
 
             depths.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
             i_colors.init(y_start, y_stop, colors[i], colors[j]);
+            i_world.init(y_start, y_stop, world[i], world[j]);
 
             this->valid = y_current < y_stop;
         }
@@ -141,7 +155,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::position():Invalid State/Not Initialized");
             }
 
-            return vector3_type(this->x(), this->y(), this->depth());
+            return i_world.value();
         }
 
         vector3_type normal() const
@@ -188,6 +202,7 @@ namespace graphics {
             } else {
                 depths.next_value();
                 i_colors.next_value();
+                i_world.next_value();
 
                 accumulator += numerator;
 
@@ -209,7 +224,7 @@ namespace graphics {
         int dx, x_step;
         int numerator, denominator, accumulator;
 
-        vector3_type vertices[3], colors[3];
+        vector3_type vertices[3], colors[3], world[3];
     };
 
 }// end namespace graphics

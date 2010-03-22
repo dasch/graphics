@@ -859,9 +859,9 @@ namespace graphics
                   out_vertex3, out_normal3,  out_color3);
 
         //--- Initialize rasterizer with output from the vertex program
-        m_rasterizer->init(out_vertex1, out_normal1, out_color1,
-                   out_vertex2, out_normal2, out_color2,
-                   out_vertex3, out_normal3, out_color3);
+        m_rasterizer->init(out_vertex1, in_vertex1, out_normal1, out_color1,
+                           out_vertex2, in_vertex2, out_normal2, out_color2,
+                           out_vertex3, in_vertex3, out_normal3, out_color3);
 
         //--- Keep on processing fragments until there are none left
         while( m_rasterizer->more_fragments() )

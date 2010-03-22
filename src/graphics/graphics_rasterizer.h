@@ -104,12 +104,15 @@ namespace graphics
      *
      */
     virtual void init(vector3_type const& in_vertex1,
+              vector3_type const& in_world1,
               vector3_type const& in_normal1,
               vector3_type const& in_color1,
               vector3_type const& in_vertex2,
+              vector3_type const& in_world2,
               vector3_type const& in_normal2,
               vector3_type const& in_color2,
               vector3_type const& in_vertex3,
+              vector3_type const& in_world3,
               vector3_type const& in_normal3,
               vector3_type const& in_color3)
     {
