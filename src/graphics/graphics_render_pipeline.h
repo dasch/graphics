@@ -19,6 +19,8 @@
 #include "graphics_framebuffer.h"
 #include "graphics_state.h"
 
+#define GOURAUD 1
+
 namespace graphics
 {
     /**
@@ -863,6 +865,26 @@ namespace graphics
                   in_vertex3, in_normal3, in_color3,
                   out_vertex3, out_normal3,  out_color3);
 
+#ifdef GOURAUD
+        m_fragment_program->run(this->state(),
+                    in_vertex1,
+                    in_normal1,
+                    in_color1,
+                    out_color1);
+
+        m_fragment_program->run(this->state(),
+                    in_vertex2,
+                    in_normal2,
+                    in_color2,
+                    out_color2);
+
+        m_fragment_program->run(this->state(),
+                    in_vertex3,
+                    in_normal3,
+                    in_color3,
+                    out_color3);
+#endif
+
         //--- Initialize rasterizer with output from the vertex program
         m_rasterizer->init(out_vertex1, in_vertex1, out_normal1, out_color1,
                            out_vertex2, in_vertex2, out_normal2, out_color2,
@@ -886,11 +908,13 @@ namespace graphics
                 vector3_type out_color;               // uninitialized!
                 out_color = m_rasterizer->color();    // now initialized!
 
+#ifndef GOURAUD
                 m_fragment_program->run(this->state(),
                             m_rasterizer->position(),
                             m_rasterizer->normal(),
                             m_rasterizer->color(),
                             out_color);
+#endif
 
                 for (int i = 1; i <= 3; i++) {
                     out_color[i] = fmin(out_color[i], 1.0);
