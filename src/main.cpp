@@ -169,7 +169,8 @@ void DrawFinalTriangle()
     render_pipeline.state().ambient_intensity() = MyMathTypes::real_type(0.5);
     render_pipeline.state().ambient_color() = MyMathTypes::vector3_type(0.0, 1.0, 0.0);
     // Diffuse
-    render_pipeline.state().light_position() = MyMathTypes::vector3_type(266.395325, 274.291267, -43.696048);
+    //render_pipeline.state().light_position() = MyMathTypes::vector3_type(266.395325, 274.291267, -43.696048);
+    render_pipeline.state().light_position() = MyMathTypes::vector3_type(366.395325, 674.291267, -143.696048);
     render_pipeline.state().diffuse_color() = MyMathTypes::vector3_type(1.0, 1.0, 1.0);
     render_pipeline.state().diffuse_intensity() = MyMathTypes::real_type(0.75);
     // Specular
