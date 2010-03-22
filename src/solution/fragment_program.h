@@ -27,6 +27,11 @@ namespace graphics {
              vector3_type const & in_color,
              vector3_type & out_color)
         {
+            if (state.light_position() == vector3_type(0, 0, 0)) {
+                out_color = in_color;
+                return;
+            }
+
             vector3_type normal = in_normal / Norm(in_normal);
 
             vector3_type A = ambient(state);
