@@ -28,6 +28,7 @@ namespace graphics {
         LinearInterpolator<math_types, real_type> depths;
         LinearInterpolator<math_types, vector3_type> i_colors;
         LinearInterpolator<math_types, vector3_type> i_world;
+        LinearInterpolator<math_types, vector3_type> i_normal;
 
         protected:
 
@@ -131,6 +132,7 @@ namespace graphics {
             depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
             i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
             i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
+            i_normal.init(left_edge.x(), right_edge.x(), left_edge.normal(), right_edge.normal());
 
             SearchForNonEmptyScanline();
         }
@@ -205,7 +207,7 @@ namespace graphics {
                 throw std::runtime_error("MyTriangleRasterizer::normal():Invalid State/Not Iitialized");
             }
 
-            return this->dummy_vector;
+            return i_normal.value();
         }
 
         vector3_type const& color() const
@@ -239,6 +241,7 @@ namespace graphics {
             depths.next_value();
             i_colors.next_value();
             i_world.next_value();
+            i_normal.next_value();
 
             SearchForNonEmptyScanline();
         }
@@ -305,6 +308,7 @@ namespace graphics {
                 depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
                 i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
                 i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
+                i_normal.init(left_edge.x(), right_edge.x(), left_edge.normal(), right_edge.normal());
 
                 left_edge.next_fragment();
                 right_edge.next_fragment();

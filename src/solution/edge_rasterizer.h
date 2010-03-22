@@ -25,6 +25,7 @@ namespace graphics {
         LinearInterpolator<math_types, real_type> depths;
         LinearInterpolator<math_types, vector3_type> i_colors;
         LinearInterpolator<math_types, vector3_type> i_world;
+        LinearInterpolator<math_types, vector3_type> i_normal;
 
         public:
         MyEdgeRasterizer() : valid(true)
@@ -56,6 +57,10 @@ namespace graphics {
             colors[1] = in_color2;
             colors[2] = in_color3;
 
+            normals[0] = in_normal1;
+            normals[1] = in_normal2;
+            normals[2] = in_normal3;
+
             world[0] = in_world1;
             world[1] = in_world2;
             world[2] = in_world3;
@@ -83,6 +88,9 @@ namespace graphics {
 
             colors[0] = in_color1;
             colors[1] = in_color2;
+
+            normals[0] = in_normal1;
+            normals[1] = in_normal2;
 
             world[0] = in_world1;
             world[1] = in_world2;
@@ -118,6 +126,7 @@ namespace graphics {
             depths.init(y_start, y_stop, vertices[i][3], vertices[j][3]);
             i_colors.init(y_start, y_stop, colors[i], colors[j]);
             i_world.init(y_start, y_stop, world[i], world[j]);
+            i_normal.init(y_start, y_stop, normals[i], normals[j]);
 
             this->valid = y_current < y_stop;
         }
@@ -164,7 +173,7 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::normal():Invalid State/Not Initialized");
             }
 
-            return vector3_type(0.0, 0.0, 0.0);
+            return i_normal.value();
         }
 
         vector3_type color() const
@@ -203,6 +212,7 @@ namespace graphics {
                 depths.next_value();
                 i_colors.next_value();
                 i_world.next_value();
+                i_normal.next_value();
 
                 accumulator += numerator;
 
@@ -224,7 +234,7 @@ namespace graphics {
         int dx, x_step;
         int numerator, denominator, accumulator;
 
-        vector3_type vertices[3], colors[3], world[3];
+        vector3_type vertices[3], colors[3], world[3], normals[3];
     };
 
 }// end namespace graphics
