@@ -65,6 +65,8 @@ INCLUDE_DIRECTORIES(
                    )
 
 ADD_EXECUTABLE(framework src/main.cpp)
+ADD_EXECUTABLE(pain src/pain.cpp)
 
 TARGET_LINK_LIBRARIES(framework ${GRAPHICS_LIBS})
+TARGET_LINK_LIBRARIES(pain ${GRAPHICS_LIBS})
 
