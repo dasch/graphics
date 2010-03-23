@@ -8,12 +8,12 @@
 #include "solution/camera.h"
 #include "solution/vertex_program.h"
 #include "solution/fragment_program.h"
-#include "readdata.h"
+#include "solution/parser.h"
 
 
 int
 main(int argc, char **argv)
 {
-
+    parse_data_file("data/patches.data");
     return 0;
 }
