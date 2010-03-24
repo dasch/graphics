@@ -5,12 +5,66 @@
 #include <string.h>
 #include <fstream>
 
+#include "solution/math_types.h"
 
 using std::cout; using std::cerr; using std::endl; using std::flush;
 using std::ifstream; using std::setw;
 
+typedef graphics::MyMathTypes::vector3_type vertex_t;
+
+typedef struct patch {
+    int number;
+    int vertices[16];
+    struct patch *next;
+} patch_t;
+
+typedef struct {
+    patch_t *head;
+    patch_t *tail;
+} patch_list_t;
+
+typedef struct {
+    unsigned int num_vertices;
+    vertex_t *vertices;
+    patch_list_t *patches;
+} object_t;
+
+object_t *
+object_init()
+{
+    object_t *object = (object_t*)malloc(sizeof(object_t));
+
+    object->num_vertices = 0;
+    object->vertices = NULL;
+    object->patches = (patch_list_t*)malloc(sizeof(patch_list_t));
+
+    return object;
+}
+
+patch_t *
+patch_list_append(patch_list_t *list, int number)
+{
+    if (list == NULL)
+        throw new std::runtime_error("list was NULL");
+
+    patch_t *patch = (patch_t*)malloc(sizeof(patch_t));
+
+    patch->number = number;
+    patch->next = NULL;
+
+    if (list->head == NULL)
+        list->head = patch;
+
+    if (list->tail != NULL)
+        list->tail->next = patch;
+
+    list->tail = patch;
+
+    return patch;
+}
+
 int
-parse_data_file(const char *filename)
+parse_data_file(const char *filename, object_t *object)
 {
     const int NVERTEX        = 0;
     const int READ_VERTICES  = 1;
@@ -34,6 +88,8 @@ parse_data_file(const char *filename)
     int    index_21, index_22, index_23, index_24;
     int    index_31, index_32, index_33, index_34;
     int    index_41, index_42, index_43, index_44;
+
+    patch_t *patch;
 
     ifstream data_file(filename);
     if (!data_file) {
@@ -80,6 +136,9 @@ parse_data_file(const char *filename)
                       return -1;
                   }
 
+                  object->num_vertices = NumberOfVertices;
+                  object->vertices = (vertex_t*)malloc(sizeof(vertex_t) * (NumberOfVertices + 1));
+
                   cout << "Number of Vertices = " << NumberOfVertices
                        << endl << endl;
 
@@ -92,16 +151,7 @@ parse_data_file(const char *filename)
                     cerr << "vertex not found in data file: " << filename << endl << flush;
                     return -1;
                 } else {
-                    // insert the vertex in a data structure
-
-                    cout << "Vertex " << setw(3) << VertexNumber << ": ";
-
-                    cout.precision(4);
-                    cout << "(x, y, z) = ("
-                     << setw(6) << x << ", "
-                     << setw(6) << y << ", "
-                     << setw(6) << z
-                     << ')' << endl;
+                    object->vertices[VertexNumber] = vertex_t(x, y, z);
 
                     if (VertexNumber == NumberOfVertices)
                         state = PATCHNAME;
@@ -140,33 +190,12 @@ parse_data_file(const char *filename)
                      << endl << flush;
                     return -1;
                 } else {
-                    // insert patch in a data structure
-
-                    cout << "patch number: "
-                     << setw(2) << PatchNumber << endl << flush;
-                    cout << "patch indices: " << endl << '\t'
-                     << setw(6) << index_11 << ", "
-                     << setw(6) << index_12 << ", "
-                     << setw(6) << index_13 << ", "
-                     << setw(6) << index_14 << endl;
-
-                    cout << '\t'
-                     << setw(6) << index_21 << ", "
-                     << setw(6) << index_22 << ", "
-                     << setw(6) << index_23 << ", "
-                     << setw(6) << index_24 << endl;
-
-                    cout << '\t'
-                     << setw(6) << index_31 << ", "
-                     << setw(6) << index_32 << ", "
-                     << setw(6) << index_33 << ", "
-                     << setw(6) << index_34 << endl;
-
-                    cout << '\t'
-                     << setw(6) << index_41 << ", "
-                     << setw(6) << index_42 << ", "
-                     << setw(6) << index_43 << ", "
-                     << setw(6) << index_44 << endl;
+                    patch = patch_list_append(object->patches, PatchNumber);
+                    patch->vertices = {
+                       index_11, index_12, index_13, index_14,
+                       index_21, index_22, index_23, index_24,
+                       index_31, index_32, index_33, index_34,
+                       index_41, index_42, index_43, index_44};
                 }
             }
             break;
