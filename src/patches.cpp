@@ -127,10 +127,23 @@ display()
 }
 
 
+vertex_t
+get_normal(vertex_t v1,
+           vertex_t v2,
+           vertex_t common)
+{
+  vertex_t v3, v4;
+  v3 = common - v1;
+  v4 = common - v2;
+  return Cross(v3, v4) / Norm(Cross(v3, v4));
+}
+
+
 void
 draw(Triangle *triangles, unsigned int count)
 {
     Triangle *t;
+    vertex_t v1, v2, v3, n1, n2, n3;
 
     render_pipeline.load_rasterizer(triangle_rasterizer);
     render_pipeline.load_vertex_program(vertex_program);
@@ -143,10 +156,8 @@ draw(Triangle *triangles, unsigned int count)
     MyMathTypes::vector2_type lower_left(-25.0, -25.0);
     MyMathTypes::vector2_type upper_right(25.0,  25.0);
 
-    MyMathTypes::real_type    front_plane(0.0);
+    MyMathTypes::real_type    front_plane(5.0);
     MyMathTypes::real_type    back_plane(-11.0);
-
-    MyMathTypes::vector3_type  n(0.0, 0.0, 1.0);
 
     camera.set_projection(vrp, vpn, vup, prp,
 			  lower_left, upper_right,
@@ -155,9 +166,19 @@ draw(Triangle *triangles, unsigned int count)
 
     for (int i = 0; i < count; i++) {
         t = &triangles[i];
-        render_pipeline.draw_triangle(t->v1(), n, cred,
-                                      t->v2(), n, cred,
-                                      t->v3(), n, cred);
+
+        v1 = t->v1();
+        v2 = t->v2();
+        v3 = t->v3();
+
+        n1 = get_normal(v3, v2, v1);
+        n2 = get_normal(v1, v3, v2);
+        n3 = get_normal(v2, v1, v3);
+
+        cout << "Drawing triangle " << i << endl;
+        render_pipeline.draw_triangle(t->v1(), n1, cred,
+                                      t->v2(), n2, cred,
+                                      t->v3(), n3, cred);
     }
 }
 
