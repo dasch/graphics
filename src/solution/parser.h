@@ -8,11 +8,10 @@
 #include <fstream>
 
 #include "solution/math_types.h"
+#include "solution/triangle.h"
 
 using std::cout; using std::cerr; using std::endl; using std::flush;
 using std::ifstream; using std::setw;
-
-typedef graphics::MyMathTypes::vector3_type vertex_t;
 
 typedef struct patch {
     int number;

@@ -3,6 +3,7 @@
 
 #include "solution/math_types.h"
 #include "solution/parser.h"
+#include "solution/triangle.h"
 
 namespace graphics
 {
