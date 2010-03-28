@@ -21,6 +21,14 @@ main(int argc, char **argv)
 
     parse_data_file("data/patches.data", object);
 
+    return 0;
+}
+
+
+void debug_patches(object_t *object)
+{
+    vertex_t vertex;
+
     for (int i = 1; i <= object->num_vertices; i++) {
         vertex = object->vertices[i];
 
@@ -61,6 +69,4 @@ main(int argc, char **argv)
             << setw(6) << patch->vertices[14] << ", "
             << setw(6) << patch->vertices[15] << endl;
     }
-
-    return 0;
 }
