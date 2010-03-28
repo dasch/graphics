@@ -9,6 +9,14 @@
 #include "solution/vertex_program.h"
 #include "solution/fragment_program.h"
 #include "solution/parser.h"
+#include "solution/subdivider.h"
+
+
+using namespace std;
+using namespace graphics;
+
+
+void debug_patches(object_t *object);
 
 
 int
@@ -21,11 +29,14 @@ main(int argc, char **argv)
 
     parse_data_file("data/patches.data", object);
 
+    patch_to_surface(object->vertices, object->patches->head);
+
     return 0;
 }
 
 
-void debug_patches(object_t *object)
+void
+debug_patches(object_t *object)
 {
     vertex_t vertex;
 

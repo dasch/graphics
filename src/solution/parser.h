@@ -1,3 +1,5 @@
+#ifndef PARSER_H
+#define PARSER_H
 
 #include <cstdio>
 #include <iostream>
@@ -14,7 +16,11 @@ typedef graphics::MyMathTypes::vector3_type vertex_t;
 
 typedef struct patch {
     int number;
+
+    // Indices into the vertex list.
     int vertices[16];
+
+    // The next patch in the list.
     struct patch *next;
 } patch_t;
 
@@ -38,6 +44,9 @@ object_init()
     object->vertices = NULL;
     object->patches = (patch_list_t*)malloc(sizeof(patch_list_t));
 
+    object->patches->head = NULL;
+    object->patches->tail = NULL;
+
     return object;
 }
 
@@ -48,6 +57,9 @@ patch_list_append(patch_list_t *list, int number)
         throw new std::runtime_error("list was NULL");
 
     patch_t *patch = (patch_t*)malloc(sizeof(patch_t));
+
+    if (patch == NULL)
+        throw new std::runtime_error("could not allocate memory");
 
     patch->number = number;
     patch->next = NULL;
@@ -166,7 +178,6 @@ parse_data_file(const char *filename, object_t *object)
                         cerr << "patch name not found" << endl << flush;
                         return -1;
                     }
-                    cout << "patch name: " << PatchName << endl << flush;
                     state = SEARCH_PATCHES;
                 }
             }
@@ -191,11 +202,22 @@ parse_data_file(const char *filename, object_t *object)
                     return -1;
                 } else {
                     patch = patch_list_append(object->patches, PatchNumber);
-                    patch->vertices = {
-                       index_11, index_12, index_13, index_14,
-                       index_21, index_22, index_23, index_24,
-                       index_31, index_32, index_33, index_34,
-                       index_41, index_42, index_43, index_44};
+                    patch->vertices[ 0] = index_11;
+                    patch->vertices[ 1] = index_12;
+                    patch->vertices[ 2] = index_13;
+                    patch->vertices[ 3] = index_14;
+                    patch->vertices[ 4] = index_21;
+                    patch->vertices[ 5] = index_22;
+                    patch->vertices[ 6] = index_23;
+                    patch->vertices[ 7] = index_24;
+                    patch->vertices[ 8] = index_31;
+                    patch->vertices[ 9] = index_32;
+                    patch->vertices[10] = index_33;
+                    patch->vertices[11] = index_34;
+                    patch->vertices[12] = index_41;
+                    patch->vertices[13] = index_42;
+                    patch->vertices[14] = index_43;
+                    patch->vertices[15] = index_44;
                 }
             }
             break;
@@ -209,3 +231,5 @@ parse_data_file(const char *filename, object_t *object)
 
     return 0;
 }
+
+#endif
