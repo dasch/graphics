@@ -26,6 +26,7 @@ typedef struct patch {
 typedef struct {
     patch_t *head;
     patch_t *tail;
+    unsigned int num_patches;
 } patch_list_t;
 
 typedef struct {
@@ -45,6 +46,7 @@ object_init()
 
     object->patches->head = NULL;
     object->patches->tail = NULL;
+    object->patches->num_patches = 0;
 
     return object;
 }
@@ -70,6 +72,7 @@ patch_list_append(patch_list_t *list, int number)
         list->tail->next = patch;
 
     list->tail = patch;
+    list->num_patches++;
 
     return patch;
 }

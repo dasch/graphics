@@ -59,17 +59,23 @@ draw_patches()
     vertex_t vertex;
     surface_t *surface;
     Triangle *triangles, *t1, *t2;
+    patch_list_t *patches;
 
     object = object_init();
 
     parse_data_file("data/teapot.data", object);
+    patches = object->patches;
 
-    triangles = (Triangle*)malloc(sizeof(Triangle)*2);
+    triangles = (Triangle*)malloc(sizeof(Triangle) * patches->num_patches * 2);
 
-    surface = patch_to_surface(object->vertices, object->patches->head);
-    surface_to_triangles(surface, &triangles[0], &triangles[1]);
+    int i = 0;
+    for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
+        surface = patch_to_surface(object->vertices, patch);
+        surface_to_triangles(surface, &triangles[i], &triangles[i + 1]);
+        i += 2;
+    }
 
-    draw(triangles, 2);
+    draw(triangles, patches->num_patches * 2);
 }
 
 
@@ -139,6 +145,10 @@ get_normal(vertex_t v1,
   vertex_t v3, v4;
   v3 = common - v1;
   v4 = common - v2;
+
+  if (Norm(Cross(v3, v4)) == 0)
+      return vertex_t(0, 0, 1);
+
   return Cross(v3, v4) / Norm(Cross(v3, v4));
 }
 

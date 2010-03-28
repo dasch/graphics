@@ -115,13 +115,8 @@ namespace graphics {
                                 edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
 
             } else {
-                std::cout << edges[0] << edges[1] << edges[2] << std::endl;
-                std::cout << lower_left << ", " << upper_left << ", " << the_other << std::endl;
-                std::cout << "TriangleRasterizer: UH OH!" << std::endl;
-                std::cout << "lower_left: " << edges[lower_left] << std::endl;
-                std::cout << "upper_left: " << edges[upper_left] << std::endl;
-                std::cout << "the_other:  " << edges[the_other] << std::endl;
-                throw new std::runtime_error("UH OH!");
+                valid = false;
+                return;
             }
 
             x_current = left_edge.x();
