@@ -10,6 +10,7 @@
 #include "solution/fragment_program.h"
 #include "solution/parser.h"
 #include "solution/subdivider.h"
+#include "solution/triangle.h"
 
 
 using namespace std;
@@ -24,12 +25,23 @@ main(int argc, char **argv)
 {
     object_t *object;
     vertex_t vertex;
+    surface_t *surface;
+    Triangle *triangles, *t1, *t2;
 
     object = object_init();
 
     parse_data_file("data/patches.data", object);
 
-    patch_to_surface(object->vertices, object->patches->head);
+    triangles = (Triangle*)malloc(sizeof(Triangle)*2);
+
+    surface = patch_to_surface(object->vertices, object->patches->head);
+    surface_to_triangles(surface, &triangles[0], &triangles[1]);
+
+    t1 = &triangles[0];
+
+    cout << "v1: " << t1->v1() << ", ";
+    cout << "v2: " << t1->v2() << ", ";
+    cout << "v3: " << t1->v3() << endl;
 
     return 0;
 }

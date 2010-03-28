@@ -22,6 +22,21 @@ namespace graphics
             _v2 = v2;
             _v3 = v3;
         }
+
+        vertex_t const& v1()
+        {
+            return _v1;
+        }
+
+        vertex_t const& v2()
+        {
+            return _v2;
+        }
+
+        vertex_t const& v3()
+        {
+            return _v3;
+        }
     };
 }
 
