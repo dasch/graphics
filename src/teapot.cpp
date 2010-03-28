@@ -58,7 +58,7 @@ draw_patches()
 
     object = object_init();
 
-    parse_data_file("data/patches.data", object);
+    parse_data_file("data/teapot.data", object);
 
     triangles = (Triangle*)malloc(sizeof(Triangle)*2);
 

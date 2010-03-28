@@ -65,8 +65,8 @@ INCLUDE_DIRECTORIES(
                    )
 
 ADD_EXECUTABLE(framework src/main.cpp)
-ADD_EXECUTABLE(patches src/patches.cpp)
+ADD_EXECUTABLE(teapot src/teapot.cpp)
 
 TARGET_LINK_LIBRARIES(framework ${GRAPHICS_LIBS})
-TARGET_LINK_LIBRARIES(patches ${GRAPHICS_LIBS})
+TARGET_LINK_LIBRARIES(teapot ${GRAPHICS_LIBS})
 
