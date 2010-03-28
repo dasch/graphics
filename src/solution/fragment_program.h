@@ -10,6 +10,8 @@
 
 #define N 20
 
+using namespace std;
+
 namespace graphics {
 
     template<typename math_types>
@@ -71,6 +73,10 @@ namespace graphics {
             vector3_type R = (in_normal * 2) * Dot(in_normal, L) - L;
 
             vector3_type V = state.eye_position() - in_position;
+
+            if (Norm(V) == 0)
+                throw new runtime_error("PIK");
+
             V = V / Norm(V);
 
             return state.specular_intensity() * state.specular_color() * pow(Dot(R, V), N);

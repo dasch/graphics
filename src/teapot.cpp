@@ -162,11 +162,23 @@ draw(Triangle *triangles, unsigned int count)
     render_pipeline.load_rasterizer(triangle_rasterizer);
     render_pipeline.load_vertex_program(vertex_program);
 
+    render_pipeline.state().ambient_intensity() = real_type(0.5);
+    render_pipeline.state().ambient_color() = vector3_type(0.0, 1.0, 0.0);
 
-    vector3_type vrp(0, 0, 0);
+    render_pipeline.state().light_position() = vector3_type(-20, 0, 70);
+
+    render_pipeline.state().diffuse_color() = vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().diffuse_intensity() = real_type(0.75);
+
+    render_pipeline.state().specular_color() = vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().specular_intensity() = real_type(0.9);
+
+    vector3_type vrp(0, 0, 0.1);
     vector3_type vpn(0, 0, 1);
     vector3_type vup(0, 1, 0);
     vector3_type prp(0, -70, 70);
+
+    render_pipeline.state().eye_position() = vrp;
 
     vector2_type lower_left( -10.0, -10.0);
     vector2_type upper_right( 10.0,  10.0);
