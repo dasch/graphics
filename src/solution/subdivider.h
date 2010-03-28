@@ -47,12 +47,14 @@ namespace graphics
         *t2 = Triangle(v2, v3, v4);
     }
 
-    //void
-    //divide_surface_into_triangles(surface_t *surface, unsigned int const depth, Triangle *triangles)
-    //{
-    //    if (depth == 1)
-    //        surface_to_triangles(surface, &triangles[0], &triangles[1]);
-    //}
+    void
+    divide_surface_into_triangles(surface_t *surface, unsigned int const depth, Triangle *triangles)
+    {
+        if (depth == 0) {
+            surface_to_triangles(surface, &triangles[0], &triangles[1]);
+            return;
+        }
+    }
 
     void
     debug_surface(surface_t *s)
