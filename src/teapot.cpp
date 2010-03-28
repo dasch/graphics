@@ -35,6 +35,10 @@ MyFragmentProgram<MyMathTypes>    fragment_program;
 MyTriangleRasterizer<MyMathTypes> triangle_rasterizer;
 MyLineRasterizer<MyMathTypes>     line_rasterizer;
 
+typedef MyMathTypes::vector3_type vector3_type;
+typedef MyMathTypes::vector2_type vector2_type;
+typedef MyMathTypes::real_type real_type;
+
 MyMathTypes::vector3_type cblack( 0.0, 0.0, 0.0 );
 MyMathTypes::vector3_type cwhite( 1.0, 1.0, 1.0 );
 MyMathTypes::vector3_type cred(1.0, 0.0, 0.0);
@@ -148,16 +152,17 @@ draw(Triangle *triangles, unsigned int count)
     render_pipeline.load_rasterizer(triangle_rasterizer);
     render_pipeline.load_vertex_program(vertex_program);
 
-    MyMathTypes::vector3_type vrp(0, 0, 0);
-    MyMathTypes::vector3_type vpn(0, 0, 1);
-    MyMathTypes::vector3_type vup(0, 1, 0);
-    MyMathTypes::vector3_type prp(0, 0, 1);
 
-    MyMathTypes::vector2_type lower_left(-25.0, -25.0);
-    MyMathTypes::vector2_type upper_right(25.0,  25.0);
+    vector3_type vrp(0, 0, 0);
+    vector3_type vpn(0, 0, 1);
+    vector3_type vup(0, 1, 0);
+    vector3_type prp(0, -70, 70);
 
-    MyMathTypes::real_type    front_plane(5.0);
-    MyMathTypes::real_type    back_plane(-11.0);
+    vector2_type lower_left( -10.0, -10.0);
+    vector2_type upper_right( 10.0,  10.0);
+
+    real_type    front_plane(60.0);
+    real_type    back_plane( -10.0);
 
     camera.set_projection(vrp, vpn, vup, prp,
 			  lower_left, upper_right,
