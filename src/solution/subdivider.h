@@ -44,54 +44,6 @@ namespace graphics
         t1 = Triangle(v1, v2, v4);
         t2 = Triangle(v2, v3, v4);
     }
-
-//    class Subdivider
-//    {
-//    private:
-//
-//        surface_t *_surface;
-//        triangle_t _triangle;
-//        bool _valid;
-//
-//    public:
-//
-//        void
-//        init(surface_t *surface)
-//        {
-//            _surface = surface;
-//            _valid = true;
-//
-//            _triangle = (triangle_t)malloc(sizeof(vector3_t) * 3);
-//
-//            _triangle[0] = surface[1][1];
-//            _triangle[1] = surface[1][4];
-//            _triangle[2] = surface[4][1];
-//        }
-//
-//        bool
-//        more_triangles()
-//        {
-//            return _num_divisions < 3;
-//        }
-//
-//        void
-//        next_triangle()
-//        {
-//            _triangle = (triangle_t)malloc(sizeof(vector3_t) * 3);
-//
-//            _triangle[0] = surface[4][4];
-//            _triangle[1] = surface[1][4];
-//            _triangle[2] = surface[4][1];
-//
-//            _valid = false;
-//        }
-//
-//        triangle_t
-//        current_triangle()
-//        {
-//            return _triangle;
-//        }
-//    };
 }
 
 #endif
