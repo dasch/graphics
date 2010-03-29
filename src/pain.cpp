@@ -63,7 +63,7 @@ draw_patches()
 
     object = object_init();
 
-    parse_data_file("data/teapot.data", object);
+    parse_data_file("data/pain.data", object);
     patches = object->patches;
 
     for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
