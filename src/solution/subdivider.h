@@ -113,15 +113,12 @@ namespace graphics
     void
     subdivide(surface_t *surface, surface_t &bl, surface_t &br, surface_t &tr, surface_t &tl)
     {
-        surface_t *left, *right;
+        surface_t left, right;
 
-        left  = (surface_t*)malloc(sizeof(surface_t));
-        right = (surface_t*)malloc(sizeof(surface_t));
+        subdivide_horizontal(surface, &left, &right);
 
-        subdivide_horizontal(surface, left, right);
-
-        subdivide_vertical(left, &bl, &tl);
-        subdivide_vertical(right, &br, &tr);
+        subdivide_vertical(&left, &bl, &tl);
+        subdivide_vertical(&right, &br, &tr);
     }
 
     Triangle *
@@ -142,12 +139,10 @@ namespace graphics
 
             subdivide(surface, bl, br, tr, tl);
 
-            surface_to_triangles(&bl, &triangles[i],     &triangles[i + 1]);
-            surface_to_triangles(&br, &triangles[i + 2], &triangles[i + 3]);
-            surface_to_triangles(&tl, &triangles[i + 4], &triangles[i + 5]);
-            surface_to_triangles(&tr, &triangles[i + 6], &triangles[i + 7]);
-
-            i += 8;
+            surface_to_triangles(&bl, &triangles[i++], &triangles[i++]);
+            surface_to_triangles(&br, &triangles[i++], &triangles[i++]);
+            surface_to_triangles(&tl, &triangles[i++], &triangles[i++]);
+            surface_to_triangles(&tr, &triangles[i++], &triangles[i++]);
         }
 
         return triangles;
