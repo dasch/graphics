@@ -224,7 +224,6 @@ namespace graphics
         }
         else
         {
-          std::cout << "Degenerate!" << std::endl;
           this->is_degenerate = true;
           return;
         }
