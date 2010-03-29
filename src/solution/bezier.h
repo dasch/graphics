@@ -149,8 +149,8 @@ namespace graphics
 
             subdivide_horizontal(surface, left, right);
 
-            subdivide_vertical(left, bl, tl);
-            subdivide_vertical(right, br, tr);
+            subdivide_vertical(left, tl, bl);
+            subdivide_vertical(right, tr, br);
         }
 
         /**

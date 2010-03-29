@@ -117,7 +117,7 @@ namespace graphics {
                                 edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
             } else {
                 is_degenerate = true;
-                std::cout << "Triangle was degenerate!" << std::endl;
+                std::cout << "Triangle was degenerate!" << std::endl << std::flush;
                 return;
             }
 

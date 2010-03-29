@@ -164,7 +164,7 @@ draw(Triangle *triangles, unsigned int count)
     render_pipeline.state().ambient_intensity() = real_type(0.5);
     render_pipeline.state().ambient_color() = vector3_type(0.0, 1.0, 0.0);
 
-    render_pipeline.state().light_position() = vector3_type(-20, 0, 70);
+    render_pipeline.state().light_position() = vector3_type(366.395325, 674.291267, -143.696048);
 
     render_pipeline.state().diffuse_color() = vector3_type(1.0, 1.0, 1.0);
     render_pipeline.state().diffuse_intensity() = real_type(0.75);
@@ -197,9 +197,9 @@ draw(Triangle *triangles, unsigned int count)
         v2 = t->v2();
         v3 = t->v3();
 
-        n1 = get_normal(v3, v2, v1);
-        n2 = get_normal(v1, v3, v2);
-        n3 = get_normal(v2, v1, v3);
+        n1 = get_normal(v2, v3, v1);
+        n2 = get_normal(v3, v1, v2);
+        n3 = get_normal(v1, v2, v3);
 
         render_pipeline.draw_triangle(t->v1(), n1, cred,
                                       t->v2(), n2, cred,
