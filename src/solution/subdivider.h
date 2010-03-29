@@ -92,6 +92,33 @@ namespace graphics
         debug_surface(right);
     }
 
+    Triangle *
+    draw_object(object_t *object, int& count)
+    {
+        surface_t *surface, *left, *right;
+        patch_list_t *patches;
+        Triangle *triangles;
+
+        patches = object->patches;
+
+        count = patches->num_patches * 4;
+        triangles = (Triangle*)malloc(sizeof(Triangle) * count);
+
+        left  = (surface_t*)malloc(sizeof(surface_t));
+        right = (surface_t*)malloc(sizeof(surface_t));
+
+        int i = 0;
+        for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
+            surface = patch_to_surface(object->vertices, patch);
+            divide_surface(surface, left, right);
+            surface_to_triangles(left, &triangles[i], &triangles[i + 1]);
+            surface_to_triangles(right, &triangles[i + 2], &triangles[i + 3]);
+            i += 4;
+        }
+
+        return triangles;
+    }
+
     void
     debug_surface(surface_t *s)
     {

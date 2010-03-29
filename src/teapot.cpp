@@ -56,31 +56,15 @@ void
 draw_patches()
 {
     object_t *object;
-    vertex_t vertex;
-    surface_t *surface, *left, *right;
-    Triangle *triangles, *t1, *t2;
-    patch_list_t *patches;
+    Triangle *triangles;
+    int num_triangles;
 
     object = object_init();
 
     parse_data_file("data/teapot.data", object);
-    patches = object->patches;
 
-    triangles = (Triangle*)malloc(sizeof(Triangle) * patches->num_patches * 4);
-
-    left  = (surface_t*)malloc(sizeof(surface_t));
-    right = (surface_t*)malloc(sizeof(surface_t));
-
-    int i = 0;
-    for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
-        surface = patch_to_surface(object->vertices, patch);
-        divide_surface(surface, left, right);
-        surface_to_triangles(left, &triangles[i], &triangles[i + 1]);
-        surface_to_triangles(right, &triangles[i + 2], &triangles[i + 3]);
-        i += 4;
-    }
-
-    draw(triangles, patches->num_patches * 4);
+    triangles = draw_object(object, num_triangles);
+    draw(triangles, num_triangles);
 }
 
 
