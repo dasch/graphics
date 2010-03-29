@@ -18,7 +18,6 @@
 #define DRAWTRIANGLES  1
 #define DEBUGTRIANGLES 1
 
-void draw_patches();
 
 /*******************************************************************\
 *                                                                   *
@@ -95,7 +94,7 @@ int winHeight = 768;
 #include "solution/vertex_program.h"
 #include "solution/fragment_program.h"
 #include "solution/parser.h"
-#include "solution/subdivider.h"
+#include "solution/bezier.h"
 
 /*******************************************************************\
 *                                                                   *
@@ -1521,10 +1520,6 @@ void display()
         DrawInterpolationExample();
     }
 
-    if (figure == '7') {
-        draw_patches();
-    }
-
 
 #if DRAWHOUSE
     if (figure == 'f') {
@@ -1645,25 +1640,4 @@ int main( int argc, char **argv )
     }
 
     return 0;
-}
-
-
-void
-draw_patches()
-{
-    object_t *object;
-    surface_t *surface;
-
-    object = object_init();
-
-    if (object == NULL)
-        throw new std::runtime_error("Object was NULL");
-
-    parse_data_file("data/patches.data", object);
-
-    //std::cout << "Vertices: " << object->patches->head->vertices[4] << endl;
-
-    surface = patch_to_surface(object->vertices, object->patches->head);
-
-    //std::cout << "Surface: " << surface << std::endl;
 }
