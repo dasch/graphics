@@ -69,7 +69,7 @@ draw_patches()
     for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
         surface = patch_to_surface(object->vertices, patch);
 
-        bezier.init(surface, 2);
+        bezier.init(surface, 3);
 
         cout << endl << "Patch #" << i++ << ", number of triangles: " << bezier.getCount() << endl;
 
@@ -145,8 +145,10 @@ get_normal(vertex_t v1,
   v3 = common - v1;
   v4 = common - v2;
 
-  if (Norm(Cross(v3, v4)) == 0)
+  if (Norm(Cross(v3, v4)) == 0) {
+      cout << "normal was invalid" << endl;
       return vertex_t(0, 0, 1);
+  }
 
   return Cross(v3, v4) / Norm(Cross(v3, v4));
 }
@@ -172,18 +174,16 @@ draw(Triangle *triangles, unsigned int count)
     render_pipeline.state().specular_color() = vector3_type(1.0, 1.0, 1.0);
     render_pipeline.state().specular_intensity() = real_type(0.9);
 
-    vector3_type vrp(0, 0, 0.1);
+    vector3_type vrp(0, 0, 1);
     vector3_type vpn(0, 0, 1);
     vector3_type vup(0, 1, 0);
     vector3_type prp(0, -70, 70);
 
-    render_pipeline.state().eye_position() = vrp;
+    vector2_type lower_left( -5.0, -5.0);
+    vector2_type upper_right( 5.0,  5.0);
 
-    vector2_type lower_left( -10.0, -10.0);
-    vector2_type upper_right( 10.0,  10.0);
-
-    real_type    front_plane(60.0);
-    real_type    back_plane( -10.0);
+    real_type front_plane(60.0);
+    real_type back_plane( -10.0);
 
     camera.set_projection(vrp, vpn, vup, prp,
 			  lower_left, upper_right,

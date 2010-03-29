@@ -74,8 +74,9 @@ namespace graphics {
             t_current += t_delta;
             v_current += v_delta;
 
-            if (t_current == t_stop)
+            if (t_current == t_stop) {
                 valid = false;
+            }
         }
 
         LinearInterpolator<math_types, value_type> const&

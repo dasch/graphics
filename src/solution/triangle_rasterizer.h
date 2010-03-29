@@ -230,10 +230,9 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            return !is_degenerate &&
-                   (left_edge.more_fragments()
+            return left_edge.more_fragments()
                 || right_edge.more_fragments()
-                || x_current < x_stop);
+                || x_current < x_stop;
         }
 
         void next_fragment()

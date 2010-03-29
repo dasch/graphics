@@ -107,7 +107,7 @@ namespace graphics
         throw std::invalid_argument("graphics_zbuffer::write: depth must be within [0...1]");
 #else
         if (z_value > 0 || z_value < -1)
-        throw std::invalid_argument("graphics_zbuffer::write: depth must be within [-1...0]");
+            throw std::invalid_argument("graphics_zbuffer::write: depth must be within [-1...0]");
 #endif
         //--- Simple minded clipping against framebuffer
         if (x < 0)
