@@ -19,7 +19,7 @@
 #include "graphics_framebuffer.h"
 #include "graphics_state.h"
 
-#define GOURAUD 1
+//#define GOURAUD 1
 
 namespace graphics
 {
