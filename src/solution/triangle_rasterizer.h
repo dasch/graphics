@@ -13,6 +13,7 @@
 #include "edge_rasterizer.h"
 // #include "linear_interpolator"
 
+using namespace std;
 
 
 namespace graphics {
@@ -58,6 +59,7 @@ namespace graphics {
         {
             this->Debug = false;
             this->valid = true;
+            this->is_degenerate = false;
 
             edges[0] = in_vertex1;
             edges[1] = in_vertex2;
@@ -113,11 +115,15 @@ namespace graphics {
 
                 right_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
                                 edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
-
             } else {
-                valid = false;
+                is_degenerate = true;
                 return;
             }
+
+            if (!left_edge.more_fragments() || !right_edge.more_fragments()) {
+                is_degenerate = true;
+                return;
+            } 
 
             x_current = left_edge.x();
             y_current = left_edge.y();
@@ -156,8 +162,7 @@ namespace graphics {
 
         bool Degenerate() const
         {
-            // implement the real version
-            return false;
+            return is_degenerate;
         }
 
         int x() const
@@ -224,9 +229,10 @@ namespace graphics {
 
         bool more_fragments() const
         {
-            return left_edge.more_fragments()
+            return !is_degenerate &&
+                   (left_edge.more_fragments()
                 || right_edge.more_fragments()
-                || x_current < x_stop;
+                || x_current < x_stop);
         }
 
         void next_fragment()
@@ -341,7 +347,7 @@ namespace graphics {
         int x_current, y_current;
         int x_stop;
 
-        bool valid;
+        bool valid, is_degenerate;
     };
 
 }// end namespace graphics

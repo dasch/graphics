@@ -57,6 +57,42 @@ namespace graphics
     }
 
     void
+    divide_surface(surface_t *surface, surface_t *left, surface_t *right)
+    {
+        vertex_t p1, p2, p3, p4, tmp;
+
+        for (int i = 1; i <= 4; i++) {
+            p1 = (*surface)[i][1];
+            p2 = (*surface)[i][2];
+            p3 = (*surface)[i][3];
+            p4 = (*surface)[i][4];
+
+            tmp = (p2 + p3) / 2;
+
+            (*left)[i][1] = p1;
+            (*right)[i][4] = p4;
+
+            (*left)[i][2] = (p1 + p2) / 2;
+            (*right)[i][3] = (p3 + p4) / 2;
+
+            (*left)[i][3] = ((*left)[i][2] + tmp) / 2;
+            (*right)[i][2] = ((*right)[i][3] + tmp) / 2;
+
+            (*left)[i][4] = ((*left)[i][3] + (*right)[i][2]) / 2;
+            (*right)[i][1] = (*left)[i][4];
+        }
+
+        cout << "Original: " << endl;
+        debug_surface(surface);
+
+        cout << "Left: " << endl;
+        debug_surface(left);
+
+        cout << "Right: " << endl;
+        debug_surface(right);
+    }
+
+    void
     debug_surface(surface_t *s)
     {
         cout << "(" << (*s)[1][1] << ")  (" <<(*s)[1][2] << ")  (" << (*s)[1][3] << ")  (" << (*s)[1][4] << ")" << endl;
