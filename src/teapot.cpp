@@ -18,8 +18,8 @@
 #include "solution/vertex_program.h"
 #include "solution/fragment_program.h"
 #include "solution/parser.h"
-#include "solution/subdivider.h"
 #include "solution/triangle.h"
+#include "solution/bezier.h"
 
 
 using namespace std;
@@ -56,15 +56,21 @@ void
 draw_patches()
 {
     object_t *object;
-    Triangle *triangles;
-    int num_triangles;
+    patch_list_t *patches;
+    surface_t surface;
+    Bezier bezier;
 
     object = object_init();
 
     parse_data_file("data/teapot.data", object);
+    patches = object->patches;
 
-    triangles = draw_object(object, num_triangles);
-    draw(triangles, num_triangles);
+    for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
+        surface = patch_to_surface(object->vertices, patch);
+
+        bezier.init(surface, 0);
+        draw(bezier.getTriangles(), bezier.getCount());
+    }
 }
 
 
