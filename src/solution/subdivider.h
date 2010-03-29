@@ -57,7 +57,7 @@ namespace graphics
     }
 
     void
-    divide_surface(surface_t *surface, surface_t *left, surface_t *right)
+    subdivide_horizontal(surface_t *surface, surface_t *left, surface_t *right)
     {
         vertex_t p1, p2, p3, p4, tmp;
 
@@ -81,39 +81,69 @@ namespace graphics
             (*left)[i][4] = ((*left)[i][3] + (*right)[i][2]) / 2;
             (*right)[i][1] = (*left)[i][4];
         }
+    }
 
-        cout << "Original: " << endl;
-        debug_surface(surface);
+    void
+    subdivide_vertical(surface_t *surface, surface_t *top, surface_t *bottom)
+    {
+        vertex_t p1, p2, p3, p4, tmp;
 
-        cout << "Left: " << endl;
-        debug_surface(left);
+        for (int i = 1; i <= 4; i++) {
+            p1 = (*surface)[1][i];
+            p2 = (*surface)[2][i];
+            p3 = (*surface)[3][i];
+            p4 = (*surface)[4][i];
 
-        cout << "Right: " << endl;
-        debug_surface(right);
+            tmp = (p2 + p3) / 2;
+
+            (*top)[1][i] = p1;
+            (*bottom)[4][i] = p4;
+
+            (*top)[2][i] = (p1 + p2) / 2;
+            (*bottom)[3][i] = (p3 + p4) / 2;
+
+            (*top)[3][i] = ((*top)[2][i] + tmp) / 2;
+            (*bottom)[2][i] = ((*bottom)[3][i] + tmp) / 2;
+
+            (*top)[4][i] = ((*top)[3][i] + (*bottom)[2][i]) / 2;
+            (*bottom)[1][i] = (*top)[4][i];
+        }
     }
 
     Triangle *
     draw_object(object_t *object, int& count)
     {
-        surface_t *surface, *left, *right;
+        surface_t *surface, *bl, *br, *tl, *tr, *left, *right;
         patch_list_t *patches;
         Triangle *triangles;
 
         patches = object->patches;
 
-        count = patches->num_patches * 4;
+        count = patches->num_patches * 4 * 2;
         triangles = (Triangle*)malloc(sizeof(Triangle) * count);
 
         left  = (surface_t*)malloc(sizeof(surface_t));
         right = (surface_t*)malloc(sizeof(surface_t));
+        bl = (surface_t*)malloc(sizeof(surface_t));
+        br = (surface_t*)malloc(sizeof(surface_t));
+        tl = (surface_t*)malloc(sizeof(surface_t));
+        tr = (surface_t*)malloc(sizeof(surface_t));
 
         int i = 0;
         for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
             surface = patch_to_surface(object->vertices, patch);
-            divide_surface(surface, left, right);
-            surface_to_triangles(left, &triangles[i], &triangles[i + 1]);
-            surface_to_triangles(right, &triangles[i + 2], &triangles[i + 3]);
-            i += 4;
+
+            subdivide_horizontal(surface, left, right);
+
+            subdivide_vertical(left, bl, tl);
+            subdivide_vertical(right, br, tr);
+
+            surface_to_triangles(bl, &triangles[i],     &triangles[i + 1]);
+            surface_to_triangles(br, &triangles[i + 2], &triangles[i + 3]);
+            surface_to_triangles(tl, &triangles[i + 4], &triangles[i + 5]);
+            surface_to_triangles(tr, &triangles[i + 6], &triangles[i + 7]);
+
+            i += 8;
         }
 
         return triangles;
