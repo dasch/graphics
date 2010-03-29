@@ -68,9 +68,11 @@ ADD_EXECUTABLE(framework src/main.cpp)
 ADD_EXECUTABLE(teapot src/teapot.cpp)
 ADD_EXECUTABLE(pain src/pain.cpp)
 ADD_EXECUTABLE(rocket src/rocket.cpp)
+ADD_EXECUTABLE(patches src/patches.cpp)
 
 TARGET_LINK_LIBRARIES(framework ${GRAPHICS_LIBS})
 TARGET_LINK_LIBRARIES(teapot ${GRAPHICS_LIBS})
 TARGET_LINK_LIBRARIES(pain ${GRAPHICS_LIBS})
 TARGET_LINK_LIBRARIES(rocket ${GRAPHICS_LIBS})
+TARGET_LINK_LIBRARIES(patches ${GRAPHICS_LIBS})
 
