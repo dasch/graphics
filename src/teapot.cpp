@@ -68,7 +68,7 @@ draw_patches()
     for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
         surface = patch_to_surface(object->vertices, patch);
 
-        bezier.init(surface, 0);
+        bezier.init(surface, 1);
         draw(bezier.getTriangles(), bezier.getCount());
     }
 }
@@ -197,7 +197,6 @@ draw(Triangle *triangles, unsigned int count)
         n2 = get_normal(v1, v3, v2);
         n3 = get_normal(v2, v1, v3);
 
-        cout << "Drawing triangle " << i << endl;
         render_pipeline.draw_triangle(t->v1(), n1, cred,
                                       t->v2(), n2, cred,
                                       t->v3(), n3, cred);

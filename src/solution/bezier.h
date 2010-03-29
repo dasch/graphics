@@ -79,12 +79,25 @@ namespace graphics
 
             subdivide(surface, bl, br, tr, tl);
 
-            depth--;
+            cout << "Original:" << endl;
+            debug_surface(surface);
 
-            bezier(bl, depth);
-            bezier(br, depth);
-            bezier(tr, depth);
-            bezier(tl, depth);
+            cout << "Bottom left:" << endl;
+            debug_surface(bl);
+
+            cout << "Bottom right:" << endl;
+            debug_surface(br);
+
+            cout << "Top right:" << endl;
+            debug_surface(tr);
+
+            cout << "top left:" << endl;
+            debug_surface(tl);
+
+            bezier(bl, depth - 1);
+            bezier(br, depth - 1);
+            bezier(tr, depth - 1);
+            bezier(tl, depth - 1);
         }
 
         void
@@ -170,6 +183,16 @@ namespace graphics
             
             _triangles[_count++] = Triangle(v1, v2, v4);
             _triangles[_count++] = Triangle(v2, v3, v4);
+        }
+
+        void
+        debug_surface(surface_t &s)
+        {
+            cout << "(" << s[1][1] << ")  (" <<s[1][2] << ")  (" << s[1][3] << ")  (" << s[1][4] << ")" << endl;
+            cout << "(" << s[2][1] << ")  (" <<s[2][2] << ")  (" << s[2][3] << ")  (" << s[2][4] << ")" << endl;
+            cout << "(" << s[3][1] << ")  (" <<s[3][2] << ")  (" << s[3][3] << ")  (" << s[3][4] << ")" << endl;
+            cout << "(" << s[4][1] << ")  (" <<s[4][2] << ")  (" << s[4][3] << ")  (" << s[4][4] << ")" << endl;
+            cout << endl << flush;
         }
     };
 }
