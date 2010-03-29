@@ -59,6 +59,7 @@ draw_patches()
     patch_list_t *patches;
     surface_t surface;
     Bezier bezier;
+    int i = 0;
 
     object = object_init();
 
@@ -68,7 +69,10 @@ draw_patches()
     for (patch_t *patch = patches->head; patch != NULL; patch = patch->next) {
         surface = patch_to_surface(object->vertices, patch);
 
-        bezier.init(surface, 1);
+        bezier.init(surface, 2);
+
+        cout << endl << "Patch #" << i++ << ", number of triangles: " << bezier.getCount() << endl;
+
         draw(bezier.getTriangles(), bezier.getCount());
     }
 }
