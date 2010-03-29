@@ -121,21 +121,6 @@ namespace graphics {
                 return;
             }
 
-            if (!left_edge.more_fragments() || !right_edge.more_fragments()) {
-                is_degenerate = true;
-                return;
-            } 
-
-            x_current = left_edge.x();
-            y_current = left_edge.y();
-
-            x_stop = right_edge.x();
-
-            depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
-            i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
-            i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
-            i_normal.init(left_edge.x(), right_edge.x(), left_edge.normal(), right_edge.normal());
-
             SearchForNonEmptyScanline();
         }
 
@@ -230,6 +215,9 @@ namespace graphics {
 
         bool more_fragments() const
         {
+            if (is_degenerate)
+                return false;
+
             return left_edge.more_fragments()
                 || right_edge.more_fragments()
                 || x_current < x_stop;
@@ -300,7 +288,7 @@ namespace graphics {
 
         void SearchForNonEmptyScanline()
         {
-            while (x_current == x_stop && (left_edge.more_fragments() || right_edge.more_fragments())) {
+            while (x_current == x_stop && left_edge.more_fragments() && right_edge.more_fragments()) {
                 x_current = left_edge.x();
                 y_current = left_edge.y();
 
