@@ -34,7 +34,13 @@ namespace graphics {
                 return;
             }
 
-            vector3_type normal = in_normal / Norm(in_normal);
+            vector3_type normal;
+
+            if (Norm(in_normal) == 0) {
+                normal = vector3_type(0, 0, 1);
+            } else {
+                normal = in_normal / Norm(in_normal);
+            }
 
             vector3_type A = ambient(state);
             vector3_type D = diffuse(state, in_position, normal);
@@ -48,7 +54,7 @@ namespace graphics {
         vector3_type
         ambient(graphics_state_type const& state)
         {
-            return state.ambient_intensity() * state.ambient_color();
+            return state.ambient_intensity() * state.ambient_color() * vector3_type(0.5, 0.5, 0.5);
         }
 
         vector3_type
