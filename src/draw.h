@@ -86,6 +86,14 @@ draw_patches()
     }
 }
 
+void
+keyboard(unsigned char key, int mouse_x, int mouse_y)
+{
+    switch (key) {
+        case 'q':
+            exit(0);
+    }
+}
 
 int
 run(object_t *object, int argc, char **argv)
@@ -119,6 +127,7 @@ run(object_t *object, int argc, char **argv)
     camera.init( render_pipeline );
 
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
 
     glutMainLoop();
 
