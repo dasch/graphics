@@ -10,7 +10,6 @@
 
 #include "graphics/graphics.h"
 #include "solution/linear_interpolator.h"
-#include "solution/point_rasterizer.h"
 #include "solution/line_rasterizer.h"
 #include "solution/triangle_rasterizer.h"
 #include "solution/math_types.h"
@@ -208,13 +207,19 @@ draw(Triangle *triangles, unsigned int count)
         v2 = t->v2();
         v3 = t->v3();
 
-        n1 = get_normal(v2, v3, v1);
-        n2 = get_normal(v3, v1, v2);
-        n3 = get_normal(v1, v2, v3);
+        n1 = get_normal(v2, v3, v1) * -1;
+        n2 = get_normal(v3, v1, v2) * -1;
+        n3 = get_normal(v1, v2, v3) * -1;
 
-        render_pipeline.draw_triangle(t->v1(), n1, cwhite,
-                                      t->v2(), n2, cwhite,
-                                      t->v3(), n3, cwhite);
+        render_pipeline.load_rasterizer(triangle_rasterizer);
+        render_pipeline.draw_triangle(t->v1(), t->n1(), cwhite,
+                                      t->v2(), t->n2(), cwhite,
+                                      t->v3(), t->n3(), cwhite);
+
+        render_pipeline.load_rasterizer(line_rasterizer);
+        render_pipeline.draw_line(v1, cblack, v1 + n1, cwhite);
+        render_pipeline.draw_line(v2, cblack, v2 + n2, cwhite);
+        render_pipeline.draw_line(v3, cblack, v3 + n3, cwhite);
     }
 }
 

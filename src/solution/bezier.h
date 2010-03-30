@@ -162,14 +162,20 @@ namespace graphics
         draw_surface(surface_t &surface)
         {
             vertex_t v1, v2, v3, v4;
+            vertex_t n1, n2, n3, n4;
 
             v1 = surface[1][1];
             v2 = surface[4][1];
             v3 = surface[4][4];
             v4 = surface[1][4];
+
+            n1 = Normal(v1, surface[1][2] - v1, surface[2][1] - v1);
+            n2 = Normal(v2, surface[3][1] - v2, surface[4][2] - v2);
+            n3 = Normal(v3, surface[4][3] - v3, surface[3][4] - v3);
+            n4 = Normal(v4, surface[2][4] - v4, surface[1][3] - v4);
             
-            _triangles[_count++] = Triangle(v1, v2, v4);
-            _triangles[_count++] = Triangle(v4, v2, v3);
+            _triangles[_count++] = Triangle(v1, n1, v2, n2, v4, n4);
+            _triangles[_count++] = Triangle(v4, n4, v2, n2, v3, n3);
         }
 
         void
@@ -180,6 +186,21 @@ namespace graphics
             cout << "(" << s[3][1] << ")  (" <<s[3][2] << ")  (" << s[3][3] << ")  (" << s[3][4] << ")" << endl;
             cout << "(" << s[4][1] << ")  (" <<s[4][2] << ")  (" << s[4][3] << ")  (" << s[4][4] << ")" << endl;
             cout << endl << flush;
+        }
+
+        vertex_t
+        Normal(vertex_t const &original,
+                   vertex_t const &left,
+                   vertex_t const &right)
+        {
+            vertex_t v1 = original - left;
+            vertex_t v2 = original - right;
+            vertex_t c  = Cross(v2, v1);
+
+            if (Norm(c) == 0)
+                return vertex_t(0, 0, 1);
+
+            return c / Norm(c);
         }
     };
 }
