@@ -28,6 +28,8 @@ using namespace graphics;
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
 
+#define BEZIER_DEPTH 2
+
 MyCamera<MyMathTypes>             camera;
 RenderPipeline<MyMathTypes>       render_pipeline;
 MyVertexProgram<MyMathTypes>      vertex_program;
@@ -70,7 +72,7 @@ draw_patches()
 {
     patch_list_t *patches;
     surface_t surface;
-    Bezier bezier(6);
+    Bezier bezier(BEZIER_DEPTH);
     int i = 0;
 
     patches = OBJECT->patches;
@@ -210,9 +212,9 @@ draw(Triangle *triangles, unsigned int count)
         n2 = get_normal(v3, v1, v2);
         n3 = get_normal(v1, v2, v3);
 
-        render_pipeline.draw_triangle(t->v1(), n1, cred,
-                                      t->v2(), n2, cred,
-                                      t->v3(), n3, cred);
+        render_pipeline.draw_triangle(t->v1(), n1, cwhite,
+                                      t->v2(), n2, cwhite,
+                                      t->v3(), n3, cwhite);
     }
 }
 
