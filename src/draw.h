@@ -207,19 +207,19 @@ draw(Triangle *triangles, unsigned int count)
         v2 = t->v2();
         v3 = t->v3();
 
-        n1 = get_normal(v2, v3, v1) * -1;
-        n2 = get_normal(v3, v1, v2) * -1;
-        n3 = get_normal(v1, v2, v3) * -1;
+        n1 = t->n1();
+        n2 = t->n2();
+        n3 = t->n3();
 
         render_pipeline.load_rasterizer(triangle_rasterizer);
-        render_pipeline.draw_triangle(t->v1(), t->n1(), cwhite,
-                                      t->v2(), t->n2(), cwhite,
-                                      t->v3(), t->n3(), cwhite);
+        render_pipeline.draw_triangle(v1, n1, cwhite,
+                                      v2, n2, cwhite,
+                                      v3, n3, cwhite);
 
-        render_pipeline.load_rasterizer(line_rasterizer);
-        render_pipeline.draw_line(v1, cblack, v1 + n1, cwhite);
-        render_pipeline.draw_line(v2, cblack, v2 + n2, cwhite);
-        render_pipeline.draw_line(v3, cblack, v3 + n3, cwhite);
+        //render_pipeline.load_rasterizer(line_rasterizer);
+        //render_pipeline.draw_line(v1, cblack, v1 + n1, cblack);
+        //render_pipeline.draw_line(v2, cred,   v2 + n2, cred);
+        //render_pipeline.draw_line(v3, cgreen, v3 + n3, cgreen);
     }
 }
 

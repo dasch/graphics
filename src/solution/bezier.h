@@ -161,21 +161,52 @@ namespace graphics
         void
         draw_surface(surface_t &surface)
         {
-            vertex_t v1, v2, v3, v4;
-            vertex_t n1, n2, n3, n4;
+            vertex_t v[4], t[4], s[4], n[4];
 
-            v1 = surface[1][1];
-            v2 = surface[4][1];
-            v3 = surface[4][4];
-            v4 = surface[1][4];
+            v[0] = surface[1][1];
+            v[1] = surface[1][4];
+            v[2] = surface[4][1];
+            v[3] = surface[4][4];
 
-            n1 = Normal(v1, surface[1][2] - v1, surface[2][1] - v1);
-            n2 = Normal(v2, surface[3][1] - v2, surface[4][2] - v2);
-            n3 = Normal(v3, surface[4][3] - v3, surface[3][4] - v3);
-            n4 = Normal(v4, surface[2][4] - v4, surface[1][3] - v4);
-            
-            _triangles[_count++] = Triangle(v1, n1, v2, n2, v4, n4);
-            _triangles[_count++] = Triangle(v4, n4, v2, n2, v3, n3);
+            t[0] = surface[1][2] - v[0];
+            t[1] = surface[1][3] - v[1];
+            t[2] = surface[4][2] - v[2];
+            t[3] = surface[4][3] - v[3];
+
+            s[0] = surface[2][1] - v[0];
+            s[1] = surface[2][4] - v[1];
+            s[2] = surface[3][1] - v[2];
+            s[3] = surface[3][4] - v[3];
+
+            // Merge tangents.
+            for (int i = 0; i < 4; i++) {
+                for (int j = i+1; j < 4; j++) {
+                    if (v[i] != v[j])
+                        continue;
+
+                    if (t[i] == 0 && t[j] == 0 && j-i == 1) {
+                        // Merge horizontally.
+                        t[i] = s[j];
+                        t[j] = s[i];
+                    } else if (s[i] == 0 && s[j] == 0 && j-i == 2) {
+                        // Merge vertically.
+                        s[i] = t[j];
+                        s[j] = t[i];
+                    }
+                }
+            }
+
+            n[0] = Cross(s[0], t[0]);
+            n[1] = Cross(t[1], s[1]);
+            n[2] = Cross(t[2], s[2]);
+            n[3] = Cross(s[3], t[3]);
+
+            for (int i = 0; i < 4; i++) {
+                n[i] /= Norm(n[i]);
+            }
+
+            _triangles[_count++] = Triangle(v[2], n[2], v[3], n[3], v[0], n[0]);
+            _triangles[_count++] = Triangle(v[1], n[1], v[0], n[0], v[3], n[3]);
         }
 
         void
@@ -190,8 +221,8 @@ namespace graphics
 
         vertex_t
         Normal(vertex_t const &original,
-                   vertex_t const &left,
-                   vertex_t const &right)
+               vertex_t const &left,
+               vertex_t const &right)
         {
             vertex_t v1 = original - left;
             vertex_t v2 = original - right;
