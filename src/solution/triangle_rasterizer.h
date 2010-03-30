@@ -11,334 +11,339 @@
 #include <cmath>
 #include "graphics/graphics.h"
 #include "edge_rasterizer.h"
-#include "linear_interpolator.h"
+// #include "linear_interpolator"
 
-namespace graphics
-{
+using namespace std;
 
-  template<typename math_types>
+
+namespace graphics {
+
+    template<typename math_types>
     class MyTriangleRasterizer : public Rasterizer<math_types>
-  {
-    public:
-      typedef typename math_types::vector3_type vector3_type;
-      typedef typename math_types::real_type    real_type;
+    {
+        public:
+        typedef typename math_types::vector3_type vector3_type;
+        typedef typename math_types::real_type    real_type;
 
-    protected:
+        private:
+        LinearInterpolator<math_types, real_type> depths;
+        LinearInterpolator<math_types, vector3_type> i_colors;
+        LinearInterpolator<math_types, vector3_type> i_world;
+        LinearInterpolator<math_types, vector3_type> i_normal;
 
-    public:
-      MyTriangleRasterizer() : valid(false), Debug(false)
+        protected:
+
+        MyEdgeRasterizer<MyMathTypes> left_edge, right_edge;
+
+        public:
+        MyTriangleRasterizer() : valid(false), Debug(false)
         {}
 
-      virtual ~MyTriangleRasterizer()
+
+        virtual ~MyTriangleRasterizer()
         {}
 
-      void init(vector3_type const& in_vertex1,
-                vector3_type const& in_normal1,
-                vector3_type const& in_color1,
-                vector3_type const& in_world_coord1,
-                vector3_type const& in_vertex2,
-                vector3_type const& in_normal2,
-                vector3_type const& in_color2,
-                vector3_type const& in_world_coord2,
-                vector3_type const& in_vertex3,
-                vector3_type const& in_normal3,
-                vector3_type const& in_color3,
-                vector3_type const& in_world_coord3)
-      {
-        // Convert x and y coordinates to integers
-        vertex[0] = vector3_type (static_cast<int>(round(in_vertex1[1])),
-                                  static_cast<int>(round(in_vertex1[2])),
-                                  in_vertex1[3]);
-        vertex[1] = vector3_type (static_cast<int>(round(in_vertex2[1])),
-                                  static_cast<int>(round(in_vertex2[2])),
-                                  in_vertex2[3]);
-        vertex[2] = vector3_type (static_cast<int>(round(in_vertex3[1])),
-                                  static_cast<int>(round(in_vertex3[2])),
-                                  in_vertex3[3]);
 
-        // Save colors
-        this->colors[0] = in_color1;
-        this->colors[1] = in_color2;
-        this->colors[2] = in_color3;
-
-        // Save normals
-        this->normals[0] = in_normal1;
-        this->normals[1] = in_normal2;
-        this->normals[2] = in_normal3;
-
-        // Save world coordinates
-        this->world_coords[0] = in_world_coord1;
-        this->world_coords[1] = in_world_coord2;
-        this->world_coords[2] = in_world_coord3;
-
-        this->Debug = false;
-        this->is_degenerate = false;
-        this->initialize_triangle();
-        this->valid = true;
-      }
-
-      bool DebugOn() {
-        bool oldvalue = this->Debug;
-        this->Debug = true;
-
-        return oldvalue;
-      }
-
-      bool DebugOff() {
-        bool oldvalue = this->Debug;
-        this->Debug = false;
-
-        return oldvalue;
-      }
-
-      bool Valid() const
-      {
-        return true;
-      }
-
-      bool Degenerate() const
-      {
-        // implement the real version
-        return this->is_degenerate;
-      }
-
-      int x() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::x():Invalid State/Not Initialized");
-        }
-        return this->x_current;
-      }
-
-      int y() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::y():Invalid State/Not Initialized");
-        }
-        return this->y_current;
-      }
-
-      real_type depth() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::depth():Invalid State/Not Initialized");
-        }
-        // implement the real version
-        return this->depth_interpolator.value();
-      }
-
-      // Returns position in world coordinates
-      vector3_type position() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::position():Invalid State/Not Initialized");
-        }
-        return this->world_interpolator.value();
-      }
-
-      vector3_type const& normal() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::normal():Invalid State/Not Iitialized");
-        }
-        // implement the real version
-        return this->normal_interpolator.value();
-      }
-
-      vector3_type const& color() const
-      {
-        if (!this->valid) {
-          throw std::runtime_error("MyTriangleRasterizer::color():Invalid State/Not Initialized");
-        }
-        // implement the real version
-        return this->color_interpolator.value();
-      }
-
-      void print_variables() {
-        std::cout << "MyTriangleRasterizer: local variables" << std::endl;
-        std::cout << "=====================================" << std::endl;
-        std::cout << "\tx_current:\t" << x_current << std::endl;
-        std::cout << "\tx_stop:\t\t" << x_stop << std::endl;
-        std::cout << "\ty_current:\t" << y_current << std::endl;
-        std::cout << std::endl;
-      }
-
-      /*******************************************************************\
-       *                                                                   *
-       *                  m o r e _ f r a g m e n t s ( )                  *
-       *                                                                   *
-      \*******************************************************************/
-
-      bool more_fragments() const {
-        return this->left_edge.more_fragments() ||
-               this->right_edge.more_fragments() ||
-               this->x_current < this->x_stop;
-      }
-
-      /*******************************************************************\
-       *                                                                   *
-       *                   n e x t _ f r a g m e n t ( )                   *
-       *                                                                   *
-      \*******************************************************************/
-
-      void next_fragment() {
-        this->x_current++;
-        // Interpolators
-        this->depth_interpolator.next_value();
-        this->color_interpolator.next_value();
-        this->normal_interpolator.next_value();
-        this->world_interpolator.next_value();
-
-        SearchForNonEmptyScanline();
-      }
-
-    private:
-      // Initialize the current triangle for rasterization
-      void initialize_triangle() {
-        // Determine order
-        this->lower_left = this->LowerLeft();
-        this->upper_left = this->UpperLeft();
-        this->the_other = 3 - this->lower_left - this->upper_left;
-        //std::cout << this->vertex[0] << std::endl;
-        //std::cout << this->vertex[1] << std::endl;
-        //std::cout << this->vertex[2] << std::endl;
-
-        vector3_type v_ll (vertex[this->lower_left][1], vertex[this->lower_left][2], 0);
-        vector3_type v_ul (vertex[this->upper_left][1], vertex[this->upper_left][2], 0);
-        vector3_type v_ot (vertex[this->the_other][1], vertex[this->the_other][2], 0);
-        int c = Cross(v_ul - v_ll, v_ot - v_ll)[3];
-        if (c < 0)
+        void init(vector3_type const& in_vertex1,
+                  vector3_type const& in_world1,
+                  vector3_type const& in_normal1,
+                  vector3_type const& in_color1,
+                  vector3_type const& in_vertex2,
+                  vector3_type const& in_world2,
+                  vector3_type const& in_normal2,
+                  vector3_type const& in_color2,
+                  vector3_type const& in_vertex3,
+                  vector3_type const& in_world3,
+                  vector3_type const& in_normal3,
+                  vector3_type const& in_color3) 
         {
-          this->left_edge.init(vertex[this->lower_left],  this->normals[this->lower_left], this->colors[this->lower_left], this->world_coords[this->lower_left],
-                               vertex[this->upper_left],  this->normals[this->upper_left], this->colors[this->upper_left], this->world_coords[this->upper_left]);
-          this->right_edge.init(vertex[this->lower_left], this->normals[this->lower_left], this->colors[this->lower_left], this->world_coords[this->lower_left],
-                                vertex[this->the_other],  this->normals[this->the_other], this->colors[this->the_other],   this->world_coords[this->the_other],
-                                vertex[this->upper_left], this->normals[this->upper_left], this->colors[this->upper_left], this->world_coords[this->upper_left]);
-        } else if (c > 0)
+            this->Debug = false;
+            this->valid = true;
+            this->is_degenerate = false;
+
+            edges[0] = vector3_type (static_cast<int>(round(in_vertex1[1])),
+                                     static_cast<int>(round(in_vertex1[2])),
+                                     in_vertex1[3]);
+            edges[1] = vector3_type (static_cast<int>(round(in_vertex2[1])),
+                                     static_cast<int>(round(in_vertex2[2])),
+                                     in_vertex2[3]);
+            edges[2] = vector3_type (static_cast<int>(round(in_vertex3[1])),
+                                     static_cast<int>(round(in_vertex3[2])),
+                                     in_vertex3[3]);
+
+            normals[0] = in_normal1;
+            normals[1] = in_normal2;
+            normals[2] = in_normal3;
+
+            colors[0] = in_color1;
+            colors[1] = in_color2;
+            colors[2] = in_color3;
+
+            world[0] = in_world1;
+            world[1] = in_world2;
+            world[2] = in_world3;
+
+            vertices[0][1] = edges[0][1];
+            vertices[0][2] = edges[0][2];
+            vertices[0][3] = 0;
+
+            vertices[1][1] = edges[1][1];
+            vertices[1][2] = edges[1][2];
+            vertices[1][3] = 0;
+
+            vertices[2][1] = edges[2][1];
+            vertices[2][2] = edges[2][2];
+            vertices[2][3] = 0;
+
+            lower_left = LowerLeft();
+            upper_left = UpperLeft();
+            the_other = 3 - lower_left - upper_left;
+
+            vector3_type ll, ul, ot;
+
+            ll = vertices[lower_left];
+            ul = vertices[upper_left];
+            ot = vertices[the_other];
+
+            vector3_type cross = Cross(ul - ll, ot - ll);
+
+            if (cross[3] < 0) {
+                left_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                               edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
+
+                right_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                                edges[the_other],  world[the_other],  normals[the_other],  colors[the_other],
+                                edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
+            } else if (cross[3] > 0) {
+                left_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                               edges[the_other],  world[the_other],  normals[the_other],  colors[the_other],
+                               edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
+
+                right_edge.init(edges[lower_left], world[lower_left], normals[lower_left], colors[lower_left],
+                                edges[upper_left], world[upper_left], normals[upper_left], colors[upper_left]);
+            } else {
+                is_degenerate = true;
+                return;
+            }
+
+            SearchForNonEmptyScanline();
+        }
+
+        bool DebugOn()
         {
-          this->left_edge.init(vertex[this->lower_left],  this->normals[this->lower_left], this->colors[this->lower_left], this->world_coords[this->lower_left],
-                               vertex[this->the_other],   this->normals[this->the_other], this->colors[this->the_other],   this->world_coords[this->the_other],
-                               vertex[this->upper_left],  this->normals[this->upper_left], this->colors[this->upper_left], this->world_coords[this->upper_left]);
-          this->right_edge.init(vertex[this->lower_left], this->normals[this->lower_left], this->colors[this->lower_left], this->world_coords[this->lower_left],
-                                vertex[this->upper_left], this->normals[this->upper_left], this->colors[this->upper_left], this->world_coords[this->upper_left]);
+            bool oldvalue = this->Debug;
+            this->Debug = true;
+
+            return oldvalue;
         }
-        else
+
+        bool DebugOff()
         {
-          this->is_degenerate = true;
-          return;
+            bool oldvalue = this->Debug;
+            this->Debug = false;
+
+            return oldvalue;
         }
-        // Get first drawable point
-        SearchForNonEmptyScanline();
-      }
 
-      // A triangle is degenerate if all three points are co-linear
-      bool degenerate() {
-        return is_degenerate;
-      }
-
-      // LowerLeft() returns the index of the vertex with the smallest y-coordinate
-      // If there is a horizontal edge, the vertex with the smallest
-      // x-coordinate is chosen.
-      // The computations should be done in integer coordinates.
-      int LowerLeft() {
-        int ll = 0;
-        for(int i=0;i<3;i++) {
-          if ((this->vertex[i][2] < this->vertex[ll][2]) ||
-             ((this->vertex[i][2] == this->vertex[ll][2]) &&
-               this->vertex[i][1] < this->vertex[ll][1])) {
-            ll = i;
-          }
+        bool Valid() const
+        {
+            // implement the real version
+            return valid;
         }
-        return ll;
-      }
 
-      // UpperLeft() returns the index of the vertex with the greatest y-coordinate
-      // If there is a horizontal edge, the vertex with the smallest
-      // x-coordinate is chosen.
-      // The computations should be done in integer coordinates.
-      int UpperLeft() {
-        int ul = 0;
-        for(int i=0;i<3;i++) {
-          if ((vertex[i][2] > vertex[ul][2]) ||
-             ((vertex[i][2] == vertex[ul][2]) &&
-               vertex[i][1] < vertex[ul][1])) {
-            ul = i;
-          }
+        bool Degenerate() const
+        {
+            return is_degenerate;
         }
-        return ul;
-      }
 
-      void SearchForNonEmptyScanline() {
-        while(this->x_current == this->x_stop &&
-             (this->left_edge.more_fragments() || this->right_edge.more_fragments())) {
+        int x() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::x():Invalid State/Not Initialized");
+            }
 
-          this->x_current = this->left_edge.x();
-          this->y_current = this->left_edge.y();
-          this->x_stop = this->right_edge.x();
-
-          this->depth_interpolator.init(this->x_current,
-                                        this->x_stop,
-                                        this->left_edge.depth(),
-                                        this->right_edge.depth());
-          this->color_interpolator.init(this->x_current,
-                                        this->x_stop,
-                                        this->left_edge.color(),
-                                        this->right_edge.color());
-          this->normal_interpolator.init(this->x_current,
-                                         this->x_stop,
-                                         this->left_edge.normal(),
-                                         this->right_edge.normal());
-          this->world_interpolator.init(this->x_current,
-                                        this->x_stop,
-                                        this->left_edge.position(),
-                                        this->right_edge.position());
-          this->left_edge.next_fragment();
-          this->right_edge.next_fragment();
+            return x_current;
         }
-      }
 
-      void choose_color(int x) {
-        // x is the position on a scanline in a triangle - they all have different colors:
-        //    xstart  : green
-        //    xcurrent: yellow
-        //    xstop   : red
-        // This is like a trafic-light: green->go ahead, yellow->be carefull, red->stop!
+        int y() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::y():Invalid State/Not Initialized");
+            }
 
-        // implement the real version
-      }
+            return y_current;
+        }
 
-      // Private Variables
-      vector3_type vertex[3];
-      vector3_type colors[3];
-      vector3_type normals[3];
-      vector3_type world_coords[3];
+        real_type depth() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::depth():Invalid State/Not Initialized");
+            }
 
-      vector3_type dummy_vector;
+            return depths.value();
+        }
 
-      // The Debug variable
-      bool Debug;
+        vector3_type position() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::position():Invalid State/Not Initialized");
+            }
 
-      // Indices into the vertex table
-      int lower_left;
-      int upper_left;
-      int the_other;
+            return i_world.value();
+        }
 
-      int x_current, x_stop, y_current;
+        vector3_type const& normal() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::normal():Invalid State/Not Iitialized");
+            }
 
-      bool valid;
-      bool is_degenerate;
+            return i_normal.value();
+        }
 
-      MyEdgeRasterizer<MyMathTypes> left_edge;
-      MyEdgeRasterizer<MyMathTypes> right_edge;
+        vector3_type const& color() const
+        {
+            if (!this->valid) {
+                throw std::runtime_error("MyTriangleRasterizer::color():Invalid State/Not Initialized");
+            }
 
-      LinearInterpolator<MyMathTypes, MyMathTypes::real_type> depth_interpolator;
-      LinearInterpolator<MyMathTypes, MyMathTypes::vector3_type> color_interpolator;
-      LinearInterpolator<MyMathTypes, MyMathTypes::vector3_type> normal_interpolator;
-      LinearInterpolator<MyMathTypes, MyMathTypes::vector3_type> world_interpolator;
-  };
+            return i_colors.value();
+        }
 
-}                                // end namespace graphics
+        void print_variables()
+        {
+            std::cout << "MyTriangleRasterizer: local variables" << std::endl;
+            std::cout << "=====================================" << std::endl;
+            std::cout << "\tvalid     == " << this->valid    << std::endl;
+            std::cout << std::endl;
+        }
 
+        bool more_fragments() const
+        {
+            if (is_degenerate)
+                return false;
+
+            return left_edge.more_fragments()
+                || right_edge.more_fragments()
+                || x_current < x_stop;
+        }
+
+        void next_fragment()
+        {
+            x_current++;
+
+            depths.next_value();
+            i_colors.next_value();
+            i_world.next_value();
+            i_normal.next_value();
+
+            SearchForNonEmptyScanline();
+        }
+
+        private:
+
+        // A triangle is degenerate if all three points are co-linear
+        bool degenerate()
+        {
+            return false;
+        }
+
+
+        // LowerLeft() returns the index of the vertex with the smallest y-coordinate
+        // If there is a horizontal edge, the vertex with the smallest 
+        // x-coordinate is chosen.
+        // The computations should be done in integer coordinates.
+        int LowerLeft()
+        {
+            int ll = 0;
+            vector3_type a, b;
+
+            for (int i = 0; i < 3; i++) {
+                a = vertices[i];
+                b = vertices[ll];
+
+                if (a[2] < b[2] || (a[2] == b[2] && a[1] < b[1])) {
+                    ll = i;
+                }
+            }
+
+            return ll;
+        }
+
+        // UpperLeft() returns the index of the vertex with the greatest y-coordinate
+        // If there is a horizontal edge, the vertex with the smallest 
+        // x-coordinate is chosen.
+        // The computations should be done in integer coordinates.
+        int UpperLeft()
+        {
+            int ul = 0;
+            vector3_type a, b;
+
+            for (int i = 0; i < 3; i++) {
+                a = vertices[i];
+                b = vertices[ul];
+
+                if (a[2] > b[2] || (a[2] == b[2] && a[1] < b[1])) {
+                    ul = i;
+                }
+            }
+
+            return ul;
+        }
+
+        void SearchForNonEmptyScanline()
+        {
+            while (x_current == x_stop && left_edge.more_fragments() && right_edge.more_fragments()) {
+                x_current = left_edge.x();
+                y_current = left_edge.y();
+
+                x_stop = right_edge.x();
+
+                depths.init(left_edge.x(), right_edge.x(), left_edge.depth(), right_edge.depth());
+                i_colors.init(left_edge.x(), right_edge.x(), left_edge.color(), right_edge.color());
+                i_world.init(left_edge.x(), right_edge.x(), left_edge.position(), right_edge.position());
+                i_normal.init(left_edge.x(), right_edge.x(), left_edge.normal(), right_edge.normal());
+
+                left_edge.next_fragment();
+                right_edge.next_fragment();
+            }
+        }
+
+        void choose_color(int x)
+        {
+            // x is the position on a scanline in a triangle - they all have different colors:
+            //    xstart  : green
+            //    xcurrent: yellow
+            //    xstop   : red
+            // This is like a trafic-light: green->go ahead, yellow->be carefull, red->stop!
+
+            // implement the real version
+        }
+
+
+        // Private Variables
+
+        vector3_type dummy_vector;
+
+        // The Debug variable
+        bool Debug;
+
+
+        // Indices into the vertex table
+        int lower_left;
+        int upper_left;
+        int the_other;
+
+        vector3_type edges[3], normals[3], colors[3];
+        vector3_type vertices[3], world[3];
+
+        int x_current, y_current;
+        int x_stop;
+
+        bool valid, is_degenerate;
+    };
+
+}// end namespace graphics
 
 // TRIANGLE_RASTERIZER_H
 #endif
