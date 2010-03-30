@@ -10,7 +10,7 @@ ENDIF(COMMAND cmake_policy)
 
 PROJECT(GraphicsProjectFrameWork)
 
-SET(CMAKE_CXX_FLAGS -trigraphs)
+set(CMAKE_CXX_FLAGS "-trigraphs -g")
 
 FIND_PACKAGE(OpenGL)
 IF(OPENGL_FOUND)
