@@ -31,26 +31,28 @@ namespace graphics
     {
     private:
         Triangle *_triangles;
-        unsigned int _count;
+        unsigned int _count, _depth;
 
     public:
 
         /**
          *
          */
-        Bezier()
-        {}
+        Bezier(unsigned int depth)
+        {
+            _depth = depth;
+            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2);
+        }
 
         /**
          *
          */
         void
-        init(surface_t &surface, unsigned int depth)
+        init(surface_t &surface)
         {
-            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2);
             _count = 0;
 
-            bezier(surface, depth);
+            bezier(surface, _depth);
         }
 
         Triangle *
