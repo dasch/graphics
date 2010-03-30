@@ -27,7 +27,7 @@ using namespace graphics;
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
 
-#define BEZIER_DEPTH 2
+#define BEZIER_DEPTH 6
 
 MyCamera<MyMathTypes>             camera;
 RenderPipeline<MyMathTypes>       render_pipeline;
@@ -122,7 +122,21 @@ run(object_t *object, int argc, char **argv)
     render_pipeline.set_resolution(WIN_WIDTH, WIN_HEIGHT);
 
     //--- set up graphics state
-    render_pipeline.state().ambient_intensity() = 0.5;
+    render_pipeline.load_rasterizer(triangle_rasterizer);
+    render_pipeline.load_vertex_program(vertex_program);
+
+    render_pipeline.state().ambient_intensity() = real_type(0.5);
+    render_pipeline.state().ambient_color() = vector3_type(0.0, 1.0, 0.0);
+
+    if (render_pipeline.state().light_position() == 0)
+        render_pipeline.state().light_position() = vector3_type(366.395325, 674.291267, -143.696048);
+
+    render_pipeline.state().diffuse_color() = vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().diffuse_intensity() = real_type(0.75);
+
+    render_pipeline.state().specular_color() = vector3_type(1.0, 1.0, 1.0);
+    render_pipeline.state().specular_intensity() = real_type(0.9);
+
 
     //--- init camera
     camera.init( render_pipeline );
@@ -180,20 +194,6 @@ draw(Triangle *triangles, unsigned int count)
 {
     Triangle *t;
     vertex_t v1, v2, v3, n1, n2, n3;
-
-    render_pipeline.load_rasterizer(triangle_rasterizer);
-    render_pipeline.load_vertex_program(vertex_program);
-
-    render_pipeline.state().ambient_intensity() = real_type(0.5);
-    render_pipeline.state().ambient_color() = vector3_type(0.0, 1.0, 0.0);
-
-    render_pipeline.state().light_position() = vector3_type(366.395325, 674.291267, -143.696048);
-
-    render_pipeline.state().diffuse_color() = vector3_type(1.0, 1.0, 1.0);
-    render_pipeline.state().diffuse_intensity() = real_type(0.75);
-
-    render_pipeline.state().specular_color() = vector3_type(1.0, 1.0, 1.0);
-    render_pipeline.state().specular_intensity() = real_type(0.9);
 
     camera.set_projection(vrp, vpn, vup, prp,
 			  lower_left, upper_right,

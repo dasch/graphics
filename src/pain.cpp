@@ -14,7 +14,8 @@ int main(int argc, char **argv)
     front_plane = real_type(60.0);
     back_plane = real_type(-10.0);
 
-    render_pipeline.state().eye_position() = vector3_type(-360, -74, -13);
+    render_pipeline.state().light_position() = vector3_type(-360, -74, -13);
+    render_pipeline.state().eye_position() = vrp + prp;
 
     object_t *object;
     object = object_init();
