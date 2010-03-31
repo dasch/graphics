@@ -87,7 +87,7 @@ namespace graphics
             bezier(tl, depth - 1);
         }
 
-        void
+        static inline void
         subdivide_horizontal(surface_t &surface, surface_t &left, surface_t &right)
         {
             vertex_t p1, p2, p3, p4, tmp;
@@ -114,7 +114,7 @@ namespace graphics
             }
         }
 
-        void
+        static inline void
         subdivide_vertical(surface_t &surface, surface_t &top, surface_t &bottom)
         {
             vertex_t p1, p2, p3, p4, tmp;
@@ -202,7 +202,11 @@ namespace graphics
             n[3] = Cross(s[3], t[3]);
 
             for (int i = 0; i < 4; i++) {
-                n[i] /= Norm(n[i]);
+                if (Norm(n[i]) == 0) {
+                    n[i] = vertex_t(0, 0, 1);
+                } else {
+                    n[i] /= Norm(n[i]);
+                }
             }
 
             _triangles[_count++] = Triangle(v[2], n[2], v[3], n[3], v[0], n[0]);

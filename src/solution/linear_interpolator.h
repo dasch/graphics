@@ -10,6 +10,7 @@
 
 #include "interpolator.h"
 
+using namespace std;
 
 namespace graphics {
 
