@@ -173,8 +173,10 @@ namespace graphics {
                 throw std::runtime_error("MyEdgeRasterizer::normal():Invalid State/Not Initialized");
             }
 
-            if (Norm(i_normal.value()) == 0)
+            if (Norm(i_normal.value()) == 0) {
+                cout << "Fucked up normal in edge_rasterizer" << endl;
                 return vector3_type(0, 0, 1);
+            }
 
             return i_normal.value() / Norm(i_normal.value());
         }
