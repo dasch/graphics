@@ -13,7 +13,7 @@ namespace graphics
     typedef Matrix<vertex_t, 4, 4> surface_t;
 
     surface_t
-    patch_to_surface(vertex_t *vertices, patch_t *patch)
+    patch_to_surface(vertex_t const *vertices, patch_t const *patch)
     {
         surface_t surface;
 
@@ -38,7 +38,7 @@ namespace graphics
         /**
          *
          */
-        Bezier(unsigned int depth)
+        Bezier(unsigned int const depth)
         {
             _depth = depth;
             _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2 * 2);
@@ -48,7 +48,7 @@ namespace graphics
          *
          */
         void
-        init(surface_t &surface)
+        init(surface_t const &surface)
         {
             _count = 0;
 
@@ -70,7 +70,7 @@ namespace graphics
     private:
 
         void
-        bezier(surface_t &surface, unsigned int const depth)
+        bezier(surface_t const &surface, unsigned int const depth)
         {
             surface_t bl, br, tr, tl;
 
@@ -88,7 +88,7 @@ namespace graphics
         }
 
         static inline void
-        subdivide_horizontal(surface_t &surface, surface_t &left, surface_t &right)
+        subdivide_horizontal(surface_t const &surface, surface_t &left, surface_t &right)
         {
             vertex_t p1, p2, p3, p4, tmp;
 
@@ -115,7 +115,7 @@ namespace graphics
         }
 
         static inline void
-        subdivide_vertical(surface_t &surface, surface_t &top, surface_t &bottom)
+        subdivide_vertical(surface_t const &surface, surface_t &top, surface_t &bottom)
         {
             vertex_t p1, p2, p3, p4, tmp;
 
@@ -145,7 +145,7 @@ namespace graphics
          * Divide the surface into four sub-surfaces.
          */
         void
-        subdivide(surface_t &surface, surface_t &bl, surface_t &br, surface_t &tr, surface_t &tl)
+        subdivide(surface_t const &surface, surface_t &bl, surface_t &br, surface_t &tr, surface_t &tl)
         {
             surface_t left, right;
 
@@ -159,7 +159,7 @@ namespace graphics
          * Draw the two triangles that make up the surface.
          */
         void
-        draw_surface(surface_t &surface)
+        draw_surface(surface_t const &surface)
         {
             vertex_t v[4], t[4], s[4], n[4];
 
@@ -261,7 +261,7 @@ namespace graphics
         }
 
         void
-        debug_surface(surface_t &s)
+        debug_surface(surface_t const &s)
         {
             cout << "(" << s[1][1] << ")  (" <<s[1][2] << ")  (" << s[1][3] << ")  (" << s[1][4] << ")" << endl;
             cout << "(" << s[2][1] << ")  (" <<s[2][2] << ")  (" << s[2][3] << ")  (" << s[2][4] << ")" << endl;
