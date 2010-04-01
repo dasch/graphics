@@ -41,7 +41,7 @@ namespace graphics
         Bezier(unsigned int depth)
         {
             _depth = depth;
-            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2);
+            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2 * 2);
         }
 
         /**
@@ -70,11 +70,11 @@ namespace graphics
     private:
 
         void
-        bezier(surface_t &surface, unsigned int depth)
+        bezier(surface_t &surface, unsigned int const depth)
         {
             surface_t bl, br, tr, tl;
 
-            if (depth == 0) {
+            if (depth <= 0 && is_convex(surface)) {
                 draw_surface(surface);
                 return;
             }
@@ -211,6 +211,53 @@ namespace graphics
 
             _triangles[_count++] = Triangle(v[2], n[2], v[3], n[3], v[0], n[0]);
             _triangles[_count++] = Triangle(v[1], n[1], v[0], n[0], v[3], n[3]);
+        }
+
+        static bool
+        is_convex(surface_t const &surface)
+        {
+            vertex_t v1, v2, v3, v4;
+
+            for (int i = 1; i <= 4; i++) {
+                v1 = surface[i][1];
+                v2 = surface[i][2];
+                v3 = surface[i][3];
+                v4 = surface[i][4];
+
+                if (!is_convex_curve(v1, v2, v3, v4)) {
+                    cout << "not convex!" << endl;
+                    return false;
+                }
+            }
+
+            for (int i = 1; i <= 4; i++) {
+                v1 = surface[1][i];
+                v2 = surface[2][i];
+                v3 = surface[3][i];
+                v4 = surface[4][i];
+
+                if (!is_convex_curve(v1, v2, v3, v4)) {
+                    cout << "not convex!" << endl;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        static bool
+        is_convex_curve(vertex_t const &v1,
+                        vertex_t const &v2,
+                        vertex_t const &v3,
+                        vertex_t const &v4)
+        {
+            vertex_t base, v1v2, v1v3;
+
+            base = v4 - v1;
+            v1v2 = v2 - v1;
+            v1v3 = v3 - v1;
+
+            return !(base * v1v2 > base * v1v3);
         }
 
         void

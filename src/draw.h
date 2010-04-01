@@ -27,7 +27,7 @@ using namespace graphics;
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
 
-#define BEZIER_DEPTH 3
+#define BEZIER_DEPTH 6
 
 MyCamera<MyMathTypes>             camera;
 RenderPipeline<MyMathTypes>       render_pipeline;
