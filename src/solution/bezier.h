@@ -74,7 +74,7 @@ namespace graphics
         {
             surface_t bl, br, tr, tl;
 
-            if (depth <= 0 && is_convex(surface)) {
+            if (depth == 0) {
                 draw_surface(surface);
                 return;
             }
