@@ -178,6 +178,41 @@ namespace graphics
             s[2] = surface[3][1] - v[2];
             s[3] = surface[3][4] - v[3];
 
+
+            // Find the best tangents.
+            for (int i = 3; i <= 4 && s[0] == 0; i++) {
+                s[0] = surface[i][1] - v[0];
+            }
+
+            for (int i = 3; i <= 4 && s[1] == 0; i++) {
+                s[1] = surface[i][4] - v[1];
+            }
+
+            for (int i = 2; i >= 1 && s[2] == 0; i--) {
+                s[2] = surface[i][1] - v[2];
+            }
+
+            for (int i = 2; i >= 1 && s[3] == 0; i--) {
+                s[3] = surface[i][4] - v[3];
+            }
+
+            for (int i = 3; i <= 4 && t[0] == 0; i++) {
+                t[0] = surface[1][i] - v[0];
+            }
+
+            for (int i = 2; i >= 1 && t[1] == 0; i--) {
+                t[1] = surface[1][i] - v[1];
+            }
+
+            for (int i = 3; i <= 4 && t[2] == 0; i++) {
+                t[2] = surface[4][i] - v[2];
+            }
+
+            for (int i = 2; i >= 1 && t[3] == 0; i--) {
+                t[3] = surface[4][i] - v[3];
+            }
+
+
             // Merge tangents.
             for (int i = 0; i < 4; i++) {
                 for (int j = i+1; j < 4; j++) {
@@ -203,7 +238,8 @@ namespace graphics
 
             for (int i = 0; i < 4; i++) {
                 if (Norm(n[i]) == 0) {
-                    n[i] = vertex_t(0, 0, 1);
+                    cout << "n[" << i << "]:" << endl;
+                    debug_surface(surface);
                 } else {
                     n[i] /= Norm(n[i]);
                 }
