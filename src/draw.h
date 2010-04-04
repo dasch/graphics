@@ -27,8 +27,6 @@ using namespace graphics;
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
 
-#define BEZIER_DEPTH 6
-
 MyCamera<MyMathTypes>             camera;
 RenderPipeline<MyMathTypes>       render_pipeline;
 MyVertexProgram<MyMathTypes>      vertex_program;
@@ -64,6 +62,7 @@ void DrawLinez();
 void display();
 
 object_t *OBJECT;
+unsigned int BEZIER_DEPTH = 4;
 
 
 void
@@ -99,6 +98,10 @@ keyboard(unsigned char key, int mouse_x, int mouse_y)
 int
 run(object_t *object, int argc, char **argv)
 {
+    if (argc > 1) {
+        BEZIER_DEPTH = atoi(argv[1]);
+    }
+
     glutInit(&argc, argv);
 
     OBJECT = object;

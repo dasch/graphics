@@ -41,7 +41,7 @@ namespace graphics
         Bezier(unsigned int const depth)
         {
             _depth = depth;
-            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth) * 2 * 2);
+            _triangles = (Triangle*)malloc(sizeof(Triangle) * pow(4, depth + 1) * 2);
         }
 
         /**
@@ -70,11 +70,11 @@ namespace graphics
     private:
 
         void
-        bezier(surface_t const &surface, unsigned int const depth)
+        bezier(surface_t const &surface, int const depth)
         {
             surface_t bl, br, tr, tl;
 
-            if (depth == 0) {
+            if (depth <= 0 && is_convex(surface)) {
                 draw_surface(surface);
                 return;
             }
