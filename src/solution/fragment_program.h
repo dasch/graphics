@@ -8,8 +8,6 @@
 #include <iomanip>
 #include "graphics/graphics.h"
 
-#define N 20
-
 using namespace std;
 
 namespace graphics {
@@ -85,7 +83,7 @@ namespace graphics {
 
             V = V / Norm(V);
 
-            return state.specular_intensity() * state.specular_color() * pow(Dot(R, V), N);
+            return state.specular_intensity() * state.specular_color() * pow(Dot(R, V), 20);
         }
     };
 

@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv)
 {
-    vrp = vector3_type(5, 5, -1);
+    vrp = vector3_type(1, 7, -1);
     vpn = vector3_type(0, 0, -1);
     vup = vector3_type(0, 1, 0);
     prp = vector3_type(-50, 20, 70);
